@@ -17,6 +17,7 @@ export default function Header () {
             <NavLink to="/">Home</NavLink>
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/create-event">Create Event</NavLink>
+            <NavLink to="/contacts">Contacts</NavLink>
             { user 
             ? (
                 <>
