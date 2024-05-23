@@ -144,3 +144,12 @@ export async function fetchEventFromDB(id) {
     }
 }
 
+export const inviteUser = async (eventId, userId) => {
+    const eventRef = ref(db, `events/${eventId}/invitedUsers/${userId}`);
+    await set(eventRef, true);
+};
+
+export const disinviteUser = async (eventId, userId) => {
+    const eventRef = ref(db, `events/${eventId}/invitedUsers/${userId}`);
+    await remove(eventRef);
+};

@@ -12,6 +12,8 @@ import { getUserData } from './services/users.service.js';
 import {useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase-config.js';
 import CreateEvent from './components/CreateEvent/CreateEvent.jsx';
+import AllEvents from './views/AllEvents/AllEvents.jsx';
+import SingleEvent from './views/SingleEvent/SingleEvent.jsx';
 
 function App() {
   const [appState, setAppState] = useState({
@@ -45,6 +47,8 @@ function App() {
               <Route path="/login" element={<Login />}/>
               <Route path="/register" element={<Register />}/>
               <Route path="/create-event" element={<CreateEvent />}/>
+              <Route path="/events" element={<AllEvents />}/>
+              <Route path="/events/:id" element={<SingleEvent/>}/>
             </Routes>
           <Footer/>
         </AppContext.Provider>
