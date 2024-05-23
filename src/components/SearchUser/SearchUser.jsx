@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { fetchUsersFromDB } from '../../services/users.service';
 
 export default function SearchUser() {
