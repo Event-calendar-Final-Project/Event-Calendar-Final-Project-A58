@@ -37,10 +37,10 @@ export async function getUserContactsList(handle) {
   }
 }
 
-export async function addContactToUser(handle, contactHandle) {
+export async function addContactToUser(handle, uid) {
   try {
     await update(ref(db, `users/${handle}/contacts`), {
-      [contactHandle]: true
+      [uid]: true
     });
   } catch (error) {
     console.error("Error adding contact to user:", error);

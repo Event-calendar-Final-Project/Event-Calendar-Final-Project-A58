@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import AddContact from '../AddContact/AddContact';
+import { useState, useContext } from 'react';
 import { fetchUsersFromDB } from '../../services/users.service';
+import { AppContext } from '../../context/AppContext';
 
 export default function SearchUser() {
+  const { userData } = useContext(AppContext);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(null);
 
@@ -31,6 +34,7 @@ export default function SearchUser() {
     <div>
       <h2>{results[0].handle}</h2>
       <p>{results[0].email}</p>
+      <AddContact handle={userData.handle} uid={results[0].uid} />
     </div>
   )
 }
