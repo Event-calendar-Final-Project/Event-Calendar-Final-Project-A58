@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
-import SearchUser from "../SearchUser/SearchUser";
+import { AppContext } from "../context/AppContext";
+import SearchUser from "../components/SearchUser/SearchUser";
 
 
 export default function ContactsList() {

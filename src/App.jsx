@@ -5,14 +5,13 @@ import Footer from './components/Footer.jsx';
 import Header from './components/Header.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './views/Login.jsx';
-import Authenticated from './hoc/Authenticated.jsx';
 import { AppContext } from './context/AppContext.jsx';
 import Register from './views/Register.jsx';
 import { getUserData } from './services/users.service.js';
 import {useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase-config.js';
 import CreateEvent from './components/CreateEvent/CreateEvent.jsx';
-import ContactsList from './components/ContactsList/ContactsList.jsx';
+import ContactsList from './views/ContactsList.jsx';
 
 function App() {
   const [appState, setAppState] = useState({
