@@ -64,3 +64,14 @@ export async function fetchUsersFromDB() {
     throw error;
   }
 }
+
+export async function fetchUserById(uid){
+  try {
+    const userRef = ref(db, `users/${uid}`);
+    const userSnapshot = await get(userRef);
+    return userSnapshot.val();
+  } catch (error) {
+    console.error('Error fetching user by id:', error);
+    throw error;
+  }
+}
