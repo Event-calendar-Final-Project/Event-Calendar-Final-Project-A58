@@ -5,7 +5,6 @@ import Footer from './components/Footer.jsx';
 import Header from './components/Header.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './views/Login.jsx';
-import Authenticated from './hoc/Authenticated.jsx';
 import { AppContext } from './context/AppContext.jsx';
 import Register from './views/Register.jsx';
 import { getUserData } from './services/users.service.js';
@@ -14,6 +13,7 @@ import { auth } from './config/firebase-config.js';
 import CreateEvent from './components/CreateEvent/CreateEvent.jsx';
 import AllEvents from './views/AllEvents/AllEvents.jsx';
 import SingleEvent from './views/SingleEvent/SingleEvent.jsx';
+import ContactsList from './views/ContactsList.jsx';
 
 function App() {
   const [appState, setAppState] = useState({
@@ -47,6 +47,7 @@ function App() {
               <Route path="/login" element={<Login />}/>
               <Route path="/register" element={<Register />}/>
               <Route path="/create-event" element={<CreateEvent />}/>
+              <Route path="/contacts" element={<ContactsList />}/>
               <Route path="/events" element={<AllEvents />}/>
               <Route path="/events/:id" element={<SingleEvent/>}/>
             </Routes>
