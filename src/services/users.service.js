@@ -65,9 +65,9 @@ export async function fetchUsersFromDB() {
   }
 }
 
-export async function fetchUserById(uid){
+export async function fetchUserByHandle(handle){
   try {
-    const userRef = ref(db, `users/${uid}`);
+    const userRef = ref(db, `users/${handle}`);
     const userSnapshot = await get(userRef);
     return userSnapshot.val();
   } catch (error) {
