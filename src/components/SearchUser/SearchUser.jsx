@@ -7,6 +7,7 @@ export default function SearchUser() {
   const { userData } = useContext(AppContext);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(null);
+  const [contactAdded, setContactAdded] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,6 +17,7 @@ export default function SearchUser() {
 
     setResults(searchResults);
     console.log(searchResults);
+    setContactAdded(false);
   };
 
   return (
@@ -34,7 +36,7 @@ export default function SearchUser() {
     <div>
       <h2>{results[0].handle}</h2>
       <p>{results[0].email}</p>
-      <AddContact handle={userData.handle} uid={results[0].uid} />
+      <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} />
     </div>
   )
 }
