@@ -31,7 +31,7 @@ export default function CalendarMonth() {
        
     function calendarBuilder() {
 
-        let calendar = '';
+        let calendar = [];
 
         const firstMonthDay = new Date(currentYear, currentMonth, 1).getDay();
         const lastMonthDate = new Date(currentYear, currentMonth + 1, 0).getDate();
