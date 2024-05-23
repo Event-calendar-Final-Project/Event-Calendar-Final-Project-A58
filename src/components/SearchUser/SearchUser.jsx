@@ -3,12 +3,11 @@ import { fetchUsersFromDB } from '../../services/users.service';
 
 export default function SearchUser() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Call the fetch function with the search query
     const users = await fetchUsersFromDB();
     const searchResults = users.filter((user) => user.handle === query);
 
@@ -28,11 +27,13 @@ export default function SearchUser() {
       </form>
 
       {
-        <div>
-          <h2>{results[0].handle}</h2>
-          <p>{results[0].email}</p>
-        </div>
-      }
+  results && (
+    <div>
+      <h2>{results[0].handle}</h2>
+      <p>{results[0].email}</p>
+    </div>
+  )
+}
     </div>
   );
 }
