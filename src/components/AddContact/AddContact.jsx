@@ -1,22 +1,19 @@
-import { addContactToUser } from "../../services/users.service"
-import { getUserContactsList } from "../../services/users.service";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { getUserContactsList, addContactToUser } from '../../services/users.service';
 
+export default function AddContact({ handle, contactHandle, contactAdded, setContactAdded }) {
+  const [contacts, setContacts] = useState([]);
 
-export default function AddContact( { handle, uid } ) {
-    const [contacts, setContacts] = useState([]);
+  useEffect(() => {
+    getUserContactsList(handle).then(setContacts);
+  }, [handle]);
 
-    useEffect(() => {
-        getUserContactsList(handle).then(setContacts);
-    }, []);
-    console.log(contacts)
-    const handleAddContactSubmit = (event) => {
-        event.preventDefault();
-        console.log(handle, uid)
-        addContactToUser(handle, uid)
-    }
+  const handleAddContactSubmit = (event) => {
+    event.preventDefault();
+    addContactToUser(handle, contactHandle).then(() => setContactAdded(true)); 
+  }
 
-    return (
-        Object.keys(contacts).includes(uid) ? null : <button onClick={handleAddContactSubmit}>Add Contact</button>
-    )
+  return (
+    contacts && Object.keys(contacts).includes(contactHandle) || contactAdded ? null : <button onClick={handleAddContactSubmit}>Add Contact</button>
+  )
 }
