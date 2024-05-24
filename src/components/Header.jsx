@@ -18,10 +18,11 @@ export default function Header () {
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/create-event">Create Event</NavLink>
             <NavLink to="/contacts">Contacts</NavLink>
-            { user 
+            <NavLink to={userData.handle}>My Profile</NavLink>
+            { user && userData
             ? (
                 <>
-                    {`Welcome!`}
+                    {`Welcome ${userData.handle}!`}
                     <Button onClick={logout}>LogOut</Button>
                 </>
             )

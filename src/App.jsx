@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './App.css';
 import Home from './views/Home.jsx';
 import Footer from './components/Footer.jsx';
@@ -14,6 +14,7 @@ import CreateEvent from './components/CreateEvent/CreateEvent.jsx';
 import AllEvents from './views/AllEvents/AllEvents.jsx';
 import SingleEvent from './views/SingleEvent/SingleEvent.jsx';
 import ContactsList from './views/ContactsList.jsx';
+import UserData from './views/UserData.jsx';
 
 function App() {
   const [appState, setAppState] = useState({
@@ -21,6 +22,7 @@ function App() {
     userData: null,
   });
   const [user, loading, error] = useAuthState(auth);
+  const { userData } = useContext(AppContext);
 
   if (appState.user !== user) {
     setAppState({ ...appState, user });
@@ -31,9 +33,10 @@ function App() {
 
     getUserData(appState.user.uid)
       .then(snapshot => {
-        // console.log(snapshot.val()); // { pesho: {...} }
+         console.log(snapshot.val()); // { pesho: {...} }
         const userData = Object.values(snapshot.val())[0];
         setAppState({...appState, userData});
+        console.log(appState.userData)
       });
   }, [appState.user])
 
@@ -50,6 +53,7 @@ function App() {
               <Route path="/contacts" element={<ContactsList />}/>
               <Route path="/events" element={<AllEvents />}/>
               <Route path="/events/:id" element={<SingleEvent/>}/>
+              <Route path="/:handle" element={<UserData user={appState.userData}/>}/>
             </Routes>
           <Footer/>
         </AppContext.Provider>
