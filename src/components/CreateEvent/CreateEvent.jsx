@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { addEvent } from "../../services/event.service";
 import { AppContext } from "../../context/AppContext";
 import { updateUserEvents } from "../../services/users.service";
+import AddEventSeries from "../AddEventSeries/AddEventSeries";
 //import FileUpload from './FileUpload';
 
 export default function CreateEvent() {
@@ -110,6 +111,7 @@ export default function CreateEvent() {
             {/* <FileUpload onUpload={handleFileUpload} />*/}
             <button onClick={createEvent}>Create</button>
             {successMessage && <p>{successMessage}</p>}
+            <AddEventSeries />
 
         </div>
     );
