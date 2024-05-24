@@ -2,6 +2,7 @@ import AddContact from '../AddContact/AddContact';
 import { useState, useContext } from 'react';
 import { fetchUsersFromDB } from '../../services/users.service';
 import { AppContext } from '../../context/AppContext';
+import { Link } from 'react-router-dom';
 
 export default function SearchUser() {
   const { userData } = useContext(AppContext);
@@ -32,15 +33,25 @@ export default function SearchUser() {
       </form>
 
       {
-  results && (
-    <div>
-      <h2>{results[0].handle}</h2>
-      <p>{results[0].email}</p>
-      <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} />
-    </div>
-  )
+        results && results[0] && (
+          <div>
+            <h2>
+              <Link to={{
+                pathname: `/${results[0].handle}`,
+                state: { user: results[0] }
+              }}>
+                 {console.log('Link state:', { user: results[0] })}
+                {results[0].handle}
+              </Link>
+            </h2>
+            <p>{results[0].email}</p>
+            <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} />
+          </div>
+        )
 }
     </div>
   );
 }
+
+
 

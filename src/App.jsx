@@ -53,7 +53,8 @@ function App() {
               <Route path="/contacts" element={<ContactsList />}/>
               <Route path="/events" element={<AllEvents />}/>
               <Route path="/events/:id" element={<SingleEvent/>}/>
-              <Route path="/:handle" element={<UserData user={appState.userData}/>}/>
+              <Route path="/my-profile" element={<UserData user={appState.userData}/>}/>
+              <Route path="/:handle" element={<UserData />}/> 
             </Routes>
           <Footer/>
         </AppContext.Provider>

@@ -18,7 +18,7 @@ export default function Header () {
             <NavLink to="/events">Events</NavLink>
             <NavLink to="/create-event">Create Event</NavLink>
             <NavLink to="/contacts">Contacts</NavLink>
-            <NavLink to={userData.handle}>My Profile</NavLink>
+            <NavLink to="/my-profile">My Profile</NavLink>
             { user && userData
             ? (
                 <>
