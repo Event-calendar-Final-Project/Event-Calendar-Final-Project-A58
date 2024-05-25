@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 import { useParams, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { fetchUserByHandle } from '../services/users.service';
+import EditProfile from '../components/EditProfile/EditProfile';
+import { AppContext } from '../context/AppContext';
 
 export default function UserData({ user: userProp }) {
   const { handle } = useParams();
   const location = useLocation();
   const [user, setUser] = useState(userProp || location.state?.user);
+  const { userData } = useContext(AppContext);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     console.log('UserData useEffect', handle, user, userProp);
@@ -24,10 +28,16 @@ export default function UserData({ user: userProp }) {
     return null; 
   }
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
   return (
     <div>
       <h1>{user.handle}</h1>
       <p>{user.email}</p>
+      {user.handle === userData.handle && <button onClick={handleEditClick}>Edit</button>} 
+      {isEditing && <EditProfile user={user} />}
     </div>
   );
 }
