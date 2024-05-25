@@ -90,3 +90,14 @@ export async function updateUserProfile(handle, firstName, lastName, phone, addr
 
   return { success: true };
 }
+
+export async function addContactList(handle, listName, contacts) {
+  try {
+    const listRef = ref(db, `users/${handle}/contactLists/${listName}`);
+    await set(listRef, contacts);
+    console.log("Contact list successfully written!");
+  } catch (error) {
+    console.error('Error writing contact list:', error);
+    throw error;
+  }
+}
