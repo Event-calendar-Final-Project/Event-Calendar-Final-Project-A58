@@ -77,14 +77,16 @@ export async function fetchUserByHandle(handle){
 }
 
 export async function updateUserProfile(handle, firstName, lastName, phone, address, avatar) {
-  const userRef = ref(db, 'users/' + handle);
-  await update(userRef, {
-    firstName: firstName,
-    lastName: lastName,
-    phone: phone,
-    address: address,
-    avatar: avatar,
-  });
+  const userRef = ref(db, `users/${handle}`);
+
+  const updates = {};
+  if (firstName !== undefined && firstName !== null) updates.firstName = firstName;
+  if (lastName !== undefined && lastName !== null) updates.lastName = lastName;
+  if (phone !== undefined && phone !== null) updates.phone = phone;
+  if (address !== undefined && address !== null) updates.address = address;
+  if (avatar !== undefined && avatar !== null) updates.avatar = avatar;
+
+  await update(userRef, updates);
 
   return { success: true };
 }
