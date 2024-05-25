@@ -75,3 +75,16 @@ export async function fetchUserByHandle(handle){
     throw error;
   }
 }
+
+export async function updateUserProfile(handle, firstName, lastName, phone, address, avatar) {
+  const userRef = ref(db, 'users/' + handle);
+  await update(userRef, {
+    firstName: firstName,
+    lastName: lastName,
+    phone: phone,
+    address: address,
+    avatar: avatar,
+  });
+
+  return { success: true };
+}
