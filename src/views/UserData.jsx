@@ -9,13 +9,14 @@ export default function UserData({ user: userProp }) {
   const [user, setUser] = useState(userProp || location.state?.user);
 
   useEffect(() => {
+    console.log('UserData useEffect', handle, user, userProp);
     const fetchUser = async () => {
       if (!user || (userProp && userProp.handle !== user.handle)) {
         const fetchedUser = userProp || await fetchUserByHandle(handle);
         setUser(fetchedUser);
       }
     };
-
+    console.log(handle)
     fetchUser();
   }, [handle, user, userProp]);
 
