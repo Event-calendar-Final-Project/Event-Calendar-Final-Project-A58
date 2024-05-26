@@ -1,17 +1,29 @@
 import { db } from "../config/firebase-config";
-import { ref, set, update, get, child } from "firebase/database";
+import { ref, set, update, get, child, push } from "firebase/database";
 
-// Add a new event series
-export async function addEventSeries(seriesId, title, description) {
-    const seriesRef = ref(db, `eventSeries/${seriesId}`);
-    await set(seriesRef, { title, description, events: {} });
-}
 
-// Add an event to an existing series
-export async function addEventToSeries(seriesId, eventId) {
-    const seriesRef = ref(db, `eventSeries/${seriesId}/events/${eventId}`);
-    await set(seriesRef, true);
-}
+// Function to add an event series
+export const addEventSeries = async (title, description) => {
+    const newSeriesRef = push(ref(db, 'eventSeries')); // Generate a new series ID
+    const seriesId = newSeriesRef.key;
+
+    const series = {
+        title,
+        description,
+        createdOn: Date.now(),
+    };
+
+    await set(newSeriesRef, series);
+    return seriesId; // Return the generated series ID
+};
+
+// Function to add an event to a series
+export const addEventToSeries = async (seriesId, eventId) => {
+    const seriesEventRef = ref(db, `eventSeries/${seriesId}/events/${eventId}`);
+    await set(seriesEventRef, true); // Add event ID to the series
+};
+
+
 
 // Fetch an event series along with its events
 export async function getEventSeries(seriesId) {

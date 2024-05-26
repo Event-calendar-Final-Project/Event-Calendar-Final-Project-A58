@@ -11,8 +11,8 @@ import { getUserData } from './services/users.service.js';
 import {useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase-config.js';
 import CreateEvent from './components/CreateEvent/CreateEvent.jsx';
-import AllEvents from './views/AllEvents/AllEvents.jsx';
-import SingleEvent from './views/SingleEvent/SingleEvent.jsx';
+import AllEvents from './views/AllEvents.jsx';
+import SingleEvent from './views/SingleEvent.jsx';
 import ContactsList from './views/ContactsList.jsx';
 import UserData from './views/UserData.jsx';
 
