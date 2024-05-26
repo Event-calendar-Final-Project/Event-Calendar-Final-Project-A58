@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
-import { likeEvent, dislikeEvent, getEventById, inviteUser, disinviteUser} from '../../services/event.service';
+import { likeEvent, dislikeEvent, getEventById, inviteUser, disinviteUser } from '../../services/event.service';
 import { getUserByHandle } from '../../services/users.service';
-
 
 const contentEvent = {};
 
@@ -15,10 +14,14 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [editedContent, setEditedContent] = useState(event.description);
     const [organizerData, setOrganizerData] = useState(null);
     const [inviteHandle, setInviteHandle] = useState('');
+    const [contacts, setContacts] = useState([]);
+    const [filteredContacts, setFilteredContacts] = useState([]);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         fetchEvent();
         fetchOrganizerData();
+        fetchUserContacts();
     }, []);
 
     const fetchEvent = async () => {
@@ -31,6 +34,14 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         setOrganizerData(data.val());
     };
 
+    const fetchUserContacts = async () => {
+        const data = await getUserByHandle(userData.handle);
+        if (data.exists()) {
+            const userContacts = userData.contacts || {};
+            setContacts(Object.keys(userContacts));
+        }
+    };
+
     const like = async () => {
         await likeEvent(event.id, userData.handle);
         fetchEvent();
@@ -40,8 +51,6 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         await dislikeEvent(event.id, userData.handle);
         fetchEvent();
     };
-
-
 
     const handleDelete = () => {
         deleteEvent(event.id);
@@ -57,13 +66,20 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         setIsEditing(false);
         fetchEvent();
     };
+
     const invite = async () => {
-        try {
-            await inviteUser(event.id, inviteHandle);
-            setInviteHandle('');
-            fetchEvent();
-        } catch (error) {
-            console.error('Error inviting user:', error);
+        if (contacts.includes(inviteHandle)) {
+            try {
+                await inviteUser(event.id, inviteHandle);
+                setInviteHandle('');
+                setError('');
+                fetchEvent();
+            } catch (error) {
+                console.error('Error inviting user:', error);
+                setError('Error inviting user.');
+            }
+        } else {
+            setError('User is not in your contacts.');
         }
     };
 
@@ -73,8 +89,14 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
             fetchEvent();
         } catch (error) {
             console.error('Error disinviting user:', error);
+            setError('Error disinviting user.');
         }
     };
+
+    useEffect(() => {
+        const filtered = contacts.filter(contact => contact.includes(inviteHandle));
+        setFilteredContacts(filtered);
+    }, [inviteHandle, contacts]);
 
     return (
         <div className="event">
@@ -123,8 +145,15 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                     value={inviteHandle}
                     onChange={(e) => setInviteHandle(e.target.value)}
                     placeholder="User handle to invite"
+                    list="contacts-list"
                 />
+                <datalist id="contacts-list">
+                    {filteredContacts.map(contact => (
+                        <option key={contact} value={contact} />
+                    ))}
+                </datalist>
                 <button onClick={invite} >Invite</button>
+                {error && <div style={{ color: 'red' }}>{error}</div>}
             </div>
             {event.invitedUsers && Object.keys(event.invitedUsers).map((userId) => (
                 <div key={userId}>
@@ -147,4 +176,4 @@ Event.propTypes = {
     deleteEvent: PropTypes.func,
     editEvent: PropTypes.func,
     isSingleView: PropTypes.bool,
-}
+};
