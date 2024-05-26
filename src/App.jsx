@@ -16,7 +16,7 @@ import SingleEvent from './views/SingleEvent/SingleEvent.jsx';
 import ContactsList from './views/ContactsList.jsx';
 import UserData from './views/UserData.jsx';
 
-function App() {
+export default function App() {
   const [appState, setAppState] = useState({
     user: null,
     userData: null,
@@ -63,4 +63,4 @@ function App() {
   )
 }
 
-export default App
+
