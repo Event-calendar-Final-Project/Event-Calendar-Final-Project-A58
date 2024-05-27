@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import SearchUser from "../components/SearchUser/SearchUser";
 import MyContactsList from "../components/MyContactsList/MyContactsList";
-import CreateContactList from "../components/ContactsLists/ContactsLists";
+import ContactsLists from "../components/ContactsLists/ContactsLists";
 
 export default function ContactsList() {
   const { userData } = useContext(AppContext);
@@ -20,7 +20,7 @@ export default function ContactsList() {
         <option value="contactsLists">Contacts Lists</option>
       </select>
       {selectedOption === 'myContacts' && <MyContactsList />}
-      {selectedOption === 'contactsLists' && <CreateContactList />}
+      {selectedOption === 'contactsLists' && <ContactsLists />}
     </>
   );
 }

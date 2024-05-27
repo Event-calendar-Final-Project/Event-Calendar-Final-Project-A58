@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { addContactList, fetchUserByHandle } from '../../services/users.service';
 
-export default function CreateContactLists() { 
+export default function CreateContactLists( { onNewListAdded }) { 
   const [isAdding, setIsAdding] = useState(false);
   const [listName, setListName] = useState('');
   const { userData: { contacts } } = useContext(AppContext);
@@ -41,7 +41,11 @@ export default function CreateContactLists() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    addContactList(userData.handle, listName, selectedContacts);
+    addContactList(userData.handle, listName, selectedContacts)
+      .then(() => {
+        // Call the callback function after adding the new list
+        onNewListAdded(listName);
+      });
     setListName('');
     setSelectedContacts({});
     setIsAdding(false);
