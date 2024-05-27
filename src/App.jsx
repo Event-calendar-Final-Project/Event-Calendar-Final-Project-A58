@@ -33,7 +33,7 @@ export default function App() {
 
     getUserData(appState.user.uid)
       .then(snapshot => {
-         console.log(snapshot.val()); // { pesho: {...} }
+         console.log(snapshot.val());
         const userData = Object.values(snapshot.val())[0];
         setAppState({...appState, userData});
         console.log(appState.userData)
