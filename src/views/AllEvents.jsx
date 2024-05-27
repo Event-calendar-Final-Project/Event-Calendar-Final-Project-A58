@@ -1,8 +1,8 @@
 /* eslint-disable no-case-declarations */
 import { useEffect, useState } from "react";
-import Event from "../../components/Event/Event";
+import Event from "../components/Event/Event";
 import { useSearchParams } from "react-router-dom";
-import { getAllEvents } from "../../services/event.service"; // Import the getAllEvents function
+import { getAllEvents } from "../services/event.service"; // Import the getAllEvents function
 
 
 export default function AllEvents() {

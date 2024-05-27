@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getEventById, updateEvent,  deleteEventInDB, fetchEventFromDB } from "../../services/event.service";
-import Event from "../../components/Event/Event";
+import { getEventById, updateEvent,  deleteEventInDB, fetchEventFromDB } from "../services/event.service";
+import Event from "../components/Event/Event";
 
 export default function SingleEvent() {
     const [event, setEvent] = useState(null);
