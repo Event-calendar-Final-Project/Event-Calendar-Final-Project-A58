@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { addContactList, fetchUserByHandle } from '../../services/users.service';
 
-export default function CreateContactList() { 
+export default function CreateContactLists() { 
   const [isAdding, setIsAdding] = useState(false);
   const [listName, setListName] = useState('');
   const { userData: { contacts } } = useContext(AppContext);
