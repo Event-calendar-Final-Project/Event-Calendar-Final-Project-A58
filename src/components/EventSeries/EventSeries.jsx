@@ -20,10 +20,11 @@ EventSeries.propTypes = {
         events: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string.isRequired,
             title: PropTypes.string.isRequired,
-            organizer: PropTypes.string.isRequired,
-            createdOn: PropTypes.string.isRequired,
-            content: PropTypes.string.isRequired,
-            photoUrl: PropTypes.string,
+            description: PropTypes.string.isRequired,
+            startDate: PropTypes.string.isRequired,
+            endDate: PropTypes.string,
+            repeat: PropTypes.string.isRequired,
+            createdOn: PropTypes.number.isRequired,
         })).isRequired,
     }).isRequired,
 };

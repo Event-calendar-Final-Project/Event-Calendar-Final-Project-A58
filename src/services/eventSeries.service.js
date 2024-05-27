@@ -1,6 +1,5 @@
 import { db } from "../config/firebase-config";
-import { ref, set, update, get, child, push } from "firebase/database";
-
+import { ref, set, get, push } from "firebase/database";
 
 // Function to add an event series
 export const addEventSeries = async (title, description) => {
@@ -17,31 +16,100 @@ export const addEventSeries = async (title, description) => {
     return seriesId; // Return the generated series ID
 };
 
-// Function to add an event to a series
-export const addEventToSeries = async (seriesId, eventId) => {
-    const seriesEventRef = ref(db, `eventSeries/${seriesId}/events/${eventId}`);
-    await set(seriesEventRef, true); // Add event ID to the series
+// Function to add an event to a series with recurrence options by title
+export const addEventToSeriesByTitle = async (seriesTitle, eventTitle, eventDescription, startDate, endDate, repeat) => {
+    // Find series by title
+    const seriesRef = ref(db, 'eventSeries');
+    const seriesSnapshot = await get(seriesRef);
+    let seriesId = null;
+
+    seriesSnapshot.forEach(childSnapshot => {
+        if (childSnapshot.val().title === seriesTitle) {
+            seriesId = childSnapshot.key;
+        }
+    });
+
+    if (!seriesId) {
+        throw new Error(`Series with title ${seriesTitle} not found.`);
+    }
+
+    const newEventRef = push(ref(db, `eventSeries/${seriesId}/events`));
+    const eventId = newEventRef.key;
+
+    const event = {
+        title: eventTitle,
+        description: eventDescription,
+        startDate,
+        endDate: endDate || null,
+        repeat, // 'none', 'weekly', 'monthly', 'yearly'
+        createdOn: Date.now(),
+    };
+
+    await set(newEventRef, event);
+
+    if (repeat !== 'none') {
+        await generateRecurringEvents(seriesId, eventId, eventTitle, eventDescription, new Date(startDate), endDate ? new Date(endDate) : null, repeat);
+    }
 };
 
+// Function to generate recurring events
+const generateRecurringEvents = async (seriesId, originalEventId, title, description, startDate, endDate, repeat) => {
+    const eventsRef = ref(db, `eventSeries/${seriesId}/events`);
+    const occurrences = [];
+    let currentDate = new Date(startDate);
 
+    while (!endDate || currentDate <= endDate) {
+        occurrences.push(new Date(currentDate));
+        if (repeat === 'weekly') {
+            currentDate.setDate(currentDate.getDate() + 7);
+        } else if (repeat === 'monthly') {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        } else if (repeat === 'yearly') {
+            currentDate.setFullYear(currentDate.getFullYear() + 1);
+        }
+    }
+
+    for (const date of occurrences) {
+        const newEventRef = push(eventsRef);
+        const eventId = newEventRef.key;
+        const event = {
+            title,
+            description,
+            startDate: date.toISOString(),
+            repeat: 'none', // Future occurrences are not repeating
+            createdOn: Date.now(),
+            originalEventId: originalEventId, // To keep track of the original event
+        };
+        await set(newEventRef, event);
+    }
+};
 
 // Fetch an event series along with its events
-export async function getEventSeries(seriesId) {
-    const seriesRef = ref(db, `eventSeries/${seriesId}`);
+export async function getEventSeries(seriesTitle) {
+    const seriesRef = ref(db, 'eventSeries');
     const seriesSnapshot = await get(seriesRef);
-    if (seriesSnapshot.exists()) {
-        const seriesData = seriesSnapshot.val();
-        const eventIds = Object.keys(seriesData.events || {});
-        const events = await Promise.all(
-            eventIds.map(async (eventId) => {
-                const eventRef = ref(db, `events/${eventId}`);
-                const eventSnapshot = await get(eventRef);
-                return { id: eventId, ...eventSnapshot.val() };
-            })
-        );
-        return { ...seriesData, events };
-    } else {
+    let seriesId = null;
+
+    seriesSnapshot.forEach(childSnapshot => {
+        if (childSnapshot.val().title === seriesTitle) {
+            seriesId = childSnapshot.key;
+        }
+    });
+
+    if (!seriesId) {
         console.log("No series data available");
         return null;
     }
+
+    const seriesData = seriesSnapshot.child(seriesId).val();
+    const eventIds = Object.keys(seriesData.events || {});
+    const events = await Promise.all(
+        eventIds.map(async (eventId) => {
+            const eventRef = ref(db, `eventSeries/${seriesId}/events/${eventId}`);
+            const eventSnapshot = await get(eventRef);
+            return { id: eventId, ...eventSnapshot.val() };
+        })
+    );
+
+    return { ...seriesData, events };
 }
