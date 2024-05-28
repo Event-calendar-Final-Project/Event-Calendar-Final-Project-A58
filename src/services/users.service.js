@@ -6,14 +6,18 @@ export const getUserByHandle = (handle) => {
   return get(query(ref(db, 'users'), orderByChild('handle'), equalTo(handle)));
 };
 
-export const createUserHandle = (handle, uid, email) => {
+export const createUserHandle = (handle, uid, email, role) => {
 
-  return set(ref(db, `users/${handle}`), { handle, uid, email, createdOn: new Date() })
+  return set(ref(db, `users/${handle}`), { handle, uid, email, createdOn: new Date(),role: role || 'user' })
 };
 
 export const getUserData = (uid) => {
 
   return get(query(ref(db, 'users'), orderByChild('uid'), equalTo(uid)));
+};
+
+export const setAdminRole = async (handle) => {
+  await update(ref(db, `users/${handle}`), { role: 'admin' });
 };
 
 export async function updateUserEvents(handle, eventId) {

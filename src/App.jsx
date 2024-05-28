@@ -15,6 +15,8 @@ import AllEvents from './views/AllEvents.jsx';
 import SingleEvent from './views/SingleEvent.jsx';
 import ContactsList from './views/ContactsList.jsx';
 import UserData from './views/UserData.jsx';
+import AdminDashboard from './components/Admin/AdminDashboard.jsx';
+
 
 export default function App() {
   const [appState, setAppState] = useState({
@@ -39,6 +41,7 @@ export default function App() {
         console.log(appState.userData)
       });
   }, [appState.user])
+  console.log(appState.userData);
 
   return (
     <>
@@ -46,6 +49,8 @@ export default function App() {
         <AppContext.Provider value={{...appState, setAppState}}>
           <Header/>
             <Routes>
+            <Route path="/admin" element={appState.userData && appState.userData.role === "admin" ? <AdminDashboard /> : <Home />} />
+
               <Route path="/" element={<Home />}/>
               <Route path="/login" element={<Login />}/>
               <Route path="/register" element={<Register />}/>

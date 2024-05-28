@@ -53,7 +53,7 @@ export const addEventToSeriesByTitle = async (seriesTitle, eventTitle, eventDesc
 };
 
 // Function to generate recurring events
-const generateRecurringEvents = async (seriesId, originalEventId, title, description, startDate, endDate, repeat) => {
+const generateRecurringEvents = async (seriesId, originalEventId, name, description, startDate, endDate, repeat) => {
     const eventsRef = ref(db, `eventSeries/${seriesId}/events`);
     const occurrences = [];
     let currentDate = new Date(startDate);
@@ -73,7 +73,7 @@ const generateRecurringEvents = async (seriesId, originalEventId, title, descrip
         const newEventRef = push(eventsRef);
         const eventId = newEventRef.key;
         const event = {
-            title,
+            name,
             description,
             startDate: date.toISOString(),
             repeat: 'none', // Future occurrences are not repeating
