@@ -16,6 +16,7 @@ import SingleEvent from './views/SingleEvent.jsx';
 import ContactsList from './views/ContactsList.jsx';
 import UserData from './views/UserData.jsx';
 import AdminDashboard from './components/Admin/AdminDashboard.jsx';
+import MyCalendar from './views/MyCalendar.jsx';
 
 
 export default function App() {
