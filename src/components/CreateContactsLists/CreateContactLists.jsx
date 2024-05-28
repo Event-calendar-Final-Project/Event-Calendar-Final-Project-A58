@@ -43,8 +43,7 @@ export default function CreateContactLists( { onNewListAdded }) {
     event.preventDefault();
     addContactList(userData.handle, listName, selectedContacts)
       .then(() => {
-        // Call the callback function after adding the new list
-        onNewListAdded(listName);
+              onNewListAdded(listName);
       });
     setListName('');
     setSelectedContacts({});
