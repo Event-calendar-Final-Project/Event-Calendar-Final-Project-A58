@@ -26,9 +26,9 @@ export default function AllEvents() {
                 placeholder="Search"
                 onChange={(e) => setSearch(e.target.value)}
             />
-            {events.map((event) => (
+            <div class="grid grid-cols-4 gap-4">            {events.map((event) => (
                 <Event key={event.id} event={event} />
-            ))}
+            ))}  </div>
         </div>
     );
 }

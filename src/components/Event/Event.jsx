@@ -1,3 +1,4 @@
+
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { onValue, ref } from 'firebase/database';
@@ -6,9 +7,6 @@ import { AppContext } from '../../context/AppContext';
 import { likeEvent, dislikeEvent, getEventById, inviteUser, disinviteUser } from '../../services/event.service';
 import { getUserByHandle } from '../../services/users.service';
 import { db } from '../../config/firebase-config';
-
-
-const contentEvent = {};
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
     const { userData } = useContext(AppContext);
@@ -124,39 +122,39 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                     onChange={(e) => setEditedContent(e.target.value)}
                 />
             ) : (
-                <h1 style={{ color: '#0a9396' }}>{event.name}</h1>
+                <h1 className="text-teal-500">{event.name}</h1>
             )}
-            <div style={contentEvent}>{event.author}, {new Date(event.createdOn).toLocaleDateString('bg-BG')}</div>
+            <div className="text-gray-500">{event.author}, {new Date(event.createdOn).toLocaleDateString('bg-BG')}</div>
             {organizerData && organizerData.photoData && (
-                <img src={`data:image/jpg;base64,${organizerData.photoData}`} style={{ width: '10%', maxWidth: '50%', display: 'block', margin: '0 auto', paddingTop: '15px' }} alt="No User Photo" />
+                <img src={`data:image/jpg;base64,${organizerData.photoData}`} className="w-10 max-w-50 block mx-auto pt-15" alt="No User Photo" />
             )}
-            <div style={contentEvent}>{event.description}</div>
+            <div className="text-gray-500">{event.description}</div>
             {isSingleView && event.photoUrl && (
                 <div>
-                    <img src={event.photoUrl} alt="Event" style={{ maxWidth: '100%' }} />
+                    <img src={event.photoUrl} alt="Event" className="max-w-full" />
                 </div>
             )}
-            {!isSingleView && <Link to={`/events/${event.id}`}><button >View</button></Link>}
+            {!isSingleView && <Link to={`/events/${event.id}`}><button className="btn">View</button></Link>}
             <p></p>
             {event?.likedBy.includes(userData?.handle)
-                ? <button onClick={dislike} >Dislike</button>
-                : <button onClick={like} >Like</button>
+                ? <button onClick={dislike} className="btn">Dislike</button>
+                : <button onClick={like} className="btn">Like</button>
             }
 
             {isSingleView && userData && (userData.handle === event.author || userData.isAdmin) && !userData.isBlocked && (
                 <>
-                    <button onClick={handleDelete} >Delete</button>
+                    <button onClick={handleDelete} className="btn">Delete</button>
                     {userData && userData.handle === event.author && (
                         isEditing ? (
-                            <button onClick={saveEdit} >Save</button>
+                            <button onClick={saveEdit} className="btn">Save</button>
                         ) : (
-                            <button onClick={startEditing} >Edit</button>
+                            <button onClick={startEditing} className="btn">Edit</button>
                         )
                     )}
                 </>
             )}
 
-            <button onClick={like} >{`Likes: ${event.likedBy.length}`}</button>
+            <button onClick={like} className="btn">{`Likes: ${event.likedBy.length}`}</button>
 
             <div>
                 <input
@@ -170,13 +168,13 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                         <option key={contact} value={contact} />
                     ))}
                 </datalist>
-                <button onClick={invite} >Invite</button>
+                <button onClick={invite} className="btn">Invite</button>
                 {error && <div style={{ color: 'red' }}>{error}</div>}
             </div>
             {event.invitedUsers && Object.keys(event.invitedUsers).map((userId) => (
                 <div key={userId}>
                     <span>{userId}</span>
-                    <button onClick={() => disinvite(userId)} style={{ background: 'red' }}>Disinvite</button>
+                    <button onClick={() => disinvite(userId)} className="btn bg-red-500">Disinvite</button>
                 </div>
             ))}
         </div>
@@ -196,4 +194,6 @@ Event.propTypes = {
     editEvent: PropTypes.func,
     isSingleView: PropTypes.bool,
 };
+
+
 
