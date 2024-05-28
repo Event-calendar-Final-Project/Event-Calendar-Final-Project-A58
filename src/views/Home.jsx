@@ -3,9 +3,48 @@ import React from 'react';
 
 export default function Home() {
     return (
-        <div>
-            <img className="w-screen h-screen" src="https://images.unsplash.com/photo-1524678714210-9917a6c619c2?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image" />
-        </div>
-    );
+        <><div className="carousel rounded-box">
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg" alt="Burger" />
+          </div>
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.jpg" alt="Burger" />
+          </div>
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.jpg" alt="Burger" />
+          </div>
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.jpg" alt="Burger" />
+          </div>
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.jpg" alt="Burger" />
+          </div>
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.jpg" alt="Burger" />
+          </div>
+          <div className="carousel-item">
+            <img src="https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.jpg" alt="Burger" />
+          </div>
+        </div><div className="stats shadow">
+  
+            <div className="stat place-items-center">
+              <div className="stat-title">Events</div>
+              <div className="stat-value">15</div>
+            </div>
+  
+            <div className="stat place-items-center">
+              <div className="stat-title">Users</div>
+              <div className="stat-value text-secondary">18</div>
+            </div>
+  
+            <div className="stat place-items-center">
+              <div className="stat-title">New Registers</div>
+              <div className="stat-value">3</div>
+            </div>
+  
+          </div>
+  
+          </>
+      );
 }
 
