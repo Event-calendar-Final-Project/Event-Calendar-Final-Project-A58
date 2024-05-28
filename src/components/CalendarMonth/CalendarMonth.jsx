@@ -1,26 +1,28 @@
 import { useState } from 'react';
 
-const weekDaysStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
-    gap: '10px',
-    padding: '0',
-    listStyleType: 'none',
-  };
-  
-  const datesStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(7, 1fr)',
-    gap: '10px',
-    padding: '0',
-    listStyleType: 'none',
-  };
-
 export default function CalendarMonth(props) {
 
+    const weekDaysStyle = {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(7, 1fr)',
+        gap: '10px',
+        padding: '0',
+        listStyleType: 'none',
+      };
+      
+      const datesStyle = {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(7, 1fr)',
+        gap: '10px',
+        padding: '0',
+        listStyleType: 'none',
+        ...(props.shortWeekdays ? {} : { height: '100%' }),
+    };
+    
     const currentDate = new Date();
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
+    const weekdays = props.shortWeekdays ? ['M', 'T', 'W', 'T', 'F', 'S', 'S'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     const handlePrevMonth = () => {
         setCurrentMonth(prevMonth => {
@@ -78,13 +80,7 @@ export default function CalendarMonth(props) {
                 <span>{new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth))}</span>
             </div>
             <ul style={weekDaysStyle}>
-                <li>Mon</li>
-                <li>Tue</li>
-                <li>Wed</li>
-                <li>Thu</li>
-                <li>Fri</li>
-                <li>Sat</li>
-                <li>Sun</li>
+                {weekdays.map((day, index) => <li key={index}>{day}</li>)}
             </ul>
             <ul style={datesStyle}>
                 {calendarBuilder()}

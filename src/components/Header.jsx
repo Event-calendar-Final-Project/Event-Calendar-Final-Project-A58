@@ -19,6 +19,7 @@ export default function Header () {
             <NavLink to="/create-event">Create Event</NavLink>
             <NavLink to="/contacts">Contacts</NavLink>
             <NavLink to="/my-profile">My Profile</NavLink>
+            <NavLink to="/my-calendar">My Calendar</NavLink>
             { user && userData
             ? (
                 <>
