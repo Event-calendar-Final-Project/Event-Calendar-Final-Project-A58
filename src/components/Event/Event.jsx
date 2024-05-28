@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { onValue, ref } from 'firebase/database';
 import { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { likeEvent, dislikeEvent, getEventById, inviteUser, disinviteUser } from '../../services/event.service';
 import { getUserByHandle } from '../../services/users.service';
+import { db } from '../../config/firebase-config';
+
 
 const contentEvent = {};
 
@@ -23,6 +26,9 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         fetchOrganizerData();
         fetchUserContacts();
     }, []);
+    useEffect(() => {
+        setupInvitedUsersListener();
+    }, [event.id.invitedUsers]);
 
     const fetchEvent = async () => {
         const fetchedEvent = await getEventById(initialEvent.id);
@@ -91,6 +97,18 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
             console.error('Error disinviting user:', error);
             setError('Error disinviting user.');
         }
+    };
+
+    const setupInvitedUsersListener = () => {
+        const invitedUsersRef = ref(db, `events/${initialEvent.id}/invitedUsers`);
+        onValue(invitedUsersRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const invitedUsers = snapshot.val();
+                if (userData.handle in invitedUsers) {
+                    alert(`You have been invited to ${initialEvent.name}!`);
+                }
+            }
+        });
     };
 
     useEffect(() => {
@@ -172,8 +190,10 @@ Event.propTypes = {
         description: PropTypes.string.isRequired,
         createdOn: PropTypes.string,
         likedBy: PropTypes.array,
+        name: PropTypes.string,
     }),
     deleteEvent: PropTypes.func,
     editEvent: PropTypes.func,
     isSingleView: PropTypes.bool,
 };
+

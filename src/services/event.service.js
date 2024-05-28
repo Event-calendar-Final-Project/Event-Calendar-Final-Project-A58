@@ -144,12 +144,16 @@ export async function fetchEventFromDB(id) {
     }
 }
 
-export const inviteUser = async (eventId, userId) => {
-    const eventRef = ref(db, `events/${eventId}/invitedUsers/${userId}`);
-    await set(eventRef, true);
+// Invite a user to an event
+export const inviteUser = async (eventId, userHandle) => {
+    const updateVal = {};
+    updateVal[`events/${eventId}/invitedUsers/${userHandle}`] = true;
+    update(ref(db), updateVal);
 };
 
-export const disinviteUser = async (eventId, userId) => {
-    const eventRef = ref(db, `events/${eventId}/invitedUsers/${userId}`);
-    await remove(eventRef);
+// Disinvite a user from an event
+export const disinviteUser = async (eventId, userHandle) => {
+    const updateVal = {};
+    updateVal[`events/${eventId}/invitedUsers/${userHandle}`] = null;
+    update(ref(db), updateVal);
 };
