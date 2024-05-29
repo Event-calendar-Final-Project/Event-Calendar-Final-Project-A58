@@ -5,6 +5,7 @@ import CalendarWorkWeek from '../components/CalendarWorkWeek/CalendarWorkWeek';
 import SingleDay from '../components/SingleDay/SingleDay';
 export default function MyCalendar() {
     const [view, setView] = useState('month');
+    const [selectedDate, setSelectedDate] = useState(null);
 
     const styles = {
         gridContainer: {
@@ -37,13 +38,37 @@ export default function MyCalendar() {
     const renderView = () => {
         switch (view) {
             case 'week':
-                return <CalendarWeek style={styles.large} />;
+                return (
+                    <CalendarWeek
+                        style={styles.large}
+                        onDateClick={(date) => {
+                            setView('day');
+                            setSelectedDate(date);
+                        }}
+                    />
+                );
             case 'workweek':
-                return <CalendarWorkWeek style={styles.large} />;
+                return (
+                    <CalendarWorkWeek
+                        style={styles.large}
+                        onDateClick={(date) => {
+                            setView('day');
+                            setSelectedDate(date);
+                        }}
+                    />
+                );
             case 'day':
-                return <SingleDay style={styles.large} />;
+                return <SingleDay style={styles.large} date={selectedDate} />;
             default:
-                return <CalendarMonth style={styles.large} />;
+                return (
+                    <CalendarMonth
+                        style={styles.large}
+                        onDateClick={(date) => {
+                            setView('day');
+                            setSelectedDate(date);
+                        }}
+                    />
+                );
         }
     };
 
@@ -55,7 +80,10 @@ export default function MyCalendar() {
                     <button onClick={() => setView('month')}>Month</button>
                     <button onClick={() => setView('week')}>Week</button>
                     <button onClick={() => setView('workweek')}>Work Week</button>
-                    <button onClick={() => setView('day')}>Day</button>
+                    <button onClick={() => {
+                        setView('day');
+                        setSelectedDate(new Date());
+                    }}>Day</button>
                 </div>
                 {renderView()}
             </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function CalendarMonth(props) {
+export default function CalendarMonth({ onDateClick, ...props }) {
 
     const weekDaysStyle = {
         display: 'grid',
@@ -17,6 +17,11 @@ export default function CalendarMonth(props) {
         padding: '0',
         listStyleType: 'none',
         ...(props.shortWeekdays ? {} : { height: '100%' }),
+    };
+
+    const dateStyle = {
+        width: '100%',
+        cursor: props.shortWeekdays ? 'default' : 'pointer'
     };
     
     const currentDate = new Date();
@@ -56,13 +61,13 @@ export default function CalendarMonth(props) {
         const prevMonthLastDate = new Date(currentYear, currentMonth, 0).getDate();
 
         const datesBeforeCurrentMonth = Array.from({ length: firstMonthDay }, (_, i) => 
-            <li key={`before-${i}`} style={{width: '100%'}}>{prevMonthLastDate - i}</li>
+            <li key={`before-${i}`} style={dateStyle} onClick={() => onDateClick(new Date(currentYear, currentMonth, i + 1))}>{prevMonthLastDate - i}</li>
         ).reverse();
         const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => 
-            <li key={`current-${i}`} style={{width: '100%'}}>{i + 1}</li>
+            <li key={`current-${i}`} style={dateStyle} onClick={() => onDateClick(new Date(currentYear, currentMonth, i + 1))}>{i + 1}</li>
         );
         const datesOfNextMonth = Array.from({ length: 6 - lastMonthDay }, (_, i) => 
-            <li key={`next-${i}`} style={{width: '100%'}}>{i + 1}</li>
+            <li key={`next-${i}`} style={dateStyle} onClick={() => onDateClick(new Date(currentYear, currentMonth, i + 1))}>{i + 1}</li>
         );
         
         calendar = [...datesBeforeCurrentMonth, ...datesOfCurrentMonth, ...datesOfNextMonth];
