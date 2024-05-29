@@ -27,12 +27,12 @@ export default function AddEventSeries() {
 
     return (
         <div>
-            <h2>Add Event Series</h2>
+            <h2 className="text-xl font-medium text-black">Add Event Series</h2>
             <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
             <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-            <button onClick={handleAddSeries}>Add Series</button>
+            <button onClick={handleAddSeries} className="btn btn-outline btn-info">Add Series</button>
 
-            <h2>Add Event to Series</h2>
+            <h2 className="text-xl font-medium text-black">Add Event to Series</h2>
             <input type="text" placeholder="Series Title" value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)} />
             <input type="text" placeholder="Event Title" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
             <input type="text" placeholder="Event Description" value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
@@ -44,7 +44,7 @@ export default function AddEventSeries() {
                 <option value="monthly">Monthly</option>
                 <option value="yearly">Yearly</option>
             </select>
-            <button onClick={handleAddEvent}>Add Event</button>
+            <button onClick={handleAddEvent} className="btn btn-outline btn-info">Add Event</button>
         </div>
     );
 }

@@ -65,54 +65,69 @@ export default function CreateEvent() {
     // };
 
     return (
-        <div>
-            <h1>Create Event</h1>
-            <div>
-                <label htmlFor="input-name">Event Name:</label>
-                <input
-                    type="text"
-                    value={event.name}
-                    onChange={(e) => updateEvent(e.target.value, 'name')}
-                    name="input-name"
-                    id="input-name"
-                />
+        <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
+{/*             <div className="flex-shrink-0">
+                <img className="h-12 w-12" src="/img/logo.svg" alt="Logo" />
+            </div> */}
+            <div className="text-center">
+                <div className="text-xl font-medium text-black">Create Event</div>
+                <div>
+                    <label htmlFor="input-name" className="block text-sm font-medium text-gray-700">Event Name:</label>
+                    <input
+                        type="text"
+                        value={event.name}
+                        onChange={(e) => updateEvent(e.target.value, 'name')}
+                        name="input-name"
+                        id="input-name"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="input-description" className="block text-sm font-medium text-gray-700">Description:</label>
+                    <textarea
+                        value={event.description}
+                        onChange={(e) => updateEvent(e.target.value, 'description')}
+                        name="input-description"
+                        id="input-description"
+                        cols="30"
+                        rows="10"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="input-date" className="block text-sm font-medium text-gray-700">Date:</label>
+                    <input
+                        type="date"
+                        value={event.date}
+                        onChange={(e) => updateEvent(e.target.value, 'date')}
+                        name="input-date"
+                        id="input-date"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                </div>
+                <div>
+                    <label htmlFor="input-location" className="block text-sm font-medium text-gray-700">Location:</label>
+                    <input
+                        type="text"
+                        value={event.location}
+                        onChange={(e) => updateEvent(e.target.value, 'location')}
+                        name="input-location"
+                        id="input-location"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                    />
+                </div>
+                {/* <FileUpload onUpload={handleFileUpload} />*/}
+                <div className="text-center">
+                    <button onClick={createEvent} className="btn btn-outline btn-info">
+                        Create
+                    </button>
+                    {successMessage && <p>{successMessage}</p>}
+                </div>
+                <AddEventSeries />
             </div>
-            <div>
-                <label htmlFor="input-description">Description:</label>
-                <textarea
-                    value={event.description}
-                    onChange={(e) => updateEvent(e.target.value, 'description')}
-                    name="input-description"
-                    id="input-description"
-                    cols="30"
-                    rows="10"
-                />
-            </div>
-            <div>
-                <label htmlFor="input-date">Date:</label>
-                <input
-                    type="date"
-                    value={event.date}
-                    onChange={(e) => updateEvent(e.target.value, 'date')}
-                    name="input-date"
-                    id="input-date"
-                />
-            </div>
-            <div>
-                <label htmlFor="input-location">Location:</label>
-                <input
-                    type="text"
-                    value={event.location}
-                    onChange={(e) => updateEvent(e.target.value, 'location')}
-                    name="input-location"
-                    id="input-location"
-                />
-            </div>
-            {/* <FileUpload onUpload={handleFileUpload} />*/}
-            <button onClick={createEvent}>Create</button>
-            {successMessage && <p>{successMessage}</p>}
-            <AddEventSeries />
-
         </div>
     );
 }
+
+
+
