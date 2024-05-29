@@ -5,6 +5,36 @@ export default function CalendarWeek() {
 
     const [currentDate, setCurrentDate] = useState(new Date());
 
+    const styles = {
+        ul: {
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            gap: '10px',
+            padding: '0',
+            listStyleType: 'none',
+        },
+        li: {
+            padding: '10px',
+            textAlign: 'center',
+        },
+        today: {
+            backgroundColor: '#f0f0f0',
+        },
+        weekSelector: {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '20px',
+        },
+        button: {
+            padding: '10px',
+        },
+        span: {
+            flexGrow: 1,
+            textAlign: 'center',
+        },
+    };
+
 function calendarBuilder() {
     
     
@@ -13,14 +43,14 @@ function calendarBuilder() {
         <li key={`current-${i}`}>{i + 1}</li>
     );
 
-    // Get the current date
+
     
 
-    // Get the start and end dates of the current week
+
     const startOfWeek = currentDate.getDate() - currentDate.getDay();
     const endOfWeek = startOfWeek + 6;
 
-    // Filter the dates to only include the dates in the current week
+
     const datesOfCurrentWeek = datesOfCurrentMonth.filter((_, i) => 
         i >= startOfWeek && i <= endOfWeek
     );
@@ -39,21 +69,21 @@ const handleNextWeek = () => {
 return (
     <div className="CalendarWeek">
         <h1>Calendar</h1>
-        <div className="week-selector">
-            <button onClick={handlePrevWeek}>&lt;</button>
-            <button onClick={handleNextWeek}>&gt;</button>
-            <span>{`${currentDate.getDate() - currentDate.getDay() + 1}-${currentDate.getDate() - currentDate.getDay() + 7} ${currentDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`}</span>
+        <div style={styles.weekSelector}>
+            <button style={styles.button} onClick={handlePrevWeek}>&lt;</button>
+            <button style={styles.button} onClick={handleNextWeek}>&gt;</button>
+            <span style={styles.span}>{`${currentDate.getDate() - currentDate.getDay() + 1}-${currentDate.getDate() - currentDate.getDay() + 7} ${currentDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`}</span>
         </div>
-        <ul>
-            <li>Mon</li>
-            <li>Tue</li>
-            <li>Wed</li>
-            <li>Thu</li>
-            <li>Fri</li>
-            <li>Sat</li>
-            <li>Sun</li>
+        <ul style={styles.ul}>
+            <li style={styles.li}>Mon</li>
+            <li style={styles.li}>Tue</li>
+            <li style={styles.li}>Wed</li>
+            <li style={styles.li}>Thu</li>
+            <li style={styles.li}>Fri</li>
+            <li style={styles.li}>Sat</li>
+            <li style={styles.li}>Sun</li>
         </ul>
-        <ul>{calendarBuilder()}</ul>
+        <ul style={styles.ul}>{calendarBuilder()}</ul>
     </div>
 )
 }
