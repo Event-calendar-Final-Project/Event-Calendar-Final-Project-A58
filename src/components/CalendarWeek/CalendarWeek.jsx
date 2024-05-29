@@ -1,9 +1,17 @@
-import './CalendarWeek.css';
 import { useState } from 'react';
 
 export default function CalendarWeek() {
 
     const [currentDate, setCurrentDate] = useState(new Date());
+    const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() + 1);
+    const endOfWeek = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() + 6);
+
+    let displayDate;
+if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
+    displayDate = `${startOfWeek.getDate()}-${endOfWeek.getDate()} ${startOfWeek.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
+} else {
+    displayDate = `${startOfWeek.getDate()} ${startOfWeek.toLocaleString('en-US', { month: 'long' })}-${endOfWeek.getDate()} ${endOfWeek.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
+}
 
     const styles = {
         ul: {
@@ -35,28 +43,18 @@ export default function CalendarWeek() {
         },
     };
 
-function calendarBuilder() {
+    function calendarBuilder() {
+        const lastMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+        const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => 
+            <li key={`current-${i}`}>{i + 1}</li>
+        );
     
+            const datesOfCurrentWeek = datesOfCurrentMonth.filter((_, i) => 
+            i >= startOfWeek - 1 && i <= endOfWeek - 1
+        );
     
-    const lastMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-    const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => 
-        <li key={`current-${i}`}>{i + 1}</li>
-    );
-
-
-    
-
-
-    const startOfWeek = currentDate.getDate() - currentDate.getDay();
-    const endOfWeek = startOfWeek + 6;
-
-
-    const datesOfCurrentWeek = datesOfCurrentMonth.filter((_, i) => 
-        i >= startOfWeek && i <= endOfWeek
-    );
-
-    return datesOfCurrentWeek;
-}
+        return datesOfCurrentWeek;
+    }
 
 const handlePrevWeek = () => {
     setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 7));
@@ -72,7 +70,7 @@ return (
         <div style={styles.weekSelector}>
             <button style={styles.button} onClick={handlePrevWeek}>&lt;</button>
             <button style={styles.button} onClick={handleNextWeek}>&gt;</button>
-            <span style={styles.span}>{`${currentDate.getDate() - currentDate.getDay() + 1}-${currentDate.getDate() - currentDate.getDay() + 7} ${currentDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`}</span>
+            <span style={styles.span}>{displayDate}</span>
         </div>
         <ul style={styles.ul}>
             <li style={styles.li}>Mon</li>
