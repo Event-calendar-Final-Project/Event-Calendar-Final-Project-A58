@@ -65,7 +65,8 @@ export default function CreateEvent() {
     // };
 
     return (
-        <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
+        
+        <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4"  style={{ backgroundImage: "url('https://images.unsplash.com/photo-1716835457716-0e879b88c774?q=80&w=1986&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}>
 {/*             <div className="flex-shrink-0">
                 <img className="h-12 w-12" src="/img/logo.svg" alt="Logo" />
             </div> */}
