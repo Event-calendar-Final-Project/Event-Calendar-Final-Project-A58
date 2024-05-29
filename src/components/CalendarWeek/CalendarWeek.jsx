@@ -44,14 +44,15 @@ if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
     };
 
     function calendarBuilder() {
-        const lastMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-        const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => 
-            <li key={`current-${i}`}>{i + 1}</li>
-        );
-    
-            const datesOfCurrentWeek = datesOfCurrentMonth.filter((_, i) => 
-            i >= startOfWeek - 1 && i <= endOfWeek - 1
-        );
+        const datesOfCurrentWeek = Array.from({ length: 7 }, (_, i) => {
+            const date = new Date(startOfWeek);
+            date.setDate(date.getDate() + i);
+            return (
+                <li key={`current-${i}`} style={date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() ? styles.today : styles.li}>
+                    {date.getDate()}
+                </li>
+            );
+        });
     
         return datesOfCurrentWeek;
     }

@@ -1,4 +1,3 @@
-import './CalendarWorkWeek.css'
 import { useState } from 'react';
 
 export default function CalendarWorkWeek() {
@@ -43,7 +42,7 @@ export default function CalendarWorkWeek() {
 
     const adjustedDay = currentDate.getDay() === 0 ? 7 : currentDate.getDay();
 
-    // Calculate the start and end of the week
+
     const startOfWeekDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - adjustedDay + 1);
     const endOfWeekDate = new Date(startOfWeekDate.getFullYear(), startOfWeekDate.getMonth(), startOfWeekDate.getDate() + 4);
 
@@ -53,7 +52,7 @@ export default function CalendarWorkWeek() {
             <li key={`current-${i}`}>{i + 1}</li>
         );
 
-        // Filter the dates to only include the workdays in the current week
+        
         const datesOfWorkWeek = datesOfCurrentMonth.filter((_, i) => 
             i >= startOfWeekDate.getDate() - 1 && i <= endOfWeekDate.getDate() - 1
         );
