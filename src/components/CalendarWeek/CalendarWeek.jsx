@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function CalendarWeek() {
+export default function CalendarWeek( {onDateClick} ) {
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() + 1);
@@ -14,6 +14,17 @@ if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
 }
 
     const styles = {
+
+        date: {
+            padding: '10px',
+            textAlign: 'center',
+            cursor: 'pointer'
+        },
+        today: {
+            backgroundColor: '#f0f0f0',
+            cursor: 'pointer'
+        },
+
         ul: {
             display: 'grid',
             gridTemplateColumns: 'repeat(7, 1fr)',
@@ -42,13 +53,16 @@ if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
             textAlign: 'center',
         },
     };
-
     function calendarBuilder() {
         const datesOfCurrentWeek = Array.from({ length: 7 }, (_, i) => {
             const date = new Date(startOfWeek);
             date.setDate(date.getDate() + i);
             return (
-                <li key={`current-${i}`} style={date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() ? styles.today : styles.li}>
+                <li 
+                    key={`current-${i}`} 
+                    style={date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() ? styles.today : styles.date}
+                    onClick={() =>onDateClick(date)}
+                >
                     {date.getDate()}
                 </li>
             );

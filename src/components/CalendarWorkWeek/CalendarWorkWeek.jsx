@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function CalendarWorkWeek() {
+export default function CalendarWorkWeek( { onDateClick } ) {
 
     const styles = {
         ul: {
@@ -13,9 +13,11 @@ export default function CalendarWorkWeek() {
         li: {
             padding: '10px',
             textAlign: 'center',
+            cursor: 'pointer',
         },
         today: {
             backgroundColor: '#f0f0f0',
+            cursor: 'pointer',
         },
         weekSelector: {
             display: 'flex',
@@ -42,17 +44,21 @@ export default function CalendarWorkWeek() {
     
         const calendarBuilder = () => {
             const lastMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-            const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => 
-                <li key={`current-${i}`} style={styles.li}>{i + 1}</li>
-            );
-    
-            
+            const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1);
+                const isToday = date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear();
+                return (
+                    <li key={`current-${i}`} style={isToday ? styles.today : styles.li} onClick={() => onDateClick(date)}>{date.getDate()}</li>
+                );
+            });
+        
             const datesOfWorkWeek = datesOfCurrentMonth.filter((_, i) => 
                 i >= startOfWeekDate.getDate() - 1 && i <= endOfWeekDate.getDate() - 1
             );
-    
+        
             return datesOfWorkWeek;
         }
+
     
         const handlePrevWeek = () => {
             setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 7));

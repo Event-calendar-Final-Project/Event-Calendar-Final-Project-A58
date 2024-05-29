@@ -1,9 +1,8 @@
 import './SingleDay.css'
 import { useState } from 'react';
+export default function SingleDay({ date }) {
 
-export default function SingleDay() {
-
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(date);
     const currentDay = currentDate.toLocaleDateString('en-GB', { weekday: 'long' });
     const currentDateString = currentDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
 
