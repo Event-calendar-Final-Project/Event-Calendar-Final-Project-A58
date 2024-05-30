@@ -28,12 +28,12 @@ export default function CreateContactLists( { onNewListAdded }) {
     if (event.target.checked) {
       setSelectedContacts(prevContacts => ({
         ...prevContacts,
-        [contact.uid]: true
+        [contact.handle]: true
       }));
     } else {
       setSelectedContacts(prevContacts => {
         const newContacts = { ...prevContacts };
-        delete newContacts[contact.uid];
+        delete newContacts[contact.handle];
         return newContacts;
       });
     }
@@ -41,9 +41,10 @@ export default function CreateContactLists( { onNewListAdded }) {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    addContactList(userData.handle, listName, selectedContacts)
+    const selectedContactHandles = Object.keys(selectedContacts);
+    addContactList(userData.handle, listName, selectedContactHandles)
       .then(() => {
-              onNewListAdded(listName);
+        onNewListAdded({ name: listName, users: selectedContactHandles });
       });
     setListName('');
     setSelectedContacts({});
