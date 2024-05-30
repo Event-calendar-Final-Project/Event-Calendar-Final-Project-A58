@@ -35,7 +35,11 @@ export default function UserData({ user: userProp }) {
   return (
     <div>
       <h1>{user.handle}</h1>
-      <p>{user.email}</p>
+      <p>First Name: {user.firstName}</p>
+      <p>Last Name: {user.lastName}</p>
+      <p>Email: {user.email}</p>
+      <p>Phone: {user.phone}</p>
+      <p>Address: {user.address}</p>
       {user.handle === userData.handle && <button onClick={handleEditClick}>Edit</button>} 
       {isEditing && <EditProfile user={user} />}
     </div>
@@ -46,5 +50,9 @@ UserData.propTypes = {
   user: PropTypes.shape({
     handle: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    phone: PropTypes.string,
+    address: PropTypes.string,
   }),
 };
