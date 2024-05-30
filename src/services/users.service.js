@@ -6,7 +6,7 @@ export const getUserByHandle = (handle) => {
   return get(query(ref(db, 'users'), orderByChild('handle'), equalTo(handle)));
 };
 
-export const createUserHandle = (handle, uid, email, firstName, lastName, photo, address, role = 'user') => {
+export const createUserHandle = (handle, uid, email, firstName, lastName, photo, address, phone, role = 'user') => {
   return set(ref(db, `users/${handle}`), { 
     handle, 
     uid, 
@@ -14,7 +14,8 @@ export const createUserHandle = (handle, uid, email, firstName, lastName, photo,
     firstName, 
     lastName, 
     photo, 
-    address, 
+    address,
+    phone, 
     createdOn: new Date(),
     role
   });
@@ -89,7 +90,7 @@ export async function fetchUserByHandle(handle){
   }
 }
 
-export async function updateUserProfile(handle, firstName, lastName, phone, address, avatar) {
+export async function updateUserProfile(handle, firstName, lastName, phone, address, photo) {
   const userRef = ref(db, `users/${handle}`);
 
   const updates = {};
@@ -97,7 +98,7 @@ export async function updateUserProfile(handle, firstName, lastName, phone, addr
   if (lastName !== undefined && lastName !== null) updates.lastName = lastName;
   if (phone !== undefined && phone !== null) updates.phone = phone;
   if (address !== undefined && address !== null) updates.address = address;
-  if (avatar !== undefined && avatar !== null) updates.avatar = avatar;
+  // if (photo !== undefined && photo !== null) updates.photo = photo;
 
   await update(userRef, updates);
 
