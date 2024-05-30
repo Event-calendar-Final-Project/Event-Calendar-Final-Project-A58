@@ -13,6 +13,7 @@ export default function Register() {
     lastName: '',
     photo: null,
     address: '',
+    phone: '', 
   });
   const { user, setAppState } = useContext(AppContext);
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ export default function Register() {
         return console.log('User with this username already exists!');
       }
       const credential = await registerUser(form.email, form.password);
-      await createUserHandle(form.username, credential.user.uid, credential.user.email, form.firstName, form.lastName, form.photo, form.address);
+      await createUserHandle(form.username, credential.user.uid, credential.user.email, form.firstName, form.lastName, form.photo, form.address, form.phone); // added phone field
       setAppState({ user: credential.user, userData: null });
       navigate('/');
     } catch (error) {
@@ -62,6 +63,8 @@ export default function Register() {
         <input value={form.password} onChange={updateForm('password')} type="password" name="password" id="password" className="w-full px-3 py-2 border rounded-md" />
         <label htmlFor="address" className="block mb-2">Address:</label>
         <input value={form.address} onChange={updateForm('address')} type="text" name="address" id="address" className="w-full px-3 py-2 border rounded-md" />
+        <label htmlFor="phone" className="block mb-2">Phone:</label>
+        <input value={form.phone} onChange={updateForm('phone')} type="tel" name="phone" id="phone" className="w-full px-3 py-2 border rounded-md" /> {/* added phone field */}
         <label htmlFor="photo" className="block mb-2">Photo:</label>
         <input onChange={e => setForm({...form, photo: e.target.files[0]})} type="file" name="photo" id="photo" className="w-full px-3 py-2 border rounded-md" />
         <br /> <br /><br />
