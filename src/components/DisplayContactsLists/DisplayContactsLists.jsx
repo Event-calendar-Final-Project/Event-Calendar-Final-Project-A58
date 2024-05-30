@@ -1,17 +1,36 @@
-import { useContext } from 'react';
-import { AppContext } from '../../context/AppContext';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function DisplayContactsLists({ contactLists }) {
-  const { userData } = useContext(AppContext);
+  const [selectedList, setSelectedList] = useState(null);
+
+  const handleClick = (list) => {
+    if (selectedList === list) {
+      setSelectedList(null);
+    } else {
+      setSelectedList(list);
+    }
+  };
 
   return (
     <div>
       <h1>My Contacts Lists</h1>
-      {userData.contactLists && (contactLists.map((list) => (
-        <div key={list}>
-          <h2>{list}</h2>
+      {contactLists.map((list) => (
+        <div key={list.name}>
+          <h2 onClick={() => handleClick(list.name)}>{list.name}</h2>
+          {selectedList === list.name && (
+            <div>
+              {list.users.map((userHandle) => (
+                <p key={userHandle}>
+                  <Link to={`/${userHandle}`}>
+                    {userHandle}
+                  </Link>
+                </p>
+              ))}
+            </div>
+          )}
         </div>
-      )))}
+      ))}
     </div>
   );
 }
