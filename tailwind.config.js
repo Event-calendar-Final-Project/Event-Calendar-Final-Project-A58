@@ -3,12 +3,26 @@ import daisyui from 'daisyui'
 
 
 export default {
- content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        rotate: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        scale: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.1)' },
+        },
+      },
+      animation: {
+        rotate: 'rotate 5s linear infinite',
+        scale: 'scale 5s ease-in-out infinite',
+      },
+    },
   },
   plugins: [require("daisyui")],
 
