@@ -115,3 +115,20 @@ export async function addContactList(handle, listName, contacts) {
     throw error;
   }
 }
+
+export async function fetchContactLists(handle) {
+  try {
+    const contactListsRef = ref(db, `users/${handle}/contactLists`);
+    const contactListsSnapshot = await get(contactListsRef);
+    const contactListsData = [];
+
+    contactListsSnapshot.forEach((contactListSnapshot) => {
+      contactListsData.push({ name: contactListSnapshot.key, users: contactListSnapshot.val() });
+    });
+
+    return contactListsData;
+  } catch (error) {
+    console.error('Error fetching contact lists:', error);
+    throw error;
+  }
+}
