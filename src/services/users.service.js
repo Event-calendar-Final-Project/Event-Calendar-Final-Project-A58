@@ -6,9 +6,18 @@ export const getUserByHandle = (handle) => {
   return get(query(ref(db, 'users'), orderByChild('handle'), equalTo(handle)));
 };
 
-export const createUserHandle = (handle, uid, email, role) => {
-
-  return set(ref(db, `users/${handle}`), { handle, uid, email, createdOn: new Date(),role: role || 'user' })
+export const createUserHandle = (handle, uid, email, firstName, lastName, photo, address, role = 'user') => {
+  return set(ref(db, `users/${handle}`), { 
+    handle, 
+    uid, 
+    email, 
+    firstName, 
+    lastName, 
+    photo, 
+    address, 
+    createdOn: new Date(),
+    role
+  });
 };
 
 export const getUserData = (uid) => {
