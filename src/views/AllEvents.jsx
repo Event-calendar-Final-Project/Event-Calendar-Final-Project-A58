@@ -18,20 +18,13 @@ export default function AllEvents() {
     };
 
     return (
-<<<<<<< HEAD
         <div>
             <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>All Events</h1>
-=======
-        <div className="p-8">
-            <h1 className="text-3xl font-bold mb-4">All Events</h1>
->>>>>>> 8190cd78a0929dd846983097d3fb5a0e6a3831f3
             <input
                 type="text"
                 placeholder="Search"
                 onChange={(e) => setSearch(e.target.value)}
-                className="border border-gray-300 px-3 py-2 rounded-md mb-4"
             />
-<<<<<<< HEAD
             <div className="grid grid-cols-4 gap-4">
                 {events.map((event) => (
                     <div className="card w-96 bg-base-100 shadow-xl image-full">
@@ -42,11 +35,6 @@ export default function AllEvents() {
                             </div>
                         </div>
                     </div>
-=======
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {events.map((event) => (
-                    <Event key={event.id} event={event} />
->>>>>>> 8190cd78a0929dd846983097d3fb5a0e6a3831f3
                 ))}
             </div>
         </div>
