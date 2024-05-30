@@ -27,17 +27,17 @@ export default function AddEventSeries() {
 
     return (
         <div>
-            <h2 className="text-xl font-medium text-black">Add Event Series</h2>
-            <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <input type="text" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-            <button onClick={handleAddSeries} className="btn btn-outline btn-info">Add Series</button>
+            <h2 className="text-xl font-medium text-white">Add Event Series</h2>
+            <input className="textarea textarea-accent" placeholder="Enter event name here..." value={title} onChange={(e) => setTitle(e.target.value)} />
+            <input className="textarea textarea-info" placeholder="Enter description here..." value={description} onChange={(e) => setDescription(e.target.value)} />
+            <br></br><button onClick={handleAddSeries} className="btn btn-outline btn-info">Add Series</button>
 
-            <h2 className="text-xl font-medium text-black">Add Event to Series</h2>
-            <input type="text" placeholder="Series Title" value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)} />
-            <input type="text" placeholder="Event Title" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
-            <input type="text" placeholder="Event Description" value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
-            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="End Date (optional)" />
+            <h2 className="text-xl font-medium text-white">Add Event to Series</h2>
+            <input className="textarea textarea-accent" placeholder="Series Title" value={seriesTitle} onChange={(e) => setSeriesTitle(e.target.value)} />
+            <input className="textarea textarea-info" placeholder="Event Title" value={eventTitle} onChange={(e) => setEventTitle(e.target.value)} />
+            <input className="textarea textarea-info" placeholder="Event description " value={eventDescription} onChange={(e) => setEventDescription(e.target.value)} />
+            <input type="date" className="textarea textarea-info" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            <input type="date" className="textarea textarea-info" value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder="End Date (optional)" />
             <select value={repeat} onChange={(e) => setRepeat(e.target.value)}>
                 <option value="none">One-Time</option>
                 <option value="weekly">Weekly</option>

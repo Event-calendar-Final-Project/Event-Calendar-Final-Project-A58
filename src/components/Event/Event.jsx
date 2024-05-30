@@ -122,7 +122,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                     onChange={(e) => setEditedContent(e.target.value)}
                 />
             ) : (
-                <h1 className="text-teal-500">{event.name}</h1>
+                <h1 className="text-teal-500" style={{ fontWeight: 'bold', fontSize: 'larger' }}>{event.name}</h1>
             )}
             <div className="text-gray-500">{event.author}, {new Date(event.createdOn).toLocaleDateString('bg-BG')}</div>
             {organizerData && organizerData.photoData && (
