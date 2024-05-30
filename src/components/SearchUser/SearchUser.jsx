@@ -14,7 +14,7 @@ export default function SearchUser() {
     event.preventDefault();
 
     const users = await fetchUsersFromDB();
-    const searchResults = users.filter((user) => user.handle === query);
+    const searchResults = users.filter((user) => user.handle === query || user.email === query || user.phone === query);
 
     setResults(searchResults);
     console.log(searchResults);
@@ -44,14 +44,13 @@ export default function SearchUser() {
                 {results[0].handle}
               </Link>
             </h2>
-            <p>{results[0].email}</p>
+            <p>Email: {results[0].email}</p>
+            <p>Phone: {results[0].phone}</p>
+            <p>Address: {results[0].address}</p>
             <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} />
           </div>
         )
-}
+      }
     </div>
   );
 }
-
-
-
