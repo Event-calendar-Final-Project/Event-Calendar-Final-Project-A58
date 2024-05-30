@@ -17,14 +17,22 @@ export default {
           '0%, 100%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(1.1)' },
         },
+        translate: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(10px)' },
+          '50%': { transform: 'translateX(-10px)' },
+          '75%': { transform: 'translateX(10px)' },
+        },
       },
       animation: {
         rotate: 'rotate 5s linear infinite',
         scale: 'scale 5s ease-in-out infinite',
+        translate: 'translate 5s ease-in-out infinite',
       },
     },
   },
   plugins: [require("daisyui")],
+
 
   
 
