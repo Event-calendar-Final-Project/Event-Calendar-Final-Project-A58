@@ -77,12 +77,12 @@ export default function CalendarMonth({ onDateClick, ...props }) {
     }
 
     return (
-        <div style={props.style}>
-            <h1>Calendar</h1>
+        <div style={{ ...props.style, textAlign: 'center' }}>
+            <div className="stat-value">Calendar</div>
             <div className="month-selector">
                 <button onClick={handlePrevMonth}>&lt;</button>
                 <button onClick={handleNextMonth}>&gt;</button>
-                <span>{new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth))}</span>
+                <div className="stat-value">{new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth))}</div>
             </div>
             <ul style={weekDaysStyle}>
                 {weekdays.map((day, index) => <li key={index}>{day}</li>)}
