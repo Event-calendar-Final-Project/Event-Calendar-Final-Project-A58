@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function SingleDay({ date }) {
+export default function SingleDay({ date, events }) {
     const styles = {
         day: {
             width: '100%',
@@ -41,6 +41,8 @@ export default function SingleDay({ date }) {
     const [currentDate, setCurrentDate] = useState(date);
     const currentDay = currentDate.toLocaleDateString('en-GB', { weekday: 'long' });
     const currentDateString = currentDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+    const hours = Array.from({ length: 24 }, (_, i) => i);
+    console.log('events:', events);
 
     const handlePrevDay = () => {
         setCurrentDate(prevDate => new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 1));
@@ -58,30 +60,19 @@ export default function SingleDay({ date }) {
                 <button style={styles.button} onClick={handleNextDay}>&gt;</button>
             </div>
             <ul style={styles.ul}>
-                <li style={styles.li}>00:00</li>
-                <li style={styles.li}>01:00</li>
-                <li style={styles.li}>02:00</li>
-                <li style={styles.li}>03:00</li>
-                <li style={styles.li}>04:00</li>
-                <li style={styles.li}>05:00</li>
-                <li style={styles.li}>06:00</li>
-                <li style={styles.li}>07:00</li>
-                <li style={styles.li}>08:00</li>
-                <li style={styles.li}>09:00</li>
-                <li style={styles.li}>10:00</li>
-                <li style={styles.li}>11:00</li>
-                <li style={styles.li}>13:00</li>
-                <li style={styles.li}>14:00</li>
-                <li style={styles.li}>15:00</li>
-                <li style={styles.li}>16:00</li>
-                <li style={styles.li}>17:00</li>
-                <li style={styles.li}>18:00</li>
-                <li style={styles.li}>19:00</li>
-                <li style={styles.li}>20:00</li>
-                <li style={styles.li}>21:00</li>
-                <li style={styles.li}>22:00</li>
-                <li style={styles.li}>23:00</li>
-                <li style={styles.li}>24:00</li>
+            {hours.map(hour => {
+    const eventOnThisHour = events.find(event => {
+        const eventStartDate = new Date(event.startDateTime);
+        const eventEndDate = new Date(event.endDateTime);
+        return eventStartDate.getHours() <= hour && eventEndDate.getHours() > hour && eventStartDate.getDate() === currentDate.getDate() && eventStartDate.getMonth() === currentDate.getMonth() && eventStartDate.getFullYear() === currentDate.getFullYear();
+    });
+    return (
+        <li key={hour} style={eventOnThisHour ? { ...styles.li, backgroundColor: '#f0f0f0' } : styles.li}>
+            {hour}:00
+            {eventOnThisHour && <div>{eventOnThisHour.name}</div>}
+        </li>
+    );
+})}
             </ul>
         </div>
     );
