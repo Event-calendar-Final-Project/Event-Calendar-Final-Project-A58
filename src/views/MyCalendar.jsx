@@ -92,7 +92,7 @@ export default function MyCalendar() {
 
     return (
         <div style={styles.gridContainer}>
-            <CalendarMonth style={styles.small} shortWeekdays={true} />
+            <CalendarMonth style={styles.small} shortWeekdays={true} events={events} />
             <div style={styles.largeContainer}>
                 <div style={styles.buttonContainer}>
                     <button onClick={() => setView('month')}>Month</button>
