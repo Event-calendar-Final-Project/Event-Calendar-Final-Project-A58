@@ -158,3 +158,10 @@ export const disinviteUser = async (eventId, userHandle) => {
     updateVal[`events/${eventId}/invitedUsers/${userHandle}`] = null;
     update(ref(db), updateVal);
 };
+
+export const getMyEvents = async (handle) => {
+    const snapshot = await get(ref(db, `users/${handle}/events`));
+    if (!snapshot.exists()) return [];
+
+    return Object.entries(snapshot.val());
+}
