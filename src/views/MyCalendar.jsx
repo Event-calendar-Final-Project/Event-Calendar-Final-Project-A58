@@ -1,11 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import CalendarMonth from '../components/CalendarMonth/CalendarMonth';
 import CalendarWeek from '../components/CalendarWeek/CalendarWeek';
 import CalendarWorkWeek from '../components/CalendarWorkWeek/CalendarWorkWeek';
 import SingleDay from '../components/SingleDay/SingleDay';
+import { getMyEvents } from '../services/event.service';
+import { AppContext } from '../context/AppContext';
+import { getEventById } from '../services/event.service';
+
 export default function MyCalendar() {
     const [view, setView] = useState('month');
     const [selectedDate, setSelectedDate] = useState(null);
+    const [events, setEvents] = useState([]);
+    const { userData } = useContext(AppContext)
+
+    useEffect(() => {
+        getMyEvents(userData.handle).then((eventIds) => {
+            Promise.all(eventIds.map((event) => getEventById(event[0])))
+                .then((allEvents) => {
+                    setEvents(allEvents);
+                });
+        });
+    }, []);
+
+
 
     const styles = {
         gridContainer: {
@@ -58,11 +75,12 @@ export default function MyCalendar() {
                     />
                 );
             case 'day':
-                return <SingleDay style={styles.large} date={selectedDate} />;
+                return <SingleDay style={styles.large} date={selectedDate} events={events} />;
             default:
                 return (
                     <CalendarMonth
                         style={styles.large}
+                        events ={events}
                         onDateClick={(date) => {
                             setView('day');
                             setSelectedDate(date);
