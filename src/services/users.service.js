@@ -30,10 +30,14 @@ export const setAdminRole = async (handle) => {
   await update(ref(db, `users/${handle}`), { role: 'admin' });
 };
 
-export async function updateUserEvents(handle, eventId) {
+export async function updateUserEvents(handle, eventId, startDateTime, endDateTime) {
   try {
     await update(ref(db, `users/${handle}`), {
-      [`events/${eventId}`]: true
+      [`events/${eventId}`]: {
+        startDateTime: startDateTime.toISOString(),
+        endDateTime: endDateTime.toISOString(),
+        attended: true
+      }
     });
   } catch (error) {
     console.error("Error updating user events:", error);

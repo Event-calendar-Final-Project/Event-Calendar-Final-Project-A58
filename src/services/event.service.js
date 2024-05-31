@@ -2,12 +2,13 @@ import { ref, push, get, set, update, child, remove } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 // Add a new event to the database
-export const addEvent = async (author, name, description, date, location, /*photoUrl*/) => {
+export const addEvent = async (author, name, description, startDateTime, endDateTime, location, /*photoUrl*/) => {
     const event = {
         author,
         name,
         description,
-        date,
+        startDateTime: startDateTime.toISOString(),
+        endDateTime: endDateTime.toISOString(),
         location,
        // photoUrl,
         createdOn: Date.now(),
