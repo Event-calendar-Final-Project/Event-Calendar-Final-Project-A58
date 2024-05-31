@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function CalendarMonth({ onDateClick, ...props }) {
+export default function CalendarMonth({ onDateClick, events, ...props }) {
 
     const weekDaysStyle = {
         display: 'grid',
@@ -28,7 +28,7 @@ export default function CalendarMonth({ onDateClick, ...props }) {
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
     const weekdays = props.shortWeekdays ? ['M', 'T', 'W', 'T', 'F', 'S', 'S'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
+    console.log(events)
     const handlePrevMonth = () => {
         setCurrentMonth(prevMonth => {
             if (prevMonth > 0) {
@@ -50,31 +50,78 @@ export default function CalendarMonth({ onDateClick, ...props }) {
             }
         });
     };
-       
-    function calendarBuilder() {
-
-        let calendar = [];
-
-        const firstMonthDay = new Date(currentYear, currentMonth, 1).getDay();
-        const lastMonthDate = new Date(currentYear, currentMonth + 1, 0).getDate();
-        const lastMonthDay = new Date(currentYear, currentMonth, lastMonthDate).getDay();
-        const prevMonthLastDate = new Date(currentYear, currentMonth, 0).getDate();
-
-        const datesBeforeCurrentMonth = Array.from({ length: firstMonthDay }, (_, i) => 
-            <li key={`before-${i}`} style={dateStyle} onClick={() => onDateClick(new Date(currentYear, currentMonth, i + 1))}>{prevMonthLastDate - i}</li>
-        ).reverse();
-        const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => 
-            <li key={`current-${i}`} style={dateStyle} onClick={() => onDateClick(new Date(currentYear, currentMonth, i + 1))}>{i + 1}</li>
-        );
-        const datesOfNextMonth = Array.from({ length: 6 - lastMonthDay }, (_, i) => 
-            <li key={`next-${i}`} style={dateStyle} onClick={() => onDateClick(new Date(currentYear, currentMonth, i + 1))}>{i + 1}</li>
-        );
-        
-        calendar = [...datesBeforeCurrentMonth, ...datesOfCurrentMonth, ...datesOfNextMonth];
-
-        return calendar;
-
+    
+    function hasEvent(date) {
+        return events.some(event => {
+            const startDate = new Date(event.startDateTime);
+            const endDate = new Date(event.endDateTime);
+    
+            const isSameOrAfterStart = date.getFullYear() > startDate.getFullYear() ||
+                (date.getFullYear() === startDate.getFullYear() && date.getMonth() > startDate.getMonth()) ||
+                (date.getFullYear() === startDate.getFullYear() && date.getMonth() === startDate.getMonth() && date.getDate() >= startDate.getDate());
+    
+            const isSameOrBeforeEnd = date.getFullYear() < endDate.getFullYear() ||
+                (date.getFullYear() === endDate.getFullYear() && date.getMonth() < endDate.getMonth()) ||
+                (date.getFullYear() === endDate.getFullYear() && date.getMonth() === endDate.getMonth() && date.getDate() <= endDate.getDate());
+    
+            return isSameOrAfterStart && isSameOrBeforeEnd;
+        });
     }
+
+function calendarBuilder() {
+    let calendar = [];
+
+    const firstMonthDay = new Date(currentYear, currentMonth, 1).getDay();
+    const lastMonthDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const prevMonthLastDate = new Date(currentYear, currentMonth, 0).getDate();
+    const lastMonthDay = new Date(currentYear, currentMonth, lastMonthDate).getDay();
+
+    const datesBeforeCurrentMonth = Array.from({ length: firstMonthDay }, (_, i) => {
+        const date = new Date(currentYear, currentMonth - 1, prevMonthLastDate - i);
+        const hasEventOnDate = hasEvent(date);
+        return (
+            <li 
+                key={`before-${i}`} 
+                style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'red' : 'transparent' }} 
+                onClick={() => onDateClick(date)}
+            >
+                {prevMonthLastDate - i}
+            </li>
+        );
+    }).reverse();
+
+    const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => {
+        const date = new Date(currentYear, currentMonth, i + 1);
+        const hasEventOnDate = hasEvent(date);
+        return (
+            <li 
+                key={`current-${i}`} 
+                style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'red' : 'transparent' }} 
+                onClick={() => onDateClick(date)}
+            >
+                {i + 1}
+            </li>
+        );
+    });
+
+    const datesOfNextMonth = Array.from({ length: 6 - lastMonthDay }, (_, i) => {
+        const date = new Date(currentYear, currentMonth + 1, i + 1);
+        const hasEventOnDate = hasEvent(date);
+        return (
+            <li 
+                key={`next-${i}`} 
+                style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'red' : 'transparent' }} 
+                onClick={() => onDateClick(date)}
+            >
+                {i + 1}
+            </li>
+        );
+    });
+
+    calendar = [...datesBeforeCurrentMonth, ...datesOfCurrentMonth, ...datesOfNextMonth];
+
+    return calendar;
+}
 
     return (
         <div style={{ ...props.style, textAlign: 'center' }}>
@@ -88,7 +135,7 @@ export default function CalendarMonth({ onDateClick, ...props }) {
                 {weekdays.map((day, index) => <li key={index}>{day}</li>)}
             </ul>
             <ul style={datesStyle}>
-                {calendarBuilder()}
+                {events && calendarBuilder()}
             </ul>
         </div>
     )
