@@ -58,6 +58,7 @@ export default function MyCalendar() {
                 return (
                     <CalendarWeek
                         style={styles.large}
+                        events={events}
                         onDateClick={(date) => {
                             setView('day');
                             setSelectedDate(date);

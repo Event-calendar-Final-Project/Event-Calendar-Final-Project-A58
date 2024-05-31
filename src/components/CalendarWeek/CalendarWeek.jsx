@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import WeekDay from '../WeekDay/WeekDay';
 
-export default function CalendarWeek( {onDateClick} ) {
+export default function CalendarWeek( {onDateClick, events} ) {
 
     const [currentDate, setCurrentDate] = useState(new Date());
     const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() + 1);
@@ -53,21 +54,25 @@ if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
             textAlign: 'center',
         },
     };
+
+    
     function calendarBuilder() {
         const datesOfCurrentWeek = Array.from({ length: 7 }, (_, i) => {
             const date = new Date(startOfWeek);
             date.setDate(date.getDate() + i);
             return (
-                <li 
-                    key={`current-${i}`} 
-                    style={date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() ? styles.today : styles.date}
-                    onClick={() =>onDateClick(date)}
-                >
-                    {date.getDate()}
-                </li>
+                <WeekDay
+                    key={`current-${i}`}
+                    date={date}
+                    events={events.filter(event => {
+                        const eventStartDate = new Date(event.startDateTime);
+                        return eventStartDate.getDate() === date.getDate() && eventStartDate.getMonth() === date.getMonth() && eventStartDate.getFullYear() === date.getFullYear();
+                    })}
+                    showHoursLabel={i === 0}
+                />
             );
         });
-    
+
         return datesOfCurrentWeek;
     }
 
