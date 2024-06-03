@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import WeekDay from '../WeekDay/WeekDay';
+import HoursColumn from '../HoursColumn/HoursColumn';
 
-export default function CalendarWorkWeek( { onDateClick } ) {
+export default function CalendarWorkWeek( { onDateClick, events }  ) {
 
     const styles = {
         ul: {
             display: 'grid',
-            gridTemplateColumns: 'repeat(5, 1fr)',
-            gap: '10px',
+            gridTemplateColumns: 'repeat(6, 1fr)',
             padding: '0',
             listStyleType: 'none',
         },
@@ -43,21 +44,16 @@ export default function CalendarWorkWeek( { onDateClick } ) {
         const endOfWeekDate = new Date(startOfWeekDate.getFullYear(), startOfWeekDate.getMonth(), startOfWeekDate.getDate() + 4);
     
         const calendarBuilder = () => {
-            const lastMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-            const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => {
-                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1);
-                const isToday = date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear();
-                return (
-                    <li key={`current-${i}`} style={isToday ? styles.today : styles.li} onClick={() => onDateClick(date)}>{date.getDate()}</li>
-                );
+            const datesOfWorkWeek = Array.from({ length: 5 }, (_, i) => {
+                const date = new Date(startOfWeekDate);
+                date.setDate(date.getDate() + i);
+                return date;
             });
-        
-            const datesOfWorkWeek = datesOfCurrentMonth.filter((_, i) => 
-                i >= startOfWeekDate.getDate() - 1 && i <= endOfWeekDate.getDate() - 1
-            );
-        
+    
             return datesOfWorkWeek;
         }
+        
+
 
     
         const handlePrevWeek = () => {
@@ -75,24 +71,28 @@ export default function CalendarWorkWeek( { onDateClick } ) {
             displayDate = `${startOfWeekDate.getDate()} ${startOfWeekDate.toLocaleString('en-US', { month: 'long' })}-${endOfWeekDate.getDate()} ${endOfWeekDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
         }
     
-return (
-    <div className="CalendarWorkWeek">
-        <h1>Calendar</h1>
-        <div className="week-selector" style={styles.weekSelector}>
-            <button style={styles.button} onClick={handlePrevWeek}>&lt;</button>
-            <button style={styles.button} onClick={handleNextWeek}>&gt;</button>
-            <span style={styles.span}>{displayDate}</span>
-        </div>
-        <ul style={styles.ul}>
-            <li style={styles.li}>Mon</li>
-            <li style={styles.li}>Tue</li>
-            <li style={styles.li}>Wed</li>
-            <li style={styles.li}>Thu</li>
-            <li style={styles.li}>Fri</li>
-            {calendarBuilder()}
-        </ul>
-    </div>
-);
+        return (
+            <div className="CalendarWorkWeek">
+                <h1>Calendar</h1>
+                <div className="week-selector" style={styles.weekSelector}>
+                    <button style={styles.button} onClick={handlePrevWeek}>&lt;</button>
+                    <button style={styles.button} onClick={handleNextWeek}>&gt;</button>
+                    <span style={styles.span}>{displayDate}</span>
+                </div>
+                <ul style={styles.ul}>
+                    <HoursColumn />
+                    {calendarBuilder().map((date, index) => (
+                        <WeekDay 
+                            key={index} 
+                            date={date} 
+                            events={events} 
+                            context="workweek" 
+                            showHoursLabel={index === 0} 
+                        />
+                    ))}
+                </ul>
+            </div>
+        );
     }
 
     
