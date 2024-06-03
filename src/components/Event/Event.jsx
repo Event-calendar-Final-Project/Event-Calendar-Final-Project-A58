@@ -11,7 +11,8 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const { userData } = useContext(AppContext);
     const [event, setEvent] = useState(initialEvent);
     const [isEditing, setIsEditing] = useState(false);
-    const [editedContent, setEditedContent] = useState(event.description);
+    const [editedName, setEditedName] = useState(event.name);
+    const [editedDescription, setEditedDescription] = useState(event.description);
     const [organizerData, setOrganizerData] = useState(null);
     const [inviteHandle, setInviteHandle] = useState('');
     const [contacts, setContacts] = useState([]);
@@ -66,7 +67,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     };
 
     const saveEdit = async () => {
-        const updatedEvent = { ...event, content: editedContent };
+        const updatedEvent = { ...event, name: editedName, description: editedDescription };
         await editEvent(updatedEvent);
         setIsEditing(false);
         fetchEvent();
@@ -142,18 +143,29 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     return (
         <div className="event">
             {isEditing ? (
-                <textarea
-                    value={editedContent}
-                    onChange={(e) => setEditedContent(e.target.value)}
-                />
+                <>  Edit Event Name:
+                    <input
+                        value={editedName}
+                        onChange={(e) => setEditedName(e.target.value)}
+                        placeholder="Event Name"
+                    />
+                    Edit Event Description:
+                    <input
+                        value={editedDescription}
+                        onChange={(e) => setEditedDescription(e.target.value)}
+                        placeholder="Event Description"
+                    />
+                </>
             ) : (
-                <h1 className="text-teal-500" style={{ fontWeight: 'bold', fontSize: 'larger' }}>{event.name}</h1>
+                <>
+                    <h1 className="text-teal-500" style={{ fontWeight: 'bold', fontSize: 'larger' }}>{event.name}</h1>
+                    <div className="text-gray-500">{event.author}, {new Date(event.createdOn).toLocaleDateString('bg-BG')}</div>
+                    {organizerData && organizerData.photoData && (
+                        <img src={`data:image/jpg;base64,${organizerData.photoData}`} className="w-10 max-w-50 block mx-auto pt-15" alt="No User Photo" />
+                    )}
+                    <div className="text-gray-500">{event.description}</div>
+                </>
             )}
-            <div className="text-gray-500">{event.author}, {new Date(event.createdOn).toLocaleDateString('bg-BG')}</div>
-            {organizerData && organizerData.photoData && (
-                <img src={`data:image/jpg;base64,${organizerData.photoData}`} className="w-10 max-w-50 block mx-auto pt-15" alt="No User Photo" />
-            )}
-            <div className="text-gray-500">{event.description}</div>
             {isSingleView && event.photoUrl && (
                 <div>
                     <img src={event.photoUrl} alt="Event" className="max-w-full" />
@@ -226,4 +238,3 @@ Event.propTypes = {
     editEvent: PropTypes.func,
     isSingleView: PropTypes.bool,
 };
-
