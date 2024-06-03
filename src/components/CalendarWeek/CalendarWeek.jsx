@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import WeekDay from '../WeekDay/WeekDay';
+import SingleDay from '../SingleDay/SingleDay';
+import HoursColumn from '../HoursColumn/HoursColumn';
 
 export default function CalendarWeek( {onDateClick, events} ) {
 
@@ -28,13 +30,15 @@ if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
 
         ul: {
             display: 'grid',
-            gridTemplateColumns: 'repeat(7, 1fr)',
-            gap: '10px',
+            gridTemplateColumns: '1fr repeat(7, 1fr)',
+            gap: '0',
             padding: '0',
+            margin: '0',
             listStyleType: 'none',
         },
         li: {
-            padding: '10px',
+            margin: '0',
+            padding: '0',
             textAlign: 'center',
         },
         today: {
@@ -60,19 +64,9 @@ if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
         const datesOfCurrentWeek = Array.from({ length: 7 }, (_, i) => {
             const date = new Date(startOfWeek);
             date.setDate(date.getDate() + i);
-            return (
-                <WeekDay
-                    key={`current-${i}`}
-                    date={date}
-                    events={events.filter(event => {
-                        const eventStartDate = new Date(event.startDateTime);
-                        return eventStartDate.getDate() === date.getDate() && eventStartDate.getMonth() === date.getMonth() && eventStartDate.getFullYear() === date.getFullYear();
-                    })}
-                    showHoursLabel={i === 0}
-                />
-            );
+            return date;
         });
-
+    
         return datesOfCurrentWeek;
     }
 
@@ -93,15 +87,17 @@ return (
             <span style={styles.span}>{displayDate}</span>
         </div>
         <ul style={styles.ul}>
-            <li style={styles.li}>Mon</li>
-            <li style={styles.li}>Tue</li>
-            <li style={styles.li}>Wed</li>
-            <li style={styles.li}>Thu</li>
-            <li style={styles.li}>Fri</li>
-            <li style={styles.li}>Sat</li>
-            <li style={styles.li}>Sun</li>
+            <HoursColumn />
+            {calendarBuilder().map((date, index) => (
+                <WeekDay 
+                    key={index} 
+                    date={date} 
+                    events={events} 
+                    context="week" 
+                    showHoursLabel={index === 0} 
+                />
+            ))}1
         </ul>
-        <ul style={styles.ul}>{calendarBuilder()}</ul>
     </div>
 )
 }
