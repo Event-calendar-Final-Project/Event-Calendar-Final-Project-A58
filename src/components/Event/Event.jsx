@@ -1,4 +1,3 @@
-
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { onValue, ref } from 'firebase/database';
@@ -18,12 +17,14 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [contacts, setContacts] = useState([]);
     const [filteredContacts, setFilteredContacts] = useState([]);
     const [error, setError] = useState('');
+    const [contactListName, setContactListName] = useState('');
 
     useEffect(() => {
         fetchEvent();
         fetchOrganizerData();
         fetchUserContacts();
     }, []);
+
     useEffect(() => {
         setupInvitedUsersListener();
     }, [event.id.invitedUsers]);
@@ -94,6 +95,30 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         } catch (error) {
             console.error('Error disinviting user:', error);
             setError('Error disinviting user.');
+        }
+    };
+
+    const inviteContactList = async () => {
+        console.log('Inviting users from contact list:', Object.keys(userData.contactLists), contactListName);
+        const contactList = Object.keys(userData.contactLists).find(list => list === contactListName);
+        console.log('Contact list:', contactList);
+        console.log('Contact lists:', userData.contactLists[contactList]);
+        if (contactList) {
+            const contactsInList = userData.contactLists[contactList];
+            try {
+                for (const contact of contactsInList) {
+                    await inviteUser(event.id, contact);
+                }
+                setContactListName('');
+                setError('');
+                fetchEvent();
+                console.log('Invited users from the contact list.');
+            } catch (error) {
+                console.error('Error inviting users from the contact list:', error);
+                setError('Error inviting users from the contact list.');
+            }
+        } else {
+            setError('Contact list not found.');
         }
     };
 
@@ -168,7 +193,14 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                         <option key={contact} value={contact} />
                     ))}
                 </datalist>
-                <button onClick={invite} className="btn">Invite</button>
+                <button onClick={invite} className="btn">Invite User</button>
+                {/* New input field for inviting contact lists */}
+                <input
+                    value={contactListName}
+                    onChange={(e) => setContactListName(e.target.value)}
+                    placeholder="Contact list to invite"
+                />
+                                <button onClick={inviteContactList} className="btn">Invite Contact List</button>
                 {error && <div style={{ color: 'red' }}>{error}</div>}
             </div>
             {event.invitedUsers && Object.keys(event.invitedUsers).map((userId) => (
@@ -194,6 +226,4 @@ Event.propTypes = {
     editEvent: PropTypes.func,
     isSingleView: PropTypes.bool,
 };
-
-
 
