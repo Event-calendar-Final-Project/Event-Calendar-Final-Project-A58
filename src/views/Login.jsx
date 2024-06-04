@@ -5,7 +5,7 @@ import { AppContext } from "../context/AppContext";
 import { loginUser } from "../services/auth.service";
 
 export default function Login() {
-    const { user, setAppState } = useContext(AppContext);
+    const { user, userData, setAppState } = useContext(AppContext);
     const [form, setForm] = useState({
         email: '',
         password: '',
@@ -21,6 +21,7 @@ export default function Login() {
 
     const login = async() => {
         const { user } = await loginUser(form.email, form.password);
+       
         setAppState({ user, userData: null });
         navigate(location.state?.from.pathname || '/');
     };
@@ -44,4 +45,4 @@ export default function Login() {
             </div>
         </div>
     );
-        }
+}

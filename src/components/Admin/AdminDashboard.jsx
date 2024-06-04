@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
-import { getUsers, blockUser, unblockUser, getEvents, deleteEventInDB, editEventInDB } from '../../services/admin.service';
+import { getUsers, blockUser, unblockUser, getEvents, deleteEventInDB, editEventInDB, toggleUserRole } from '../../services/admin.service';
 
 const AdminDashboard = () => {
     const { userData } = useContext(AppContext);
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
     };
 
     const saveEdit = async () => {
-        const updatedEvent = { id:editedEventId, name: editedName, description: editedDescription };
+        const updatedEvent = { id: editedEventId, name: editedName, description: editedDescription };
         await editEventInDB(updatedEvent);
         setIsEditing(false);
         fetchEvents();
@@ -61,6 +61,11 @@ const AdminDashboard = () => {
         setEditedEventId(null);
         setEditedName('');
         setEditedDescription('');
+    };
+
+    const handleToggleUserRole = async (userId, currentRole) => {
+        await toggleUserRole(userId, currentRole);
+        fetchUsers();
     };
 
     return (
@@ -85,10 +90,16 @@ const AdminDashboard = () => {
                         <li key={user.id} className="mb-2">
                             <span>{user.username} - {user.email} - {user.role}</span>
                             {user.isBlocked ? (
-                                <button onClick={() => handleUnblockUser(user.id)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Unblock</button>
+                                <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Unblock</button>
                             ) : (
                                 <button onClick={() => handleBlockUser(user.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Block</button>
                             )}
+                            <button
+                                onClick={() => handleToggleUserRole(user.id, user.role)}
+                                className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600 ml-2"
+                            >
+                                {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
+                            </button>
                         </li>
                     ))}
                 </ul>
@@ -98,7 +109,6 @@ const AdminDashboard = () => {
                 <h2 className="text-2xl font-bold mb-2 mt-8">Events</h2>
                 <ul>
                     {events.map(event => (
-                       
                         <li key={event.id} className="mb-2">
                             {isEditing && event.id === editedEventId ? (
                                 <>

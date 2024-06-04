@@ -81,3 +81,10 @@ export const editEventInDB = async (updatedEvent) => {
 
     await update(eventRef, { name, description });
 };
+
+export const toggleUserRole = async (userId, currentRole) => {
+    
+    const newRole = currentRole === 'admin' ? 'user' : 'admin';
+
+    await update(ref(db, `users/${userId}`), { role: newRole });
+};
