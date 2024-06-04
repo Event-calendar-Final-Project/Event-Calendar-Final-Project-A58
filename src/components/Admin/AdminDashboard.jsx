@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
-import { getUsers, blockUser, unblockUser, getEvents, deleteEventInDB } from '../../services/admin.service';
+import { getUsers, blockUser, unblockUser, getEvents, deleteEventInDB, editEventInDB } from '../../services/admin.service';
 
 const AdminDashboard = () => {
     const { userData } = useContext(AppContext);
     const [users, setUsers] = useState([]);
     const [events, setEvents] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedName, setEditedName] = useState('');
+    const [editedEventId, setEditedEventId] = useState(null);
+    const [editedDescription, setEditedDescription] = useState('');
 
     useEffect(() => {
         fetchUsers();
@@ -36,6 +40,27 @@ const AdminDashboard = () => {
     const handleDeleteEvent = async (eventId) => {
         await deleteEventInDB(eventId, userData.handle);
         fetchEvents();
+    };
+
+    const startEditing = (event) => {
+        setIsEditing(true);
+        setEditedEventId(event.id);
+        setEditedName(event.name);
+        setEditedDescription(event.description);
+    };
+
+    const saveEdit = async () => {
+        const updatedEvent = { id:editedEventId, name: editedName, description: editedDescription };
+        await editEventInDB(updatedEvent);
+        setIsEditing(false);
+        fetchEvents();
+    };
+
+    const cancelEdit = () => {
+        setIsEditing(false);
+        setEditedEventId(null);
+        setEditedName('');
+        setEditedDescription('');
     };
 
     return (
@@ -73,10 +98,32 @@ const AdminDashboard = () => {
                 <h2 className="text-2xl font-bold mb-2 mt-8">Events</h2>
                 <ul>
                     {events.map(event => (
+                       
                         <li key={event.id} className="mb-2">
-                            <span>{event.name} - {event.description}</span>
-                            <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Delete</button>
-                            <button className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 ml-2">Edit</button>
+                            {isEditing && event.id === editedEventId ? (
+                                <>
+                                    <input
+                                        value={editedName}
+                                        onChange={(e) => setEditedName(e.target.value)}
+                                        placeholder="Event Name"
+                                        className="border border-gray-300 px-3 py-2 rounded-md mb-2"
+                                    />
+                                    <input
+                                        value={editedDescription}
+                                        onChange={(e) => setEditedDescription(e.target.value)}
+                                        placeholder="Event Description"
+                                        className="border border-gray-300 px-3 py-2 rounded-md mb-2"
+                                    />
+                                    <button onClick={saveEdit} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Save</button>
+                                    <button onClick={cancelEdit} className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600 ml-2">Cancel</button>
+                                </>
+                            ) : (
+                                <>
+                                    <span>{event.name} - {event.description}</span>
+                                    <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Delete</button>
+                                    <button onClick={() => startEditing(event)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 ml-2">Edit</button>
+                                </>
+                            )}
                         </li>
                     ))}
                 </ul>

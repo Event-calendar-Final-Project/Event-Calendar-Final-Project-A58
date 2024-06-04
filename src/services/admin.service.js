@@ -72,3 +72,12 @@ export const deleteEventInDB = async (eventId, author) => {
         throw error;
     }
 };
+
+
+
+export const editEventInDB = async (updatedEvent) => {
+    const { id, name, description } = updatedEvent;
+    const eventRef = ref(db, `events/${id}`);
+
+    await update(eventRef, { name, description });
+};
