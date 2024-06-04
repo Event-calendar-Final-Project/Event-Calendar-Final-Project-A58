@@ -25,11 +25,10 @@ export default function AllEvents() {
                 placeholder="Search"
                 onChange={(e) => setSearch(e.target.value)}
             />
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-2">
                 {events.map((event) => (
-                    <div className="card w-96 bg-base-100 shadow-xl image-full">
-                        <figure><img src="https://images.unsplash.com/photo-1716835457716-0e879b88c774?q=80&w=1986&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="car!" style={{ width: '60%', height: '100%' }}/></figure>
-                        <div className="card-body">
+                    <div className="event-card shadow-xl transform transition-transform hover:scale-105 mt-4 flex flex-row items-center p-4 space-x-4 rounded-lg">
+                                               <div className="card-body">
                             <Event className="card-title"  key={event.id} event={event} />
                             <div className="card-actions justify-end">
                             </div>

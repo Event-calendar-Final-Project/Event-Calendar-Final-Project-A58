@@ -63,7 +63,6 @@ export default function App() {
               <Route path="/:handle" element={<UserData />}/>
               <Route path="my-calendar" element={<MyCalendar />}/>
             </Routes>
-          <Footer/>
         </AppContext.Provider>
       </BrowserRouter>
     </>
