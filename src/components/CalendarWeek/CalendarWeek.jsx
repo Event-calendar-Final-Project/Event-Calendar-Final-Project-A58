@@ -57,6 +57,9 @@ if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
             flexGrow: 1,
             textAlign: 'center',
         },
+        hoursColumn: {
+            marginTop: '20px',
+        },
     };
 
     
@@ -87,7 +90,9 @@ return (
             <span style={styles.span}>{displayDate}</span>
         </div>
         <ul style={styles.ul}>
-            <HoursColumn />
+            <div style={styles.hoursColumn}>
+                <HoursColumn />
+            </div>
             {calendarBuilder().map((date, index) => (
                 <WeekDay 
                     key={index} 
@@ -96,8 +101,8 @@ return (
                     context="week" 
                     showHoursLabel={index === 0} 
                 />
-            ))}1
+            ))}
         </ul>
     </div>
-)
+);
 }
