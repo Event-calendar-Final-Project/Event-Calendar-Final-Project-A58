@@ -141,89 +141,123 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     }, [inviteHandle, contacts]);
 
     return (
-        <div className="event">
+        <div className="flex flex-row bg-base-200 rounded-box max-w-lg">
+          {/* Image */}
+          <div
+            className="bg-center rounded-l-box w-48 h-48"
+            style={{ backgroundImage: `url(${event.photoUrl || '/backgrounds/forest.jpg'})` }}
+          ></div>
+    
+          {/* Body */}
+          <div className="flex flex-col gap-4 p-4 flex-1">
             {isEditing ? (
-                <>  Edit Event Name:
-                    <input
-                        value={editedName}
-                        onChange={(e) => setEditedName(e.target.value)}
-                        placeholder="Event Name"
-                    />
-                    Edit Event Description:
-                    <input
-                        value={editedDescription}
-                        onChange={(e) => setEditedDescription(e.target.value)}
-                        placeholder="Event Description"
-                    />
-                </>
+              <>
+                <label className="text-secondary font-medium">Edit Event Name:</label>
+                <input
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  placeholder="Event Name"
+                  className="input input-bordered"
+                />
+                <label className="text-secondary font-medium">Edit Event Description:</label>
+                <input
+                  value={editedDescription}
+                  onChange={(e) => setEditedDescription(e.target.value)}
+                  placeholder="Event Description"
+                  className="input input-bordered"
+                />
+              </>
             ) : (
-                <>
-                    <h1 className="text-teal-500" style={{ fontWeight: 'bold', fontSize: 'larger' }}>{event.name}</h1>
-                    <div className="text-gray-500">{event.author}, {new Date(event.createdOn).toLocaleDateString('bg-BG')}</div>
-                    {organizerData && organizerData.photoData && (
-                        <img src={`data:image/jpg;base64,${organizerData.photoData}`} className="w-10 max-w-50 block mx-auto pt-15" alt="No User Photo" />
-                    )}
-                    <div className="text-gray-500">{event.description}</div>
-                </>
+              <>
+                <h3 className="text-secondary font-medium">{event.name}</h3>
+                <span>{event.description}</span>
+              </>
             )}
-            {isSingleView && event.photoUrl && (
-                <div>
-                    <img src={event.photoUrl} alt="Event" className="max-w-full" />
-                </div>
-            )}
-            {!isSingleView && <Link to={`/events/${event.id}`}><button className="btn">View</button></Link>}
-            <p></p>
-            {event?.likedBy.includes(userData?.handle)
-                ? <button onClick={dislike} className="btn">Dislike</button>
-                : <button onClick={like} className="btn">Like</button>
-            }
-
-            {isSingleView && userData && (userData.handle === event.author || userData.isAdmin) && !userData.isBlocked && (
-                <>
-                    <button onClick={handleDelete} className="btn">Delete</button>
-                    {userData && userData.handle === event.author && (
-                        isEditing ? (
-                            <button onClick={saveEdit} className="btn">Save</button>
-                        ) : (
-                            <button onClick={startEditing} className="btn">Edit</button>
-                        )
-                    )}
-                </>
-            )}
-
-            <button onClick={like} className="btn">{`Likes: ${event.likedBy.length}`}</button>
-
-            <div>
-                <input
-                    value={inviteHandle}
-                    onChange={(e) => setInviteHandle(e.target.value)}
-                    placeholder="User handle to invite"
-                    list="contacts-list"
-                />
-                <datalist id="contacts-list">
-                    {filteredContacts.map(contact => (
-                        <option key={contact} value={contact} />
-                    ))}
-                </datalist>
-                <button onClick={invite} className="btn">Invite User</button>
-                {/* New input field for inviting contact lists */}
-                <input
-                    value={contactListName}
-                    onChange={(e) => setContactListName(e.target.value)}
-                    placeholder="Contact list to invite"
-                />
-                                <button onClick={inviteContactList} className="btn">Invite Contact List</button>
-                {error && <div style={{ color: 'red' }}>{error}</div>}
+    
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                {organizerData && organizerData.photoData && (
+                  <img
+                    alt="Profile"
+                    src={`data:image/jpg;base64,${organizerData.photoData}`}
+                    className="w-8 rounded-full"
+                  />
+                )}
+                <span className="font-medium text-sm ml-2">{event.author}</span>
+              </div>
+              <span className="text-sm">{new Date(event.createdOn).toLocaleDateString('bg-BG')}</span>
             </div>
+    
+            <div className="flex flex-col gap-2">
+              {!isSingleView && (
+                <Link to={`/events/${event.id}`}>
+                  <button className="btn btn-xs btn-outline btn-info">View</button>
+                </Link>
+              )}
+              {!isSingleView && (
+                event?.likedBy.includes(userData?.handle) ? (
+                  <button onClick={dislike} className="btn btn-xs btn-accent">Dislike</button>
+                ) : (
+                  <button onClick={like} className="btn btn-xs btn-outline btn-secondary">Like</button>
+                )
+              )}
+              {isSingleView && (
+                <button onClick={like} className="btn btn-xs">{`Likes: ${event.likedBy.length}`}</button>
+              )}
+              {isSingleView && event.photoUrl && (
+                <img src={event.photoUrl} alt="Event" className="w-32 h-32" />
+              )}
+            </div>
+    
+            {isSingleView && userData && (userData.handle === event.author || userData.isAdmin) && !userData.isBlocked && (
+              <>
+                <button onClick={handleDelete} className="btn btn-xs btn-warning">Delete</button>
+                {userData.handle === event.author && (
+                  isEditing ? (
+                    <button onClick={saveEdit} className="btn btn-xs btn-primary">Save</button>
+                  ) : (
+                    <button onClick={startEditing} className="btn btn-xs btn-accent">Edit</button>
+                  )
+                )}
+              </>
+            )}
+    
+            <div className="flex flex-col gap-2">
+              <input
+                value={inviteHandle}
+                onChange={(e) => setInviteHandle(e.target.value)}
+                placeholder="User handle to invite"
+                list="contacts-list"
+                className="input input-bordered input-xs"
+              />
+              <datalist id="contacts-list">
+                {filteredContacts.map(contact => (
+                  <option key={contact} value={contact} />
+                ))}
+              </datalist>
+              <button onClick={invite} className="btn btn-xs btn-outline btn-success">Invite User</button>
+              
+              <input
+                value={contactListName}
+                onChange={(e) => setContactListName(e.target.value)}
+                placeholder="Contact list to invite"
+                className="input input-bordered input-xs"
+              />
+              <button onClick={inviteContactList} className="btn btn-xs btn-info">Invite Contact List</button>
+              
+              {error && <div style={{ color: 'red' }}>{error}</div>}
+            </div>
+    
             {event.invitedUsers && Object.keys(event.invitedUsers).map((userId) => (
-                <div key={userId}>
-                    <span>{userId}</span>
-                    <button onClick={() => disinvite(userId)} className="btn bg-red-500">Disinvite</button>
-                </div>
+              <div key={userId} className="flex items-center gap-2">
+                <span>{userId}</span>
+                <button onClick={() => disinvite(userId)} className="btn btn-xs bg-red-500">Disinvite</button>
+              </div>
             ))}
+          </div>
         </div>
-    );
-}
+      );
+    };
 
 Event.propTypes = {
     event: PropTypes.shape({

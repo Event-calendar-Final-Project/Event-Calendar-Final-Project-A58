@@ -2,44 +2,23 @@ import React from 'react';
 import CalendarMonth from '../components/CalendarMonth/CalendarMonth';
 import Weather from '../components/Weather/Weather';
 
-export default function Home() {
 
-  return (
-    <>
-          <>
-      <div className="carousel rounded-box">
-        <div className="carousel-item animate-rotate animate-scale">
-          <img src="https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg" alt="Burger" />
-        </div> 
-        <div className="carousel-item animate-rotate animate-scale">
-          <img src="https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.jpg" alt="Burger" />
-        </div> 
-        <div className="carousel-item animate-rotate animate-scale">
-          <img src="https://img.daisyui.com/images/stock/photo-1572635148818-ef6fd45eb394.jpg" alt="Burger" />
-        </div> 
-        <div className="carousel-item animate-rotate animate-scale">
-          <img src="https://img.daisyui.com/images/stock/photo-1494253109108-2e30c049369b.jpg" alt="Burger" />
-        </div> 
-        <div className="carousel-item animate-rotate animate-scale">
-          <img src="https://img.daisyui.com/images/stock/photo-1550258987-190a2d41a8ba.jpg" alt="Burger" />
-        </div> 
-        <div className="carousel-item animate-rotate animate-scale">
-          <img src="https://img.daisyui.com/images/stock/photo-1559181567-c3190ca9959b.jpg" alt="Burger" />
-        </div> 
-        <div className="carousel-item animate-rotate animate-scale">
-          <img src="https://img.daisyui.com/images/stock/photo-1601004890684-d8cbf643f5f2.jpg" alt="Burger" />
+
+
+  export default function Home() {
+    return (
+      <>
+        <div className="hero min-h-screen" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1716538878686-38567b89b5a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'}}>
+          <div className="hero-overlay bg-opacity-60"><Weather /></div>
+          <div className="hero-content text-center text-neutral-content">
+            <div className="max-w-md">
+              <h1 className="mb-5 text-5xl font-bold">Upcoming Events</h1>
+              <p className="mb-5">....</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </>
-      <div className="calendar-month flex justify-left items-center w-full h-full">
-        <div className="w-full max-w-sm">
-          <CalendarMonth />
-        </div>
-      </div>
-      <br />
-      <br />
-      <div><Weather /></div>
-    </>
-  );
-}
+      </>
+    );
+  }
+
 
