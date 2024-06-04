@@ -33,6 +33,10 @@ export default function CalendarWorkWeek( { onDateClick, events }  ) {
             flexGrow: 1,
             textAlign: 'center',
         },
+
+        hoursColumn: {
+            marginTop: '20px',
+        },
     };
     
         const [currentDate, setCurrentDate] = useState(new Date());
@@ -80,7 +84,9 @@ export default function CalendarWorkWeek( { onDateClick, events }  ) {
                     <span style={styles.span}>{displayDate}</span>
                 </div>
                 <ul style={styles.ul}>
-                    <HoursColumn />
+                    <div style={styles.hoursColumn}>
+                        <HoursColumn />
+                    </div>
                     {calendarBuilder().map((date, index) => (
                         <WeekDay 
                             key={index} 
