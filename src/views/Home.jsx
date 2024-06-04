@@ -7,18 +7,27 @@ import Weather from '../components/Weather/Weather';
 
   export default function Home() {
     return (
-      <>
-        <div className="hero min-h-screen" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1716538878686-38567b89b5a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)'}}>
-          <div className="hero-overlay bg-opacity-60"><Weather /></div>
-          <div className="hero-content text-center text-neutral-content">
-            <div className="max-w-md">
-              <h1 className="mb-5 text-5xl font-bold">Upcoming Events</h1>
-              <p className="mb-5">....</p>
-            </div>
-          </div>
+      <section className="relative h-screen flex flex-col items-center justify-center text-center text-white">
+        <div className="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
+          <video
+            className="min-w-full min-h-full absolute object-cover"
+            src="https://cdn.pixabay.com/video/2024/03/04/202987-919379330_large.mp4"
+            type="video/mp4"
+            autoPlay
+            muted
+            loop
+          ></video>
         </div>
-      </>
+        <div className="video-content space-y-2 z-10">
+          <div className="absolute top-0 left-0">
+            <Weather />
+          </div>
+          <h1 className="font-light text-6xl"></h1>
+          <h3 className="font-light text-3xl"></h3>
+        </div>
+      </section>
     );
-  }
+}
+  
 
 
