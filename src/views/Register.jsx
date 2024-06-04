@@ -52,7 +52,7 @@ export default function Register() {
           <section className="relative h-screen flex flex-col items-center justify-center text-center text-white" style={{ zIndex: 1 }}>
         <div className="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
           <video className="min-w-full min-h-full absolute object-cover"
-            src="https://cdn.pixabay.com/video/2019/04/20/22912-331768744_large.mp4"
+            src="https://cdn.pixabay.com/video/2017/01/26/7529-201118756_large.mp4"
             type="video/mp4" autoPlay muted loop></video>
         </div>
         <div className="video-content space-y-2 z-10">
