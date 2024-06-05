@@ -35,6 +35,7 @@ export default function UserData({ user: userProp }) {
   return (
     <div>
       <h1>{user.handle}</h1>
+      {user.photo && <img src={user.photo} alt={`${user.handle}'s profile`} />}
       <p>First Name: {user.firstName}</p>
       <p>Last Name: {user.lastName}</p>
       <p>Email: {user.email}</p>
@@ -54,5 +55,6 @@ UserData.propTypes = {
     lastName: PropTypes.string,
     phone: PropTypes.string,
     address: PropTypes.string,
+    photo: PropTypes.string,
   }),
 };
