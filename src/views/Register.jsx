@@ -3,6 +3,7 @@ import { registerUser } from "../services/auth.service";
 import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { createUserHandle, getUserByHandle } from "../services/users.service";
+import { addUserPhoto } from "../services/upload.service";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -36,8 +37,12 @@ export default function Register() {
       if (user.exists()) {
         return console.log('User with this username already exists!');
       }
+      let photoUrl = '';
+      if (form.photo) {
+        photoUrl = await addUserPhoto(form.photo, form.username); // upload the photo and get the URL
+      }
       const credential = await registerUser(form.email, form.password);
-      await createUserHandle(form.username, credential.user.uid, credential.user.email, form.firstName, form.lastName, form.photo, form.address, form.phone); // added phone field
+      await createUserHandle(form.username, credential.user.uid, credential.user.email, form.firstName, form.lastName, photoUrl, form.address, form.phone); // use the photoUrl here
       setAppState({ user: credential.user, userData: null });
       navigate('/');
     } catch (error) {
