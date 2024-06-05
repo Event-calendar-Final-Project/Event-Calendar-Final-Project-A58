@@ -6,6 +6,8 @@ import { AppContext } from '../../context/AppContext';
 import { likeEvent, dislikeEvent, getEventById, inviteUser, disinviteUser } from '../../services/event.service';
 import { getUserByHandle } from '../../services/users.service';
 import { db } from '../../config/firebase-config';
+import PhotoPreview from '../PhotoPreview/PhotoPreview';
+import { updateEventPhoto } from '../../services/upload.service';
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
     const { userData } = useContext(AppContext);
@@ -19,6 +21,10 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [filteredContacts, setFilteredContacts] = useState([]);
     const [error, setError] = useState('');
     const [contactListName, setContactListName] = useState('');
+    const [editedPhoto, setEditedPhoto] = useState(null);
+    const [file, setFile] = useState(null);
+    const [oldPhotoUrl, setOldPhotoUrl] = useState(null);
+
 
     useEffect(() => {
         fetchEvent();
@@ -66,11 +72,27 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         setIsEditing(true);
     };
 
+    const handleFileChange = (e) => {
+      setFile(e.target.files[0]);
+      setOldPhotoUrl(event.photoUrl);
+    };
+
     const saveEdit = async () => {
-        const updatedEvent = { ...event, name: editedName, description: editedDescription };
-        await editEvent(updatedEvent);
-        setIsEditing(false);
-        fetchEvent();
+      const updatedEvent = { ...event, name: editedName, description: editedDescription };
+      
+      if (editedPhoto && event.photo) {
+          try {
+              const result = await updateEventPhoto(editedPhoto, event.name, event.photo);
+              console.log('Photo updated:', result.downloadURL);
+              updatedEvent.photo = result.downloadURL;
+          } catch (error) {
+              console.error('Failed to update photo:', error);
+          }
+      }
+    
+      await editEvent(updatedEvent);
+      setIsEditing(false);
+      fetchEvent();
     };
 
     const invite = async () => {
@@ -145,34 +167,50 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
           {/* Image */}
           <div
             className="bg-center rounded-l-box w-48 h-48"
-            style={{ backgroundImage: `url(${event.photoUrl || '/backgrounds/forest.jpg'})` }}
+            style={{ backgroundImage: `url(${event.photo || '/backgrounds/forest.jpg'})` }}
           ></div>
     
           {/* Body */}
           <div className="flex flex-col gap-4 p-4 flex-1">
-            {isEditing ? (
-              <>
-                <label className="text-secondary font-medium">Edit Event Name:</label>
-                <input
-                  value={editedName}
-                  onChange={(e) => setEditedName(e.target.value)}
-                  placeholder="Event Name"
-                  className="input input-bordered"
-                />
-                <label className="text-secondary font-medium">Edit Event Description:</label>
-                <input
-                  value={editedDescription}
-                  onChange={(e) => setEditedDescription(e.target.value)}
-                  placeholder="Event Description"
-                  className="input input-bordered"
-                />
-              </>
-            ) : (
-              <>
-                <h3 className="text-secondary font-medium">{event.name}</h3>
-                <span>{event.description}</span>
-              </>
-            )}
+          {isEditing ? (
+  <>
+    <label className="text-secondary font-medium">Edit Event Name:</label>
+    <input
+      value={editedName}
+      onChange={(e) => w(e.target.value)}
+      placeholder="Event Name"
+      className="input input-bordered"
+    />
+    <label className="text-secondary font-medium">Edit Event Description:</label>
+    <input
+      value={editedDescription}
+      onChange={(e) => setEditedDescription(e.target.value)}
+      placeholder="Event Description"
+      className="input input-bordered"
+    />
+    <label className="text-secondary font-medium">Edit Event Photo:</label>
+    <input
+      type="file"
+      onChange={(e) => setEditedPhoto(e.target.files[0])}
+      className="input input-bordered"
+    />
+    {editedPhoto && <PhotoPreview photo={editedPhoto} />}
+  </>
+) : (
+  <>
+    <h3 className="text-secondary font-medium">{event.name}</h3>
+    <span>{event.description}</span>
+    {event.photo && (
+      <img src={event.photo} alt="Event" className="w-32 h-32" />
+    )}
+  </>
+)}
+
+<div className="flex justify-between items-center">
+  <div className="flex items-center">
+    <button onClick={startEditing} className="btn btn-xs btn-accent">Edit</button>
+  </div>
+</div>
     
             <div className="flex justify-between items-center">
               <div className="flex items-center">
