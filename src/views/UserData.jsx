@@ -12,7 +12,9 @@ export default function UserData({ user: userProp }) {
   const { userData } = useContext(AppContext);
   const [isEditing, setIsEditing] = useState(false);
 
+
   useEffect(() => {
+    console.log('useEffect triggered');
     console.log('UserData useEffect', handle, user, userProp);
     const fetchUser = async () => {
       if (!user || (userProp && userProp.handle !== user.handle)) {
@@ -20,8 +22,8 @@ export default function UserData({ user: userProp }) {
         setUser(fetchedUser);
       }
     };
-    console.log(handle)
     fetchUser();
+    console.log(user)
   }, [handle, user, userProp]);
 
   if (!user) {
@@ -30,6 +32,12 @@ export default function UserData({ user: userProp }) {
 
   const handleEditClick = () => {
     setIsEditing(true);
+  };
+
+  const refreshUserData = async () => {
+    console.log('refreshUserData called');
+    const fetchedUser = await fetchUserByHandle(handle);
+    setUser(prevUser => ({ ...prevUser, ...fetchedUser }));
   };
 
   return (
@@ -41,8 +49,8 @@ export default function UserData({ user: userProp }) {
       <p>Email: {user.email}</p>
       <p>Phone: {user.phone}</p>
       <p>Address: {user.address}</p>
-      {user.handle === userData.handle && <button onClick={handleEditClick}>Edit</button>} 
-      {isEditing && <EditProfile user={user} />}
+      {user.handle === userData?.handle && <button onClick={handleEditClick}>Edit</button>}
+      {isEditing && <EditProfile user={user} onProfileUpdate={refreshUserData} />}
     </div>
   );
 }
