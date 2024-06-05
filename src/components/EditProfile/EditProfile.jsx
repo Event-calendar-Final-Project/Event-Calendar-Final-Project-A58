@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { updateUserProfile } from '../../services/users.service';
+import { updateUserPhoto } from '../../services/upload.service';
 
 export default function EditProfile({ user }) {
   const [firstName, setFirstName] = useState(user.firstName);
@@ -8,10 +9,18 @@ export default function EditProfile({ user }) {
   const [address, setAddress] = useState(user.address);
   const [photo, setPhoto] = useState(user.photo);
   const [isSuccessful, setIsSuccessful] = useState(false); 
-
+console.log(user);
   const handleSubmit = async (event) => {
+    let photoUrl = '';
     event.preventDefault();
-    const result = await updateUserProfile(user.handle, firstName, lastName, phone, address, photo);
+        if (photo) {
+      const upload = await updateUserPhoto(photo, user.handle, user.photo);
+    
+      console.dir(upload.downloadURL);
+      photoUrl = upload.downloadURL;
+     
+    }
+    const result = await updateUserProfile(user.handle, firstName, lastName, phone, address, photoUrl);
     if (result.success) {
       setIsSuccessful(true);
       setFirstName('');
