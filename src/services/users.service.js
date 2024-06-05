@@ -102,7 +102,7 @@ export async function updateUserProfile(handle, firstName, lastName, phone, addr
   if (lastName !== undefined && lastName !== null) updates.lastName = lastName;
   if (phone !== undefined && phone !== null) updates.phone = phone;
   if (address !== undefined && address !== null) updates.address = address;
-  // if (photo !== undefined && photo !== null) updates.photo = photo;
+   if (photo !== undefined && photo !== null) updates.photo = photo;
 
   await update(userRef, updates);
 
