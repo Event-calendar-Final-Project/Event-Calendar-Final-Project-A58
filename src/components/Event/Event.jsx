@@ -13,7 +13,6 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(event.name);
     const [editedDescription, setEditedDescription] = useState(event.description);
-    const [organizerData, setOrganizerData] = useState(null);
     const [inviteHandle, setInviteHandle] = useState('');
     const [contacts, setContacts] = useState([]);
     const [filteredContacts, setFilteredContacts] = useState([]);
@@ -22,7 +21,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
 
     useEffect(() => {
         fetchEvent();
-        fetchOrganizerData();
+ 
         fetchUserContacts();
     }, []);
 
@@ -35,10 +34,6 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         setEvent(fetchedEvent);
     };
 
-    const fetchOrganizerData = async () => {
-        const data = await getUserByHandle(event.author);
-        setOrganizerData(data.val());
-    };
 
     const fetchUserContacts = async () => {
         const data = await getUserByHandle(userData.handle);
@@ -176,13 +171,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     
             <div className="flex justify-between items-center">
               <div className="flex items-center">
-                {organizerData && organizerData.photoData && (
-                  <img
-                    alt="Profile"
-                    src={`data:image/jpg;base64,${organizerData.photoData}`}
-                    className="w-8 rounded-full"
-                  />
-                )}
+ 
                 <span className="font-medium text-sm ml-2">{event.author}</span>
               </div>
               <span className="text-sm">{new Date(event.createdOn).toLocaleDateString('bg-BG')}</span>
