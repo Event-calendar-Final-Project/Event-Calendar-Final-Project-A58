@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './views/Login.jsx';
 import { AppContext } from './context/AppContext.jsx';
 import Register from './views/Register.jsx';
+import { logoutUser } from './services/auth.service.js';
 import { getUserData } from './services/users.service.js';
 import {useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase-config.js';
@@ -25,7 +26,6 @@ export default function App() {
     userData: null,
   });
   const [user, loading, error] = useAuthState(auth);
-  const { userData } = useContext(AppContext);
 
   if (appState.user !== user) {
     setAppState({ ...appState, user });
@@ -34,13 +34,19 @@ export default function App() {
   useEffect(() => {
     if (!appState.user) return;
 
+ 
+
     getUserData(appState.user.uid)
       .then(snapshot => {
          console.log(snapshot.val());
         const userData = Object.values(snapshot.val())[0];
         setAppState({...appState, userData});
-        console.log(appState.userData)
+        if (userData &&  userData.isBlocked){
+          logoutUser();
+          alert("You are in the list of blocked users and cannot login!");
+        }
       });
+         
   }, [appState.user])
   console.log(appState.userData);
 
