@@ -4,6 +4,7 @@ import { AppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { createUserHandle, getUserByHandle } from "../services/users.service";
 import { addUserPhoto } from "../services/upload.service";
+import PhotoPreview from "../components/PhotoPreview/PhotoPreview";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -39,7 +40,7 @@ export default function Register() {
       }
       let photoUrl = '';
       if (form.photo) {
-        photoUrl = await addUserPhoto(form.photo, form.username); // upload the photo and get the URL
+        photoUrl = await addUserPhoto(form.photo, form.username);
       }
       const credential = await registerUser(form.email, form.password);
       await createUserHandle(form.username, credential.user.uid, credential.user.email, form.firstName, form.lastName, photoUrl, form.address, form.phone); // use the photoUrl here
@@ -85,6 +86,7 @@ export default function Register() {
           <input onChange={e => setForm({...form, photo: e.target.files[0]})} type="file" name="photo" id="photo" className="w-full px-3 py-2 border rounded-md" />
           <br /> <br /><br />
           <div className="flex justify-center"><button onClick={register} className="px-4 py-2 text-white bg-blue-500 rounded-md">Register</button></div>
+          <PhotoPreview photo={form.photo} />
         </div>
       </div>
 
