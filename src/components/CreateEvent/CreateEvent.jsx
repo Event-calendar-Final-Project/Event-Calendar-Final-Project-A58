@@ -3,6 +3,8 @@ import { addEvent } from "../../services/event.service";
 import { AppContext } from "../../context/AppContext";
 import { updateUserEvents } from "../../services/users.service";
 import AddEventSeries from "../AddEventSeries/AddEventSeries";
+import { addEventPhoto } from "../../services/upload.service";
+import PhotoPreview from "../PhotoPreview/PhotoPreview";
 
 export default function CreateEvent() {
     const [event, setEvent] = useState({
@@ -14,7 +16,7 @@ export default function CreateEvent() {
         endHour: '',
     });
     const { userData } = useContext(AppContext);
-    const [uploadedFileUrl, setUploadedFileUrl] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
 
     const updateEvent = (value, key) => {
@@ -25,7 +27,7 @@ export default function CreateEvent() {
     }
 
     const createEvent = async () => {
-        // Validation code...
+
         if (event.name.length < 16 || event.name.length > 64) {
             return alert('Event name must be between 16 and 64 characters long');
         }
@@ -43,10 +45,15 @@ export default function CreateEvent() {
         }
         console.log(userData);
 
+        let photoURL = '';
+        if (selectedFile) {
+            photoURL = await addEventPhoto(selectedFile, event.name);
+        }
+
         const startDateTime = new Date(`${event.date}T${event.startHour}`);
         const endDateTime = new Date(`${event.date}T${event.endHour}`);
 
-        const eventId = await addEvent(userData.handle, event.name, event.description, startDateTime, endDateTime, event.location, uploadedFileUrl);
+        const eventId = await addEvent(userData.handle, event.name, event.description, startDateTime, endDateTime, event.location, photoURL);
 
         if (eventId) {
             setSuccessMessage('Event created successfully!');
@@ -64,11 +71,6 @@ export default function CreateEvent() {
             endHour: '',
         });
     };
-        // Rest of the code...
-    
-        // const handleFileUpload = (dataUrl) => {
-//     setUploadedFileUrl(dataUrl);
-// };
 
     return (
         <div className="p-6 max-w-sm mx-auto rounded-xl shadow-md flex items-center space-x-4"  style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}>
@@ -141,7 +143,17 @@ export default function CreateEvent() {
                         className="textarea textarea-info" placeholder="Enter location here..."
                     />
                 </div>
-                {/* <FileUpload onUpload={handleFileUpload} />*/}
+                <div>
+    <label htmlFor="input-file" className="block text-sm font-medium text-gray-700">Event Photo:</label>
+    <input
+        type="file"
+        onChange={(e) => setSelectedFile(e.target.files[0])}
+        name="input-file"
+        id="input-file"
+        className="textarea textarea-info"
+    />
+</div>
+< PhotoPreview photo={selectedFile} />
                 <div className="text-center">
                     <button onClick={createEvent} className="btn btn-outline btn-info">
                         Create
