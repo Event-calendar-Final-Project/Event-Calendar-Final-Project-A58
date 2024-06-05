@@ -2,7 +2,7 @@ import { ref, push, get, set, update, child, remove } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 // Add a new event to the database
-export const addEvent = async (author, name, description, startDateTime, endDateTime, location, /*photoUrl*/) => {
+export const addEvent = async (author, name, description, startDateTime, endDateTime, location, photo) => {
     const event = {
         author,
         name,
@@ -10,7 +10,7 @@ export const addEvent = async (author, name, description, startDateTime, endDate
         startDateTime: startDateTime.toISOString(),
         endDateTime: endDateTime.toISOString(),
         location,
-       // photoUrl,
+        photo,
         createdOn: Date.now(),
     };
     console.dir(event);
