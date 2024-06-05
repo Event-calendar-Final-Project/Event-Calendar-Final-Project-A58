@@ -1,19 +1,25 @@
-import { useState } from 'react';
-import { updateUserProfile } from '../../services/users.service';
+import {  useState } from 'react';
+import {  updateUserProfile } from '../../services/users.service';
 import { updateUserPhoto } from '../../services/upload.service';
+import PhotoPreview from '../PhotoPreview/PhotoPreview';
 
-export default function EditProfile({ user }) {
+
+export default function EditProfile({ user, onProfileUpdate }) {
+
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [phone, setPhone] = useState(user.phone);
   const [address, setAddress] = useState(user.address);
   const [photo, setPhoto] = useState(user.photo);
   const [isSuccessful, setIsSuccessful] = useState(false); 
+
+
 console.log(user);
   const handleSubmit = async (event) => {
     let photoUrl = '';
     event.preventDefault();
         if (photo) {
+          console.log(user.photo)
       const upload = await updateUserPhoto(photo, user.handle, user.photo);
     
       console.dir(upload.downloadURL);
@@ -28,8 +34,12 @@ console.log(user);
       setPhone('');
       setAddress('');
       setPhoto('');
+      console.log('Calling onProfileUpdate');
+      onProfileUpdate();
     }
   };
+
+
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -50,6 +60,7 @@ console.log(user);
           <br /><br />
           <div className="flex justify-center">
             <button type="submit" className="px-4 py-2 text-white bg-blue-500 rounded-md">Submit</button>
+            <PhotoPreview photo={photo} />
           </div>
         </form>
       </div>
