@@ -43,6 +43,8 @@ export default function SingleEvent() {
 
     const editEvent = async (eventId, updatedEvent) => {
         try {
+            console.log('Updated event:', updatedEvent);
+            console.log('Event ID:', eventId);
             await updateEvent(eventId, updatedEvent);
             fetchEvent(); // Re-fetch event after editing
         } catch (error) {
