@@ -7,14 +7,16 @@ export const getUsers = async (searchQuery = '') => {
     let users = [];
 
     if (usersSnapshot.exists()) {
+        console.log(Object.entries(usersSnapshot.val()));
         users = Object.entries(usersSnapshot.val())
             .map(([id, userData]) => ({ id, ...userData }))
             .filter(user =>
-                user.handle.includes(searchQuery) ||
-                user.email.includes(searchQuery) ||
+                user.handle?.includes(searchQuery) ||
+                user.email?.includes(searchQuery) ||
                 user.firstName?.includes(searchQuery) ||
                 user.lastName?.includes(searchQuery)
             );
+            
     }
 
     return users;

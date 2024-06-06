@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { getUsers, blockUser, unblockUser, getEvents, deleteEventInDB, editEventInDB, toggleUserRole } from '../../services/admin.service';
+import Pagination from '../Pagination/Pagination';
 
 const AdminDashboard = () => {
     const { userData } = useContext(AppContext);
@@ -11,6 +12,10 @@ const AdminDashboard = () => {
     const [editedName, setEditedName] = useState('');
     const [editedEventId, setEditedEventId] = useState(null);
     const [editedDescription, setEditedDescription] = useState('');
+
+    const [currentPageUsers, setCurrentPageUsers] = useState(1);
+    const [currentPageEvents, setCurrentPageEvents] = useState(1);
+    const itemsPerPage = 10;
 
     useEffect(() => {
         fetchUsers();
@@ -68,6 +73,19 @@ const AdminDashboard = () => {
         fetchUsers();
     };
 
+        // Pagination functions
+        const paginateUsers = (pageNumber) => setCurrentPageUsers(pageNumber);
+        const paginateEvents = (pageNumber) => setCurrentPageEvents(pageNumber);
+    
+        // Get current users and events
+        const indexOfLastUser = currentPageUsers * itemsPerPage;
+        const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+        const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+    
+        const indexOfLastEvent = currentPageEvents * itemsPerPage;
+        const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
+        const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+
     return (
         <div className="p-8">
             <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
@@ -86,9 +104,9 @@ const AdminDashboard = () => {
             <div>
                 <h2 className="text-2xl font-bold mb-2">Users</h2>
                 <ul>
-                    {users.map(user => (
+                    {currentUsers.map(user => (
                         <li key={user.id} className="mb-2">
-                            <span>{user.username} - {user.email} - {user.role}</span>
+                            <span>{user.handle} - {user.email} - {user.role}</span>
                             {user.isBlocked ? (
                                 <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Unblock</button>
                             ) : (
@@ -103,12 +121,18 @@ const AdminDashboard = () => {
                         </li>
                     ))}
                 </ul>
+                <Pagination
+                    itemsPerPage={itemsPerPage}
+                    totalItems={users.length}
+                    paginate={paginateUsers}
+                    currentPage={currentPageUsers}
+                />
             </div>
 
             <div>
                 <h2 className="text-2xl font-bold mb-2 mt-8">Events</h2>
                 <ul>
-                    {events.map(event => (
+                    {currentEvents.map(event => (
                         <li key={event.id} className="mb-2">
                             {isEditing && event.id === editedEventId ? (
                                 <>
@@ -137,6 +161,12 @@ const AdminDashboard = () => {
                         </li>
                     ))}
                 </ul>
+                <Pagination
+                    itemsPerPage={itemsPerPage}
+                    totalItems={events.length}
+                    paginate={paginateEvents}
+                    currentPage={currentPageEvents}
+                />
             </div>
         </div>
     );
