@@ -6,10 +6,10 @@ import EditProfile from '../components/EditProfile/EditProfile';
 import { AppContext } from '../context/AppContext';
 
 export default function UserData({ user: userProp }) {
-  const { handle } = useParams();
-  const location = useLocation();
-  const [user, setUser] = useState(userProp || location.state?.user);
+  const { handle: handleParam } = useParams();
   const { userData } = useContext(AppContext);
+  const handle = handleParam || userData.handle;
+  const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
 
@@ -17,14 +17,12 @@ export default function UserData({ user: userProp }) {
     console.log('useEffect triggered');
     console.log('UserData useEffect', handle, user, userProp);
     const fetchUser = async () => {
-      if (!user || (userProp && userProp.handle !== user.handle)) {
-        const fetchedUser = userProp || await fetchUserByHandle(handle);
-        setUser(fetchedUser);
-      }
+      const fetchedUser = await fetchUserByHandle(handle);
+      setUser(fetchedUser);
     };
     fetchUser();
     console.log(user)
-  }, [handle, user, userProp]);
+  }, [handle]);
 
   if (!user) {
     return null; 

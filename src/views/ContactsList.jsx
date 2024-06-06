@@ -3,7 +3,7 @@ import { AppContext } from "../context/AppContext";
 import SearchUser from "../components/SearchUser/SearchUser";
 import MyContactsList from "../components/MyContactsList/MyContactsList";
 import ContactsLists from "../components/ContactsLists/ContactsLists";
-import Upload from "../components/Upload/Upload";
+
 
 export default function ContactsList() {
   const { userData } = useContext(AppContext);
@@ -15,7 +15,6 @@ export default function ContactsList() {
 
   return (
     <>
-      <Upload />
       <SearchUser />
       <select onChange={handleSelectChange}>
         <option value="myContacts">My Contacts</option>
