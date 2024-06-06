@@ -52,8 +52,10 @@ export default function CreateEvent() {
 
         const startDateTime = new Date(`${event.date}T${event.startHour}`);
         const endDateTime = new Date(`${event.date}T${event.endHour}`);
+        const startDateTimeLocal = new Date(startDateTime.toLocaleString());
+        const endDateTimeLocal = new Date(endDateTime.toLocaleString());
 
-        const eventId = await addEvent(userData.handle, event.name, event.description, startDateTime, endDateTime, event.location, photoURL);
+        const eventId = await addEvent(userData.handle, event.name, event.description, startDateTimeLocal, endDateTimeLocal, event.location, photoURL);
 
         if (eventId) {
             setSuccessMessage('Event created successfully!');

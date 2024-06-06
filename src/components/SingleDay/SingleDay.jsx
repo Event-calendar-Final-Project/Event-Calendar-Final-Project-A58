@@ -89,14 +89,31 @@ return (
             <HoursColumn/>
             <div style={styles.eventsColumn}>
                 <ul>
-                    {hours.map(hour => {
-                        const eventOnThisHour = events.find(event => {
-                            const eventStartDate = new Date(event.startDateTime);
-                            const eventEndDate = new Date(event.endDateTime);
-                            const eventStartHour = eventStartDate.getHours();
-                            const eventEndHour = eventEndDate.getHours();
-                            return hour >= eventStartHour && hour < eventEndHour && eventStartDate.getDate() === currentDate.getDate() && eventStartDate.getMonth() === currentDate.getMonth() && eventStartDate.getFullYear() === currentDate.getFullYear();
-                        });
+                {hours.map(hour => {
+    const eventOnThisHour = events.find(event => {
+        const eventStartDate = new Date(event.startDateTime);
+        const eventEndDate = new Date(event.endDateTime);
+        const eventStartHour = eventStartDate.getHours();
+        const eventEndHour = eventEndDate.getHours();
+        const eventStartDay = eventStartDate.getDate();
+        const eventStartMonth = eventStartDate.getMonth();
+        const eventStartYear = eventStartDate.getFullYear();
+
+        const isSameDay = eventStartDay === currentDate.getDate() && eventStartMonth === currentDate.getMonth() && eventStartYear === currentDate.getFullYear();
+        const isWithinEventHours = hour >= eventStartHour && hour < eventEndHour;
+
+        console.log(`Event: ${event.name}`);
+        console.log(`Event start date: ${eventStartDate}`);
+        console.log(`Event end date: ${eventEndDate}`);
+        console.log(`Event start hour: ${eventStartHour}`);
+        console.log(`Event end hour: ${eventEndHour}`);
+        console.log(`Current date: ${currentDate}`);
+        console.log(`Current hour: ${hour}`);
+        console.log(`Is same day: ${isSameDay}`);
+        console.log(`Is within event hours: ${isWithinEventHours}`);
+
+        return isSameDay && isWithinEventHours;
+    });
                         const displayEvent = eventOnThisHour;
                         const displayEventName = displayEvent && eventOnThisHour !== lastDisplayedEvent;
                         lastDisplayedEvent = displayEvent ? eventOnThisHour : lastDisplayedEvent;

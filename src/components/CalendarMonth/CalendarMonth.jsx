@@ -54,17 +54,10 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
     function hasEvent(date) {
         return events.some(event => {
             const startDate = new Date(event.startDateTime);
-            const endDate = new Date(event.endDateTime);
     
-            const isSameOrAfterStart = date.getFullYear() > startDate.getFullYear() ||
-                (date.getFullYear() === startDate.getFullYear() && date.getMonth() > startDate.getMonth()) ||
-                (date.getFullYear() === startDate.getFullYear() && date.getMonth() === startDate.getMonth() && date.getDate() >= startDate.getDate());
-    
-            const isSameOrBeforeEnd = date.getFullYear() < endDate.getFullYear() ||
-                (date.getFullYear() === endDate.getFullYear() && date.getMonth() < endDate.getMonth()) ||
-                (date.getFullYear() === endDate.getFullYear() && date.getMonth() === endDate.getMonth() && date.getDate() <= endDate.getDate());
-    
-            return isSameOrAfterStart && isSameOrBeforeEnd;
+            return startDate.getDate() === date.getDate() &&
+                   startDate.getMonth() === date.getMonth() &&
+                   startDate.getFullYear() === date.getFullYear();
         });
     }
 

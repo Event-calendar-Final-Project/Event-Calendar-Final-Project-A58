@@ -20,6 +20,7 @@ export default function MyCalendar() {
                     setEvents(allEvents);
                 });
         });
+        console.dir(events);
     }, []);
 
 
