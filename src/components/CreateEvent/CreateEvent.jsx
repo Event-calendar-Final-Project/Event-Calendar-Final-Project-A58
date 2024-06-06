@@ -14,12 +14,17 @@ export default function CreateEvent() {
         location: '',
         startHour: '',
         endHour: '',
+        type: 'public',
+        
     });
     const { userData } = useContext(AppContext);
     const [selectedFile, setSelectedFile] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
 
     const updateEvent = (value, key) => {
+        if (key === 'type') {
+            value = value === 'public' ? 'public' : 'private';
+        }
         setEvent({
             ...event,
             [key]: value,
@@ -55,7 +60,7 @@ export default function CreateEvent() {
         const startDateTimeLocal = new Date(startDateTime.toLocaleString());
         const endDateTimeLocal = new Date(endDateTime.toLocaleString());
 
-        const eventId = await addEvent(userData.handle, event.name, event.description, startDateTimeLocal, endDateTimeLocal, event.location, photoURL);
+        const eventId = await addEvent(userData.handle, event.name, event.description, startDateTimeLocal, endDateTimeLocal, event.location, photoURL, event.type);
 
         if (eventId) {
             setSuccessMessage('Event created successfully!');
@@ -133,6 +138,19 @@ export default function CreateEvent() {
                         id="input-end-hour"
                         className="textarea textarea-info"
                     />
+                </div>
+                <div>
+                    <label htmlFor="input-type" className="block text-sm font-medium text-gray-700">Event Type:</label>
+                    <select
+                        value={event.type}
+                        onChange={(e) => updateEvent(e.target.value, 'type')}
+                        name="input-type"
+                        id="input-type"
+                        className="select select-bordered select-accent w-full max-w-xs"
+                    >
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                    </select>
                 </div>
                 <div>
                     <label htmlFor="input-location" className="block text-sm font-medium text-gray-700">Location:</label>
