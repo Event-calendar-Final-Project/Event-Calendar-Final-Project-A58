@@ -1,9 +1,10 @@
 /* eslint-disable no-case-declarations */
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Event from "../components/Event/Event";
 import { useSearchParams } from "react-router-dom";
-import { getAllEvents } from "../services/event.service"; // Import the getAllEvents function
+import { getAllEvents } from "../services/event.service";
 import Pagination from "../components/Pagination/Pagination";
+import { AppContext } from "../context/AppContext";
 
 export default function AllEvents() {
     const [events, setEvents] = useState([]);
@@ -11,14 +12,18 @@ export default function AllEvents() {
     const search = searchParams.get('search') || '';
     const [currentPageEvents, setCurrentPageEvents] = useState(1);
     const itemsPerPage = 4;
-
+    const { user } = useContext(AppContext);
+    
     useEffect(() => {
-        getAllEvents(search).then(setEvents);
-    }, [search]);
-
-    const setSearch = (value) => {
-        setSearchParams({ search: value });
-    };
+        getAllEvents(search).then((allEvents) => {
+            if (!user) {
+                const publicEvents = allEvents.filter(event => event.type === 'public');
+                setEvents(publicEvents);
+            } else {
+                setEvents(allEvents);
+            }
+        });
+    }, [search, user]);
 
     const paginateEvents = (pageNumber) => setCurrentPageEvents(pageNumber);
     const indexOfLastEvent = currentPageEvents * itemsPerPage;
