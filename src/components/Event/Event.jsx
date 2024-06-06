@@ -8,6 +8,7 @@ import { getUserByHandle } from '../../services/users.service';
 import { db } from '../../config/firebase-config';
 import PhotoPreview from '../PhotoPreview/PhotoPreview';
 import { updateEventPhoto } from '../../services/upload.service';
+import InvitePermissions from '../InvitePermissions/InvitePermissions';
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
     const { userData } = useContext(AppContext);
@@ -23,6 +24,8 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [editedPhoto, setEditedPhoto] = useState(null);
     const [file, setFile] = useState(null);
     const [oldPhotoUrl, setOldPhotoUrl] = useState(null);
+    const [showInvitePermissions, setShowInvitePermissions] = useState(false);
+    const [showInviteForm, setShowInviteForm] = useState(false);
 
 
     useEffect(() => {
@@ -248,32 +251,50 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                 )}
               </>
             )}
-    
     {userData.handle === event.author && (
-  <div className="flex flex-col gap-2">
-    <input
-      value={inviteHandle}
-      onChange={(e) => setInviteHandle(e.target.value)}
-      placeholder="User handle to invite"
-      list="contacts-list"
-      className="input input-bordered input-xs"
-    />
-    <datalist id="contacts-list">
-      {filteredContacts.map(contact => (
-        <option key={contact} value={contact} />
-      ))}
-    </datalist>
-    <button onClick={invite} className="btn btn-xs btn-outline btn-success">Invite User</button>
-    
-    <input
-      value={contactListName}
-      onChange={(e) => setContactListName(e.target.value)}
-      placeholder="Contact list to invite"
-      className="input input-bordered input-xs"
-    />
-    <button onClick={inviteContactList} className="btn btn-xs btn-info">Invite Contact List</button>
-    
-    {error && <div style={{ color: 'red' }}>{error}</div>}
+      <>
+  <button onClick={() => setShowInvitePermissions(!showInvitePermissions)} className="btn btn-xs btn-accent">
+    Invitation Permissions
+  </button>
+  {showInvitePermissions && <InvitePermissions event={event} />}
+  </>
+  
+)}
+{(event && ((event.invitationPermission && Object.values(event.invitationPermission).includes(userData.handle)) || event.author === userData.handle)) && (
+  <div>
+    <button 
+      onClick={() => setShowInviteForm(!showInviteForm)} 
+      className="btn btn-xs btn-outline btn-success"
+    >
+      Invite Users
+    </button>
+    {showInviteForm && (
+      <div className="flex flex-col gap-2">
+        <input
+          value={inviteHandle}
+          onChange={(e) => setInviteHandle(e.target.value)}
+          placeholder="User handle to invite"
+          list="contacts-list"
+          className="input input-bordered input-xs"
+        />
+        <datalist id="contacts-list">
+          {filteredContacts.map(contact => (
+            <option key={contact} value={contact} />
+          ))}
+        </datalist>
+        <button onClick={invite} className="btn btn-xs btn-outline btn-success">Invite User</button>
+        
+        <input
+          value={contactListName}
+          onChange={(e) => setContactListName(e.target.value)}
+          placeholder="Contact list to invite"
+          className="input input-bordered input-xs"
+        />
+        <button onClick={inviteContactList} className="btn btn-xs btn-info">Invite Contact List</button>
+        
+        {error && <div style={{ color: 'red' }}>{error}</div>}
+      </div>
+    )}
   </div>
 )}
     
