@@ -249,31 +249,33 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
               </>
             )}
     
-            <div className="flex flex-col gap-2">
-              <input
-                value={inviteHandle}
-                onChange={(e) => setInviteHandle(e.target.value)}
-                placeholder="User handle to invite"
-                list="contacts-list"
-                className="input input-bordered input-xs"
-              />
-              <datalist id="contacts-list">
-                {filteredContacts.map(contact => (
-                  <option key={contact} value={contact} />
-                ))}
-              </datalist>
-              <button onClick={invite} className="btn btn-xs btn-outline btn-success">Invite User</button>
-              
-              <input
-                value={contactListName}
-                onChange={(e) => setContactListName(e.target.value)}
-                placeholder="Contact list to invite"
-                className="input input-bordered input-xs"
-              />
-              <button onClick={inviteContactList} className="btn btn-xs btn-info">Invite Contact List</button>
-              
-              {error && <div style={{ color: 'red' }}>{error}</div>}
-            </div>
+    {userData.handle === event.author && (
+  <div className="flex flex-col gap-2">
+    <input
+      value={inviteHandle}
+      onChange={(e) => setInviteHandle(e.target.value)}
+      placeholder="User handle to invite"
+      list="contacts-list"
+      className="input input-bordered input-xs"
+    />
+    <datalist id="contacts-list">
+      {filteredContacts.map(contact => (
+        <option key={contact} value={contact} />
+      ))}
+    </datalist>
+    <button onClick={invite} className="btn btn-xs btn-outline btn-success">Invite User</button>
+    
+    <input
+      value={contactListName}
+      onChange={(e) => setContactListName(e.target.value)}
+      placeholder="Contact list to invite"
+      className="input input-bordered input-xs"
+    />
+    <button onClick={inviteContactList} className="btn btn-xs btn-info">Invite Contact List</button>
+    
+    {error && <div style={{ color: 'red' }}>{error}</div>}
+  </div>
+)}
     
             {event.invitedUsers && Object.keys(event.invitedUsers).map((userId) => (
               <div key={userId} className="flex items-center gap-2">
