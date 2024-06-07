@@ -30,13 +30,14 @@ export const setAdminRole = async (handle) => {
   await update(ref(db, `users/${handle}`), { role: 'admin' });
 };
 
-export async function updateUserEvents(handle, eventId, startDateTime, endDateTime) {
+export async function updateUserEvents(handle, eventId, startDateTime, endDateTime, type) {
   try {
     await update(ref(db, `users/${handle}`), {
       [`events/${eventId}`]: {
         startDateTime: startDateTime.toISOString(),
         endDateTime: endDateTime.toISOString(),
-        attended: true
+        attended: true,
+        type: type
       }
     });
   } catch (error) {
