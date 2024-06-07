@@ -23,7 +23,7 @@ export default function Header () {
 </div>
                     </div>
                     <div className="flex-none gap-2">
-                        <Reminder />
+                        {userData && <Reminder />}
                         <NavLink to="/events" className="btn btn-ghost text-xl">Events</NavLink>
                         {user && userData ? (
     <>  
