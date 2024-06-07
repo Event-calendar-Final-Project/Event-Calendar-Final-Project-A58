@@ -116,20 +116,20 @@ function calendarBuilder() {
     return calendar;
 }
 
-    return (
-        <div style={{ ...props.style, textAlign: 'center' }}>
-            <div className="stat-value">Calendar</div>
-            <div className="month-selector">
-                <button onClick={handlePrevMonth}>&lt;</button>
-                <button onClick={handleNextMonth}>&gt;</button>
-                <div className="stat-value">{new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth))}</div>
-            </div>
-            <ul style={weekDaysStyle}>
-                {weekdays.map((day, index) => <li key={index}>{day}</li>)}
-            </ul>
-            <ul style={datesStyle}>
-                {events && calendarBuilder()}
-            </ul>
+return (
+    <div style={{ ...props.style, textAlign: 'center' }}>
+        <div className="stat-value">Calendar</div>
+        <div className="month-selector">
+            <button onClick={handlePrevMonth} className="btn btn-info btn-square">&lt;</button>
+            <button onClick={handleNextMonth} className="btn btn-info btn-square">&gt;</button>
+            <div className="stat-value" >{new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth))}</div>
         </div>
-    )
+        <ul style={{ ...weekDaysStyle, fontSize: '20px' }}>
+            {weekdays.map((day, index) => <li key={index}>{day}</li>)}
+        </ul>
+        <ul style={datesStyle}>
+            {events && calendarBuilder()}
+        </ul>
+    </div>
+)
 }
