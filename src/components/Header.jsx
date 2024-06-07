@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { logoutUser } from "../services/auth.service";
+import Reminder from "./Reminder/Reminder";
 
 export default function Header () {
     const { user, userData, setAppState } = useContext(AppContext);
@@ -25,9 +26,10 @@ export default function Header () {
 </div>
                     </div>
                     <div className="flex-none gap-2">
+                        <Reminder />
                         <NavLink to="/events" className="btn btn-ghost text-xl">Events</NavLink>
                         {user && userData ? (
-    <>
+    <>  
         <NavLink to="/create-event" className="btn btn-ghost text-xl">Create Event</NavLink>
         <NavLink to="/contacts" className="btn btn-ghost text-xl">Contacts</NavLink>
         <NavLink to="/my-calendar" className="btn btn-ghost text-xl">My Calendar</NavLink>
