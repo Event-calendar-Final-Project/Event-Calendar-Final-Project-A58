@@ -12,18 +12,34 @@ export default function AllEvents() {
     const search = searchParams.get('search') || '';
     const [currentPageEvents, setCurrentPageEvents] = useState(1);
     const itemsPerPage = 4;
-    const { user } = useContext(AppContext);
+    const { userData } = useContext(AppContext);
+    const [filter, setFilter] = useState('all');
     
     useEffect(() => {
         getAllEvents(search).then((allEvents) => {
-            if (!user) {
-                const publicEvents = allEvents.filter(event => event.type === 'public');
-                setEvents(publicEvents);
+            let filteredEvents = allEvents;
+            if (userData) {
+                if (filter === 'private') {
+                    filteredEvents = allEvents.filter(event => {
+                        return event.type === 'private' && 
+                            (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle));
+                    });
+                } else if (filter === 'all') {
+                    filteredEvents = allEvents.filter(event => {
+                        return event.type === 'public' || 
+                            (event.type === 'private' && 
+                            (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle)));
+                    });
+                } else {
+                    filteredEvents = allEvents.filter(event => event.type === filter);
+                }
             } else {
-                setEvents(allEvents);
+                // If not logged in, only show public events
+                filteredEvents = allEvents.filter(event => event.type === 'public');
             }
+            setEvents(filteredEvents);
         });
-    }, [search, user]);
+    }, [search, userData, filter]);
 
     const paginateEvents = (pageNumber) => setCurrentPageEvents(pageNumber);
     const indexOfLastEvent = currentPageEvents * itemsPerPage;
@@ -36,13 +52,33 @@ export default function AllEvents() {
             <input
                 type="text"
                 placeholder="Search"
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => setSearchParams({ search: e.target.value })}
             />
+            {userData ? (
+                <select
+    value={filter}
+    onChange={(e) => setFilter(e.target.value)}
+    className="select select-bordered select-accent w-full max-w-xs mb-4"
+    style={{
+        border: '1px solid #d1d5db',
+        borderRadius: '0.375rem',
+        padding: '0.5rem 1rem',
+        color: '#374151',
+        fontSize: '1rem',
+        cursor: 'pointer'
+    }}
+>
+    <option value="all">All events</option>
+    <option value="public">Public events</option>
+    <option value="private">Private events</option>
+    <option value="draft">Drafts</option>
+</select>
+            ) : null}
             <div className="grid grid-cols-2 gap-2">
                 {currentEvents.map((event) => (
                     <div key={event.id} className="event-card shadow-xl transform transition-transform hover:scale-105 mt-4 flex flex-row items-center p-4 space-x-4 rounded-lg">
-                                               <div className="card-body">
-                            <Event className="card-title"  key={event.id} event={event} />
+                        <div className="card-body">
+                            <Event className="card-title" key={event.id} event={event} />
                             <div className="card-actions justify-end">
                             </div>
                         </div>

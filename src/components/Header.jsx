@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { logoutUser } from "../services/auth.service";
+import Reminder from "./Reminder/Reminder";
 
 export default function Header () {
     const { user, userData, setAppState } = useContext(AppContext);
@@ -17,17 +18,15 @@ export default function Header () {
                     <div className="flex-1">
                         <NavLink to="/" className="btn btn-ghost text-xl">Home</NavLink>
                         <div className="join join-horizontal">
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Theme" value="default"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Retro" value="retro"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Luxury" value="luxury"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Valentine" value="valentine"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Aqua" value="aqua"/>
+                        <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Dark mode" value="default"/>
+  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Light mode" value="light"/>
 </div>
                     </div>
                     <div className="flex-none gap-2">
+                        {userData && <Reminder />}
                         <NavLink to="/events" className="btn btn-ghost text-xl">Events</NavLink>
                         {user && userData ? (
-    <>
+    <>  
         <NavLink to="/create-event" className="btn btn-ghost text-xl">Create Event</NavLink>
         <NavLink to="/contacts" className="btn btn-ghost text-xl">Contacts</NavLink>
         <NavLink to="/my-calendar" className="btn btn-ghost text-xl">My Calendar</NavLink>

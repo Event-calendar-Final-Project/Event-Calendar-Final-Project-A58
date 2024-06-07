@@ -8,6 +8,8 @@ import { getUserByHandle } from '../../services/users.service';
 import { db } from '../../config/firebase-config';
 import PhotoPreview from '../PhotoPreview/PhotoPreview';
 import { updateEventPhoto } from '../../services/upload.service';
+import InvitePermissions from '../InvitePermissions/InvitePermissions';
+import { updateEvent } from '../../services/event.service';
 
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
@@ -24,6 +26,10 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [editedPhoto, setEditedPhoto] = useState(null);
     const [file, setFile] = useState(null);
     const [oldPhotoUrl, setOldPhotoUrl] = useState(null);
+    const [showInvitePermissions, setShowInvitePermissions] = useState(false);
+    const [showInviteForm, setShowInviteForm] = useState(false);
+    const [eventType, setEventType] = useState(event.type);
+    const [eventVisibility, setEventVisibility] = useState('public');
 
 
     useEffect(() => {
@@ -72,6 +78,14 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
       setFile(e.target.files[0]);
       setOldPhotoUrl(event.photoUrl);
     };
+
+    const updateEventTypeAndVisibility = async () => {
+      
+            console.log(event.id, { type: eventVisibility});
+      await updateEvent(event.id, {...event, type: eventVisibility });
+
+      fetchEvent();
+  };
 
     const saveEdit = async () => {
       const updatedEvent = { ...event, name: editedName, description: editedDescription };
@@ -229,11 +243,13 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   </>
 )}
 
-<div className="flex justify-between items-center">
-  <div className="flex items-center">
-    <button onClick={startEditing} className="btn btn-xs btn-accent">Edit</button>
+{userData && userData.handle === event.author && (
+  <div className="flex justify-between items-center">
+    <div className="flex items-center">
+      <button onClick={startEditing} className="btn btn-xs btn-accent">Edit</button>
+    </div>
   </div>
-</div>
+)}
     
             <div className="flex justify-between items-center">
               <div className="flex items-center">
@@ -249,13 +265,13 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                   <button className="btn btn-xs btn-outline btn-info">View</button>
                 </Link>
               )}
-              {!isSingleView && (
-                event?.likedBy.includes(userData?.handle) ? (
-                  <button onClick={dislike} className="btn btn-xs btn-accent">Dislike</button>
-                ) : (
-                  <button onClick={like} className="btn btn-xs btn-outline btn-secondary">Like</button>
-                )
-              )}
+{(userData && eventType !== 'draft' )&& !isSingleView && (
+  event?.likedBy.includes(userData?.handle) ? (
+    <button onClick={dislike} className="btn btn-xs btn-accent">Dislike</button>
+  ) : (
+    <button onClick={like} className="btn btn-xs btn-outline btn-secondary">Like</button>
+  )
+)}
               {isSingleView && (
                 <button onClick={like} className="btn btn-xs">{`Likes: ${event.likedBy.length}`}</button>
               )}
@@ -303,13 +319,22 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
               {error && <div style={{ color: 'red' }}>{error}</div>}
             </div>
     
-            {event.invitedUsers && Object.keys(event.invitedUsers).map((userId) => (
-              <div key={userId} className="flex items-center gap-2">
-                <span>{userId}</span>
-                <button onClick={() => disinvite(userId)} className="btn btn-xs bg-red-500">Disinvite</button>
-              </div>
-            ))}
+    {userData && event.invitationPermission && Object.keys(event.invitedUsers).map((userId) => (
+  <div key={userId} className="flex items-center gap-2">
+    <span>{userId}</span>
+    <button onClick={() => disinvite(userId)} className="btn btn-xs bg-red-500">Disinvite</button>
+  </div>
+))}
           </div>
+          {eventType === 'draft' && (
+                <>
+                    <button onClick={updateEventTypeAndVisibility} className="btn btn-xs btn-primary">Create Event</button>
+                    <select value={eventVisibility} onChange={(e) => setEventVisibility(e.target.value)} className="select select-bordered select-xs">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                    </select>
+                </>
+            )}
         </div>
       );
     };
