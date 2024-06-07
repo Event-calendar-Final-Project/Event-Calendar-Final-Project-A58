@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { onValue, ref } from 'firebase/database';
+import { onValue, ref, update } from 'firebase/database';
 import { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { likeEvent, dislikeEvent, getEventById, inviteUser, disinviteUser } from '../../services/event.service';
@@ -8,6 +8,7 @@ import { getUserByHandle } from '../../services/users.service';
 import { db } from '../../config/firebase-config';
 import PhotoPreview from '../PhotoPreview/PhotoPreview';
 import { updateEventPhoto } from '../../services/upload.service';
+
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
     const { userData } = useContext(AppContext);
@@ -141,16 +142,40 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     };
 
     const setupInvitedUsersListener = () => {
-        const invitedUsersRef = ref(db, `events/${initialEvent.id}/invitedUsers`);
-        onValue(invitedUsersRef, (snapshot) => {
-            if (snapshot.exists()) {
-                const invitedUsers = snapshot.val();
-                if (userData.handle in invitedUsers) {
-                    alert(`You have been invited to ${initialEvent.name}!`);
-                }
-            }
-        });
-    };
+      const invitedUsersRef = ref(db, `events/${event.id}/invitedUsers`);
+      onValue(invitedUsersRef, (snapshot) => {
+          if (snapshot.exists()) {
+              const invitedUsers = snapshot.val();
+              if (userData.handle in invitedUsers && invitedUsers[userData.handle] === true) {
+                  console.log('Invited users:', invitedUsers);
+                  alert(`You have been invited to ${initialEvent.name}!`);
+  
+                  // Update the invitedUsers in the local state
+                  const updatedEvent = {
+                      ...event,
+                      invitedUsers: {
+                          ...event.invitedUsers,
+                          [userData.handle]: false
+                      }
+                  };
+                  setEvent(updatedEvent);
+  
+                  // Update the invitedUsers in the database
+                  const updates = {};
+                  updates[`events/${event.id}/invitedUsers/${userData.handle}`] = false;
+                  update(ref(db), updates)
+                      .then(() => {
+                          console.log(`Successfully updated invitedUser ${userData.handle} to false in event ${event.id}`);
+                      })
+                      .catch((error) => {
+                          console.error('Error updating invitedUser:', error);
+                      });
+                  
+                  console.log('Invited users after update:', updatedEvent.invitedUsers);
+              }
+          }
+      });
+  };
 
     useEffect(() => {
         const filtered = contacts.filter(contact => contact.includes(inviteHandle));
