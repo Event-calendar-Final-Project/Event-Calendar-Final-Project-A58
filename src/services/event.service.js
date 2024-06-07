@@ -149,6 +149,10 @@ export async function fetchEventFromDB(id) {
 // Invite a user to an event
 export const inviteUser = async (eventId, userHandle) => {
     const updateVal = {};
+    console.log('this'+eventId.invitedUsers[userHandle]);
+    if(eventId.invitedUsers[userHandle] === false) {
+      return;  
+    } 
     updateVal[`events/${eventId}/invitedUsers/${userHandle}`] = true;
     update(ref(db), updateVal);
 };
@@ -166,3 +170,4 @@ export const getMyEvents = async (handle) => {
 
     return Object.entries(snapshot.val());
 }
+
