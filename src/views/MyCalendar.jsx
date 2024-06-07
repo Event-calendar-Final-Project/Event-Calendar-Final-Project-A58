@@ -3,9 +3,8 @@ import CalendarMonth from '../components/CalendarMonth/CalendarMonth';
 import CalendarWeek from '../components/CalendarWeek/CalendarWeek';
 import CalendarWorkWeek from '../components/CalendarWorkWeek/CalendarWorkWeek';
 import SingleDay from '../components/SingleDay/SingleDay';
-import { getMyEvents } from '../services/event.service';
 import { AppContext } from '../context/AppContext';
-import { getEventById } from '../services/event.service';
+import { getAllEvents } from '../services/event.service';
 
 export default function MyCalendar() {
     const [view, setView] = useState('month');
@@ -14,14 +13,18 @@ export default function MyCalendar() {
     const { userData } = useContext(AppContext)
 
     useEffect(() => {
-        getMyEvents(userData.handle).then((eventIds) => {
-            Promise.all(eventIds.map((event) => getEventById(event[0])))
-                .then((allEvents) => {
-                    setEvents(allEvents);
-                });
+        getAllEvents('').then((allEvents) => {
+
+          let filteredEvents = allEvents.filter(event => {
+            
+            return event.type === 'private' && 
+              (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle))
+
+          });
+          setEvents(filteredEvents);
         });
-        console.dir(events);
-    }, []);
+      }, [userData]);
+    
 
 
 
