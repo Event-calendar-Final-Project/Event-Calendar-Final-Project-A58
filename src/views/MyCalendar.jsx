@@ -101,10 +101,10 @@ export default function MyCalendar() {
             <CalendarMonth style={styles.small} shortWeekdays={true} events={events} />
             <div style={styles.largeContainer}>
                 <div style={styles.buttonContainer}>
-                    <button onClick={() => setView('month')}>Month</button>
-                    <button onClick={() => setView('week')}>Week</button>
-                    <button onClick={() => setView('workweek')}>Work Week</button>
-                    <button onClick={() => {
+                    <button  className="btn btn-info" onClick={() => setView('month')}>Month</button>
+                    <button  className="btn btn-info" onClick={() => setView('week')}>Week</button>
+                    <button  className="btn btn-info" onClick={() => setView('workweek')}>Work Week</button>
+                    <button  className="btn btn-info" onClick={() => {
                         setView('day');
                         setSelectedDate(new Date());
                     }}>Day</button>
