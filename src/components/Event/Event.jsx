@@ -234,8 +234,8 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
               {isSingleView && (
                 <button onClick={like} className="btn btn-xs">{`Likes: ${event.likedBy.length}`}</button>
               )}
-              {isSingleView && event.photoUrl && (
-                <img src={event.photoUrl} alt="Event" className="w-32 h-32" />
+              {isSingleView && event.photo && (
+                <img src={event.photo} alt="Event" className="w-32 h-32" />
               )}
             </div>
     
@@ -251,7 +251,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                 )}
               </>
             )}
-    {userData.handle === event.author && (
+    {userData && (userData.handle === event.author) && (
       <>
   <button onClick={() => setShowInvitePermissions(!showInvitePermissions)} className="btn btn-xs btn-accent">
     Invitation Permissions
@@ -260,7 +260,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   </>
   
 )}
-{(event && ((event.invitationPermission && Object.values(event.invitationPermission).includes(userData.handle)) || event.author === userData.handle)) && (
+{userData &&  (event && ((event.invitationPermission && Object.values(event.invitationPermission).includes(userData.handle)) || event.author === userData.handle)) && (
   <div>
     <button 
       onClick={() => setShowInviteForm(!showInviteForm)} 
