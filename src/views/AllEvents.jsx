@@ -11,7 +11,7 @@ export default function AllEvents() {
     const [searchParams, setSearchParams] = useSearchParams();
     const search = searchParams.get('search') || '';
     const [currentPageEvents, setCurrentPageEvents] = useState(1);
-    const itemsPerPage = 4;
+    const itemsPerPage = 6;
     const { user } = useContext(AppContext);
     
     useEffect(() => {
@@ -36,9 +36,9 @@ export default function AllEvents() {
             <input
                 type="text"
                 placeholder="Search"
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => setSearchParams(e.target.value)}
             />
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-3">
                 {currentEvents.map((event) => (
                     <div key={event.id} className="event-card shadow-xl transform transition-transform hover:scale-105 mt-4 flex flex-row items-center p-4 space-x-4 rounded-lg">
                                                <div className="card-body">
