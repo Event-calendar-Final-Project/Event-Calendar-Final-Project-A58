@@ -8,7 +8,6 @@ import { getUserByHandle } from '../../services/users.service';
 import { db } from '../../config/firebase-config';
 import PhotoPreview from '../PhotoPreview/PhotoPreview';
 import { updateEventPhoto } from '../../services/upload.service';
-import InvitePermissions from '../InvitePermissions/InvitePermissions';
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
     const { userData } = useContext(AppContext);
@@ -24,8 +23,6 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [editedPhoto, setEditedPhoto] = useState(null);
     const [file, setFile] = useState(null);
     const [oldPhotoUrl, setOldPhotoUrl] = useState(null);
-    const [showInvitePermissions, setShowInvitePermissions] = useState(false);
-    const [showInviteForm, setShowInviteForm] = useState(false);
 
 
     useEffect(() => {
@@ -36,7 +33,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
 
     useEffect(() => {
         setupInvitedUsersListener();
-    }, [event.id.invitedUsers]);
+    }, [event.invitedUsers]);
 
     const fetchEvent = async () => {
         const fetchedEvent = await getEventById(initialEvent.id);
@@ -198,6 +195,9 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   <>
     <h3 className="text-secondary font-medium">{event.name}</h3>
     <span>{event.description}</span>
+    {event.invitedUsers && (
+      <span>Invited Users: {Object.keys(event.invitedUsers).length}</span>
+    )}
     {event.photo && (
       <img src={event.photo} alt="Event" className="w-32 h-32" />
     )}
@@ -234,8 +234,8 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
               {isSingleView && (
                 <button onClick={like} className="btn btn-xs">{`Likes: ${event.likedBy.length}`}</button>
               )}
-              {isSingleView && event.photo && (
-                <img src={event.photo} alt="Event" className="w-32 h-32" />
+              {isSingleView && event.photoUrl && (
+                <img src={event.photoUrl} alt="Event" className="w-32 h-32" />
               )}
             </div>
     
@@ -251,52 +251,32 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                 )}
               </>
             )}
-    {userData && (userData.handle === event.author) && (
-      <>
-  <button onClick={() => setShowInvitePermissions(!showInvitePermissions)} className="btn btn-xs btn-accent">
-    Invitation Permissions
-  </button>
-  {showInvitePermissions && <InvitePermissions event={event} />}
-  </>
-  
-)}
-{userData &&  (event && ((event.invitationPermission && Object.values(event.invitationPermission).includes(userData.handle)) || event.author === userData.handle)) && (
-  <div>
-    <button 
-      onClick={() => setShowInviteForm(!showInviteForm)} 
-      className="btn btn-xs btn-outline btn-success"
-    >
-      Invite Users
-    </button>
-    {showInviteForm && (
-      <div className="flex flex-col gap-2">
-        <input
-          value={inviteHandle}
-          onChange={(e) => setInviteHandle(e.target.value)}
-          placeholder="User handle to invite"
-          list="contacts-list"
-          className="input input-bordered input-xs"
-        />
-        <datalist id="contacts-list">
-          {filteredContacts.map(contact => (
-            <option key={contact} value={contact} />
-          ))}
-        </datalist>
-        <button onClick={invite} className="btn btn-xs btn-outline btn-success">Invite User</button>
-        
-        <input
-          value={contactListName}
-          onChange={(e) => setContactListName(e.target.value)}
-          placeholder="Contact list to invite"
-          className="input input-bordered input-xs"
-        />
-        <button onClick={inviteContactList} className="btn btn-xs btn-info">Invite Contact List</button>
-        
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-      </div>
-    )}
-  </div>
-)}
+    
+            <div className="flex flex-col gap-2">
+              <input
+                value={inviteHandle}
+                onChange={(e) => setInviteHandle(e.target.value)}
+                placeholder="User handle to invite"
+                list="contacts-list"
+                className="input input-bordered input-xs"
+              />
+              <datalist id="contacts-list">
+                {filteredContacts.map(contact => (
+                  <option key={contact} value={contact} />
+                ))}
+              </datalist>
+              <button onClick={invite} className="btn btn-xs btn-outline btn-success">Invite User</button>
+              
+              <input
+                value={contactListName}
+                onChange={(e) => setContactListName(e.target.value)}
+                placeholder="Contact list to invite"
+                className="input input-bordered input-xs"
+              />
+              <button onClick={inviteContactList} className="btn btn-xs btn-info">Invite Contact List</button>
+              
+              {error && <div style={{ color: 'red' }}>{error}</div>}
+            </div>
     
             {event.invitedUsers && Object.keys(event.invitedUsers).map((userId) => (
               <div key={userId} className="flex items-center gap-2">
