@@ -23,7 +23,7 @@ export default function CreateEvent() {
 
     const updateEvent = (value, key) => {
         if (key === 'type') {
-            value = value === 'public' ? 'public' : 'private';
+            value = value === 'public' ? 'public' : (value === 'private' ? 'private' : 'draft');
         }
         setEvent({
             ...event,
@@ -67,7 +67,7 @@ export default function CreateEvent() {
             setTimeout(() => setSuccessMessage(''), 3000);
         }
 
-        await updateUserEvents(userData.handle, eventId, startDateTime, endDateTime);
+        await updateUserEvents(userData.handle, eventId, startDateTime, endDateTime, event.type);
 
         setEvent({
             name: '',
@@ -150,6 +150,7 @@ export default function CreateEvent() {
                     >
                         <option value="public">Public</option>
                         <option value="private">Private</option>
+                        <option value="draft">Draft</option>
                     </select>
                 </div>
                 <div>
