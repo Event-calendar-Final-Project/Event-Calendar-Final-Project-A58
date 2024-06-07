@@ -18,11 +18,8 @@ export default function Header () {
                     <div className="flex-1">
                         <NavLink to="/" className="btn btn-ghost text-xl">Home</NavLink>
                         <div className="join join-horizontal">
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Theme" value="default"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Retro" value="retro"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Luxury" value="luxury"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Valentine" value="valentine"/>
-  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Aqua" value="aqua"/>
+                        <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Dark mode" value="default"/>
+  <input type="radio" name="theme-buttons" className="btn theme-controller join-item" aria-label="Light mode" value="light"/>
 </div>
                     </div>
                     <div className="flex-none gap-2">
