@@ -80,108 +80,111 @@ export default function CreateEvent() {
     };
 
     return (
-        <div className="p-6 max-w-sm mx-auto rounded-xl shadow-md flex items-center space-x-4"  style={{ backgroundImage: "url('https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}>
-            <div className="text-center">
-                <div className="text-xl font-medium text-black">Create Event</div>
-                <div>
-                    <label htmlFor="input-name" className="block text-sm font-medium text-gray-700">Event Name:</label>
+        <div className="max-w-4xl mx-auto p-4 mt-6">
+            <h1 className="text-2xl font-bold mb-4 text-center">Create Event</h1>
+            <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-name" className="block text-sm font-medium text-gray-700 w-1/4">Event Name:</label>
                     <input
                         type="text"
                         value={event.name}
                         onChange={(e) => updateEvent(e.target.value, 'name')}
                         name="input-name"
                         id="input-name"
-                        className="textarea textarea-accent" placeholder="Enter event name here..."
+                        className="input input-bordered w-3/4"
+                        placeholder="Enter event name here..."
                     />
                 </div>
-                <div>
-                    <label htmlFor="input-description" className="block text-sm font-medium text-gray-700">Description:</label>
-                    <textarea 
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-description" className="block text-sm font-medium text-gray-700 w-1/4">Description:</label>
+                    <textarea
                         value={event.description}
                         onChange={(e) => updateEvent(e.target.value, 'description')}
                         name="input-description"
                         id="input-description"
                         cols="30"
-                        rows="10"
-                        className="textarea textarea-info" placeholder="Enter description here..."
+                        rows="2"
+                        className="textarea textarea-bordered w-3/4"
+                        placeholder="Enter description here..."
                     />
                 </div>
-                <div>
-                    <label htmlFor="input-date" className="block text-sm font-medium text-gray-700">Date:</label>
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/4">Date:</label>
                     <input
                         type="date"
                         value={event.date}
                         onChange={(e) => updateEvent(e.target.value, 'date')}
                         name="input-date"
                         id="input-date"
-                        className="textarea textarea-info" placeholder="Enter date here..."
+                        className="input input-bordered w-3/4"
                     />
                 </div>
-                <div>
-                    <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700">Start Hour:</label>
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>
                     <input
                         type="time"
                         value={event.startHour}
                         onChange={(e) => updateEvent(e.target.value, 'startHour')}
                         name="input-start-hour"
                         id="input-start-hour"
-                        className="textarea textarea-info"
+                        className="input input-bordered w-3/4"
                     />
                 </div>
-                <div>
-                    <label htmlFor="input-end-hour" className="block text-sm font-medium text-gray-700">End Hour:</label>
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-end-hour" className="block text-sm font-medium text-gray-700 w-1/4">End Hour:</label>
                     <input
                         type="time"
                         value={event.endHour}
                         onChange={(e) => updateEvent(e.target.value, 'endHour')}
                         name="input-end-hour"
                         id="input-end-hour"
-                        className="textarea textarea-info"
+                        className="input input-bordered w-3/4"
                     />
                 </div>
-                <div>
-                    <label htmlFor="input-type" className="block text-sm font-medium text-gray-700">Event Type:</label>
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-type" className="block text-sm font-medium text-gray-700 w-1/4">Event Type:</label>
                     <select
                         value={event.type}
                         onChange={(e) => updateEvent(e.target.value, 'type')}
                         name="input-type"
                         id="input-type"
-                        className="select select-bordered select-accent w-full max-w-xs"
+                        className="select select-bordered w-3/4"
                     >
                         <option value="public">Public</option>
                         <option value="private">Private</option>
                     </select>
                 </div>
-                <div>
-                    <label htmlFor="input-location" className="block text-sm font-medium text-gray-700">Location:</label>
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-location" className="block text-sm font-medium text-gray-700 w-1/4">Location:</label>
                     <input
                         type="text"
                         value={event.location}
                         onChange={(e) => updateEvent(e.target.value, 'location')}
                         name="input-location"
                         id="input-location"
-                        className="textarea textarea-info" placeholder="Enter location here..."
+                        className="input input-bordered w-3/4"
+                        placeholder="Enter location here..."
                     />
                 </div>
-                <div>
-    <label htmlFor="input-file" className="block text-sm font-medium text-gray-700">Event Photo:</label>
-    <input
-        type="file"
-        onChange={(e) => setSelectedFile(e.target.files[0])}
-        name="input-file"
-        id="input-file"
-        className="textarea textarea-info"
-    />
-</div>
-< PhotoPreview photo={selectedFile} />
-                <div className="text-center">
-                    <button onClick={createEvent} className="btn btn-outline btn-info">
+                <div className="flex items-center space-x-4">
+                    <label htmlFor="input-file" className="block text-sm font-medium text-gray-700 w-1/4">Event Photo:</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setSelectedFile(e.target.files[0])}
+                        name="input-file"
+                        id="input-file"
+                        className="input input-bordered w-3/4"
+                    />
+                </div>
+                <PhotoPreview photo={selectedFile} />
+                <div className="flex justify-center">
+                    <button onClick={createEvent} className="btn btn-outline btn-info w-full">
                         Create
                     </button>
-                    {successMessage && <p>{successMessage}</p>}
                 </div>
+                {successMessage && <p className="text-center text-green-500 mt-2">{successMessage}</p>}
                 <AddEventSeries />
             </div>
         </div>
     );
-}
+};
