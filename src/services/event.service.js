@@ -175,3 +175,10 @@ export const getMyEvents = async (handle) => {
     return Object.entries(snapshot.val());
 }
 
+export const getInvitedUsers = async (eventId) => {
+    const snapshot = await get(ref(db, `events/${eventId}/invitedUsers`));
+    if (!snapshot.exists()) return [];
+
+    return Object.keys(snapshot.val());
+}
+
