@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild, update } from 'firebase/database';
+import { get, set, ref, query, equalTo, orderByChild, update, push } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 export const getUserByHandle = (handle) => {
@@ -112,9 +112,18 @@ export async function updateUserProfile(handle, firstName, lastName, phone, addr
 
 export async function addContactList(handle, listName, contacts) {
   try {
-    const listRef = ref(db, `users/${handle}/contactLists/${listName}`);
-    await set(listRef, contacts);
-    console.log("Contact list successfully written!");
+    const listRef = await push(ref(db, `users/${handle}/contactLists`));
+    console.log(listName, contacts)
+    const contactListData = {
+      contacts: contacts,
+      id: listRef.key,
+      listName: listName 
+    };
+
+    await set(listRef, contactListData);
+
+    console.log("Contact list successfully written with ID:", listRef.key);
+    return listRef.key; // Return the generated ID for further use
   } catch (error) {
     console.error('Error writing contact list:', error);
     throw error;
