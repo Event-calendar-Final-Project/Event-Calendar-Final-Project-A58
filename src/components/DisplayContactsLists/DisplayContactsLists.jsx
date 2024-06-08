@@ -23,25 +23,25 @@ export default function DisplayContactsLists({ contactLists }) {
     padding: '10px',
     cursor: 'pointer',
   };
-
+console.log(contactLists);
   return (
     <div>
       <h1>My Contacts Lists</h1>
       <div style={listStyle}>
         {contactLists.map((list) => (
-          <div key={list.name}>
-            <h2 style={nameStyle} onClick={() => handleClick(list.name)}>{list.name}</h2>
-            {selectedList === list.name && (
-              <div>
-                {list.users.map((userHandle) => (
-                  <p key={userHandle}>
-                    <Link to={`/${userHandle}`}>
-                      {userHandle}
-                    </Link>
-                  </p>
-                ))}
-              </div>
-            )}
+          <div key={list.users.id}>
+            <h2 style={nameStyle} onClick={() => handleClick(list.users.listName)}>{list.users.listName}</h2>
+            {selectedList === list.users.listName && (
+  <div>
+    {list.users.contacts.map((userHandle) => (
+      <p key={userHandle}>
+        <Link to={`/${userHandle}`}>
+          {userHandle}
+        </Link>
+      </p>
+    ))}
+  </div>
+)}
           </div>
         ))}
       </div>
