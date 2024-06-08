@@ -5,6 +5,7 @@ import CalendarWorkWeek from '../components/CalendarWorkWeek/CalendarWorkWeek';
 import SingleDay from '../components/SingleDay/SingleDay';
 import { AppContext } from '../context/AppContext';
 import { getAllEvents } from '../services/event.service';
+import CreateMap from '../components/Map/Map';
 
 export default function MyCalendar() {
     const [view, setView] = useState('month');
@@ -111,6 +112,8 @@ export default function MyCalendar() {
                 </div>
                 {renderView()}
             </div>
+            <CreateMap/>
         </div>
+              
     );
 }
