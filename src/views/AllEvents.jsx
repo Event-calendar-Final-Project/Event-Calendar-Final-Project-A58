@@ -73,10 +73,13 @@ export default function AllEvents() {
     <option value="draft">Drafts</option>
 </select>
             ) : null}
+           
             <div className="grid grid-cols-2 gap-2">
+            
                 {currentEvents.map((event) => (
-                    <div key={event.id} className="event-card shadow-xl transform transition-transform hover:scale-105 mt-4 flex flex-row items-center p-4 space-x-4 rounded-lg">
+                    <div key={event.id} className="event-card bg-white shadow-lg transform transition-transform hover:scale-105 mt-4 flex flex-row items-center p-4 space-x-4 rounded-lg ">
                         <div className="card-body">
+                       
                             <Event className="card-title" key={event.id} event={event} />
                             <div className="card-actions justify-end">
                             </div>
@@ -84,6 +87,7 @@ export default function AllEvents() {
                     </div>
                 ))}
             </div>
+        <br />
             <Pagination itemsPerPage={itemsPerPage} totalItems={events.length} paginate={paginateEvents} currentPage={currentPageEvents} />
         </div>
     );
