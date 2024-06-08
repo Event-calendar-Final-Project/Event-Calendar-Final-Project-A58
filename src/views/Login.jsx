@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react"
-import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { loginUser } from "../services/auth.service";
+
 
 export default function Login() {
     const { user, userData, setAppState } = useContext(AppContext);
@@ -10,6 +10,7 @@ export default function Login() {
         email: '',
         password: '',
     });
+    const [error, setError] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -19,12 +20,19 @@ export default function Login() {
         }
     }, [user]);
 
-    const login = async() => {
+ 
+
+    const login = async () => {
+      try {
         const { user } = await loginUser(form.email, form.password);
-       
         setAppState({ user, userData: null });
         navigate(location.state?.from.pathname || '/');
+      } catch (error) {
+        setError('Invalid username or password');
+      }
     };
+
+    
 
     const updateForm = prop => e => {
         setForm({
@@ -32,6 +40,8 @@ export default function Login() {
           [prop]: e.target.value,
         });
       };
+
+
       return (
         <>
  
@@ -51,6 +61,11 @@ export default function Login() {
               <input value={form.password} onChange={updateForm('password')} type="password" name="password" id="password" className="w-full px-3 py-2 border rounded-md" /> <br /> <br /><br />
               <div className="flex justify-center"><button onClick={login} className="px-4 py-2 text-white bg-blue-500 rounded-md">Login</button></div>
             </div>
+            {error && (
+              <div className="bg-red-500 p-2 mt-2 text-white rounded-md">
+                {error}
+              </div>
+            )}
           </div>
             </div>
           </section>
