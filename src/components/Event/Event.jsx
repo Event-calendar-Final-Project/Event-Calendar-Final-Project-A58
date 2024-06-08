@@ -319,7 +319,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
               {error && <div style={{ color: 'red' }}>{error}</div>}
             </div>
     
-    {userData && event.invitationPermission && Object.keys(event.invitedUsers).map((userId) => (
+    {userData && event.invitedUsers && (event.invitationPermission || userData.handle === event.author || userData.isAdmin) && Object.keys(event.invitedUsers).map((userId) => (
   <div key={userId} className="flex items-center gap-2">
     <span>{userId}</span>
     <button onClick={() => disinvite(userId)} className="btn btn-xs bg-red-500">Disinvite</button>
