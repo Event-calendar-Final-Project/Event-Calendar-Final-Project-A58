@@ -1,6 +1,7 @@
 import React from 'react';
 import CalendarMonth from '../components/CalendarMonth/CalendarMonth';
 import Weather from '../components/Weather/Weather';
+import Clock from '../components/Watch/Watch';
 
 
 
@@ -21,7 +22,11 @@ import Weather from '../components/Weather/Weather';
         <div className="video-content space-y-2 z-10">
           <div className="absolute top-0 left-0">
             <Weather />
+           
           </div>
+          <div className="absolute top-1 left-0">
+          <Clock />
+      </div>
           <h1 className="font-light text-6xl"></h1>
           <h3 className="font-light text-3xl"></h3>
         </div>
