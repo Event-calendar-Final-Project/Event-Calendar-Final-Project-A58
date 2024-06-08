@@ -10,6 +10,8 @@ import PhotoPreview from '../PhotoPreview/PhotoPreview';
 import { updateEventPhoto } from '../../services/upload.service';
 import InvitePermissions from '../InvitePermissions/InvitePermissions';
 import { updateEvent } from '../../services/event.service';
+import LikeDislikeButton from '../LikeDislikeButton/LikeDislikeButton';
+import Invite from '../Invite/Invite';
 
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
@@ -56,15 +58,15 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         }
     };
 
-    const like = async () => {
-        await likeEvent(event.id, userData.handle);
-        fetchEvent();
-    };
+    const handleLike = async () => {
+      console.log('Liked');
+      await likeEvent(event.id, userData.handle);
+  };
 
-    const dislike = async () => {
-        await dislikeEvent(event.id, userData.handle);
-        fetchEvent();
-    };
+  const handleDislike = async () => {
+      console.log('Disliked');
+      await dislikeEvent(event.id, userData.handle);
+  };
 
     const handleDelete = () => {
         deleteEvent(event.id);
@@ -242,15 +244,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     )}
   </>
 )}
-
-{userData && userData.handle === event.author && (
-  <div className="flex justify-between items-center">
-    <div className="flex items-center">
-      <button onClick={startEditing} className="btn btn-xs btn-accent">Edit</button>
-    </div>
-  </div>
-)}
-    
+  
             <div className="flex justify-between items-center">
               <div className="flex items-center">
  
@@ -265,17 +259,13 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                   <button className="btn btn-xs btn-outline btn-info">View</button>
                 </Link>
               )}
-{(userData && eventType !== 'draft' )&& !isSingleView && (
-  event?.likedBy.includes(userData?.handle) ? (
-    <button onClick={dislike} className="btn btn-xs btn-accent">Dislike</button>
-  ) : (
-    <button onClick={like} className="btn btn-xs btn-outline btn-secondary">Like</button>
-  )
-)}
-              {isSingleView && (
-                <button onClick={like} className="btn btn-xs">{`Likes: ${event.likedBy.length}`}</button>
-              )}
-              {isSingleView && event.photoUrl && (
+{(userData && eventType !== 'draft' ) && (      <LikeDislikeButton
+        initialLikes={event.likedBy.length}
+        onLike={handleLike}
+        onDislike={handleDislike}
+      />)}
+
+              {isSingleView && event.photo && (
                 <img src={event.photoUrl} alt="Event" className="w-32 h-32" />
               )}
             </div>
@@ -290,6 +280,8 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                     <button onClick={startEditing} className="btn btn-xs btn-accent">Edit</button>
                   )
                 )}
+                 {< InvitePermissions event={event} />}
+                 {< Invite event={event} />}
               </>
             )}
     
