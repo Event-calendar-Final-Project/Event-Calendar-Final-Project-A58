@@ -3,13 +3,14 @@ import { AppContext } from '../../context/AppContext';
 import InviteUser from '../InviteUser/InviteUser';
 import InviteContactList from '../InviteContactList/InviteContactList';
 import { fetchContactLists, getUserContactsList } from '../../services/users.service';
-import { get } from 'firebase/database';
+import { inviteUser } from '../../services/event.service';
 
 export default function Invite({ initialEvent }) {
   const { userData } = useContext(AppContext);
   const [showInviteOptions, setShowInviteOptions] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [contactLists, setContactLists] = useState([]);
+  const [inviteHandle, setInviteHandle] = useState('');
 
   useEffect(() => {
     async function fetchData() {
@@ -27,6 +28,16 @@ export default function Invite({ initialEvent }) {
   
     fetchData();
   }, [userData.handle])
+  const handleInviteUser = async (userHandle) => {
+    try {
+      console.log(userHandle)
+      await inviteUser(initialEvent.id, userHandle); // Use initialEvent.id directly
+      // Update UI or state as needed after successful invitation
+      console.log(`User ${userHandle} invited successfully to event ${initialEvent.id}`);
+    } catch (error) {
+      console.error("Error inviting user:", error);
+    }
+  };
 
   return (
     <div>
@@ -40,7 +51,7 @@ export default function Invite({ initialEvent }) {
       )}
       {showInviteOptions && (
         <div className="flex flex-col gap-2">
-            {contacts && <InviteUser contacts={contacts}/>}
+            {contacts && <InviteUser initialEvent={initialEvent}/>}
         </div>
       )}
     </div>
