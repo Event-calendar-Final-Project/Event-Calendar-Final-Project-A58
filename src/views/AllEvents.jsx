@@ -34,8 +34,7 @@ export default function AllEvents() {
                     filteredEvents = allEvents.filter(event => event.type === filter);
                 }
             } else {
-                // If not logged in, only show public events
-                filteredEvents = allEvents.filter(event => event.type === 'public');
+                    filteredEvents = allEvents.filter(event => event.type === 'public');
             }
             setEvents(filteredEvents);
         });
