@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { getAllEvents } from "../services/event.service";
 import Pagination from "../components/Pagination/Pagination";
 import { AppContext } from "../context/AppContext";
+import CalendarEvent from "../components/CalendarEvent/CalendarEvent";
 
 export default function AllEvents() {
     const [events, setEvents] = useState([]);

@@ -18,6 +18,7 @@ import ContactsList from './views/ContactsList.jsx';
 import UserData from './views/UserData.jsx';
 import AdminDashboard from './components/Admin/AdminDashboard.jsx';
 import MyCalendar from './views/MyCalendar.jsx';
+import SingleCalendarEvent from './views/SingleCalendarEvent.jsx';
 
 
 export default function App() {
@@ -65,6 +66,7 @@ export default function App() {
               <Route path="/contacts" element={<ContactsList />}/>
               <Route path="/events" element={<AllEvents />}/>
               <Route path="/events/:id" element={<SingleEvent/>}/>
+              <Route path="/single-events/:id" element={<SingleCalendarEvent/>}/>
               <Route path="/my-profile" element={<UserData user={appState.userData}/>}/>
               <Route path="/:handle" element={<UserData />}/>
               <Route path="my-calendar" element={<MyCalendar />}/>
