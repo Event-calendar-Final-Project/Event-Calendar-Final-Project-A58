@@ -281,7 +281,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                   )
                 )}
                  {< InvitePermissions event={event} />}
-                 {< Invite event={event} />}
+                 {< Invite initialEvent={event} />}
               </>
             )}
     
