@@ -18,11 +18,10 @@ export default function ContactsList() {
   }; 
 
   useEffect(() => {
-    // Use the handle from userData to fetch the updated contacts list
+    
     getUserContactsList(userData.handle)
       .then(contacts => {
         if (contacts) {
-          // Assuming contacts is an object where keys are handles
           const contactHandles = Object.keys(contacts);
           return Promise.all(contactHandles.map(handle => fetchUserByHandle(handle)));
         }
@@ -30,7 +29,7 @@ export default function ContactsList() {
       })
       .then(setMyContacts)
       .catch(error => console.error("Failed to fetch contacts:", error));
-  }, [userData.handle, triggerRerender]); // Depend on userData.handle and triggerRerender
+  }, [userData.handle, triggerRerender]); 
 
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value); 
@@ -38,12 +37,16 @@ export default function ContactsList() {
 
   return (
     <>
-      <SearchUser onUserAdded={handleUserAdded} />
-      <select onChange={handleSelectChange}>
+      <select onChange={handleSelectChange} value={selectedOption}>
         <option value="myContacts">My Contacts</option>
         <option value="contactsLists">Contacts Lists</option>
       </select>
-      {selectedOption === 'myContacts' && <MyContactsList myContacts={myContacts}/>}
+      {selectedOption === 'myContacts' && (
+        <>
+          <SearchUser onUserAdded={handleUserAdded} />
+          <MyContactsList myContacts={myContacts}/>
+        </>
+      )}
       {selectedOption === 'contactsLists' && <ContactsLists />}
     </>
   );
