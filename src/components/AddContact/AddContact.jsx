@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getUserContactsList, addContactToUser } from '../../services/users.service';
 
-export default function AddContact({ handle, contactHandle, contactAdded, setContactAdded }) {
+export default function AddContact({ handle, contactHandle, contactAdded, setContactAdded, onUserAdded }) {
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -10,7 +10,9 @@ export default function AddContact({ handle, contactHandle, contactAdded, setCon
 
   const handleAddContactSubmit = (event) => {
     event.preventDefault();
-    addContactToUser(handle, contactHandle).then(() => setContactAdded(true)); 
+    addContactToUser(handle, contactHandle).then(() => setContactAdded(true));
+    onUserAdded();
+
   }
 
   return (
