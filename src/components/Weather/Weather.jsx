@@ -57,7 +57,7 @@ export default function Weather() {
     return (
         <div className="container">
             <div className="top" style={{ display: 'flex', gap: '10px' }}>
-                <div className="stat-value">
+                <div className="stat-value text-black">
                     <p>{data.name}</p>
                 </div> 
                 <div className="stat-value text-secondary">
@@ -66,7 +66,7 @@ export default function Weather() {
                 <div className="stat-value text-info">
                     {data.weather ? <p>{data.weather[0].main}</p> : null}
                 </div>
-                <div className="weather-icon" style={{ fontSize: '3rem' }}>
+                <div className="weather-icon" style={{ fontSize: '3rem' , color:'black'}}>
                     {data.weather ? getWeatherIcon(data.weather[0].icon) : null}
                 </div>
             </div>

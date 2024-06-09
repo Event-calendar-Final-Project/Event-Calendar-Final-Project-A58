@@ -12,7 +12,8 @@ import Clock from '../components/Watch/Watch';
         <div className="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
           <video
             className="min-w-full min-h-full absolute object-cover"
-            src="https://cdn.pixabay.com/video/2022/02/01/106340-672600365_large.mp4"
+            /* src="https://cdn.pixabay.com/video/2022/02/01/106340-672600365_large.mp4" */
+            src="https://cdn.pixabay.com/video/2024/01/24/197973-906217208_large.mp4"
             type="video/mp4"
             autoPlay
             muted

@@ -12,7 +12,7 @@ const Clock = () => {
   }, []);
 
   return (
-    <div className="text-center p-10">
+    <div className="text-center p-10 text-black">
       <p className="stat-value">{time.toLocaleTimeString()}</p>
     </div>
   );
