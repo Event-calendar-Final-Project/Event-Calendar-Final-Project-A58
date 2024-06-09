@@ -33,13 +33,13 @@ console.log(contactLists);
             <h2 style={nameStyle} onClick={() => handleClick(list.users.listName)}>{list.users.listName}</h2>
             {selectedList === list.users.listName && (
   <div>
-    {list.users.contacts.map((userHandle) => (
-      <p key={userHandle}>
-        <Link to={`/${userHandle}`}>
-          {userHandle}
-        </Link>
-      </p>
-    ))}
+{list.users.contacts.map((userHandle, index) => (
+  <p key={`${list.users.id}-${userHandle}-${index}`}>
+    <Link to={`/${userHandle}`}>
+      {userHandle}
+    </Link>
+  </p>
+))}
   </div>
 )}
           </div>
