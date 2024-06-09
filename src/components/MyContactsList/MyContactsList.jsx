@@ -3,18 +3,7 @@ import { AppContext } from "../../context/AppContext";
 import { fetchUserByHandle } from "../../services/users.service";
 import { Link } from 'react-router-dom';
 
-export default function MyContactsList() {
-
-    const[myContacts, setMyContacts] = useState([]);
-    const { userData } = useContext(AppContext);
-
-    useEffect(() => {
-        const contacts = Object.keys(userData.contacts || {});
-        Promise.all(contacts.map((handle) => fetchUserByHandle(handle)))
-            .then(setMyContacts);
-    }, [userData.contacts]); 
-
-    console.dir(myContacts);
+export default function MyContactsList({ myContacts }) {
 
     return (
         <div>
