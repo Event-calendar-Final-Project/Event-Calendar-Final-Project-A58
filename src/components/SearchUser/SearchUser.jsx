@@ -4,7 +4,7 @@ import { fetchUsersFromDB } from '../../services/users.service';
 import { AppContext } from '../../context/AppContext';
 import { Link } from 'react-router-dom';
 
-export default function SearchUser() {
+export default function SearchUser( {onUserAdded} ) {
   const { userData } = useContext(AppContext);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(null);
@@ -19,6 +19,7 @@ export default function SearchUser() {
     setResults(searchResults);
     console.log(searchResults);
     setContactAdded(false);
+
   };
 
   return (
@@ -47,7 +48,7 @@ export default function SearchUser() {
             <p>Email: {results[0].email}</p>
             <p>Phone: {results[0].phone}</p>
             <p>Address: {results[0].address}</p>
-            <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} />
+            <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} onUserAdded={onUserAdded} />
           </div>
         )
       }
