@@ -80,7 +80,7 @@ export default function CreateEvent() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-4 mt-6">
+        <div className="max-w-3xl mx-auto p-4 mt-6">
             <h1 className="text-2xl font-bold mb-4 text-center">Create Event</h1>
             <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
                 <div className="flex items-center space-x-4">
@@ -91,12 +91,12 @@ export default function CreateEvent() {
                         onChange={(e) => updateEvent(e.target.value, 'name')}
                         name="input-name"
                         id="input-name"
-                        className="input input-bordered w-3/4"
+                        className="input input-bordered w-1/2"
                         placeholder="Enter event name here..."
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-description" className="block text-sm font-medium text-gray-700 w-1/4">Description:</label>
+                    <label htmlFor="input-description" className="block text-sm font-medium text-gray-700 w-1/2">Description:</label>
                     <textarea
                         value={event.description}
                         onChange={(e) => updateEvent(e.target.value, 'description')}
@@ -104,7 +104,7 @@ export default function CreateEvent() {
                         id="input-description"
                         cols="30"
                         rows="2"
-                        className="textarea textarea-bordered w-3/4"
+                        className="textarea textarea-bordered w-3/4 h-96"
                         placeholder="Enter description here..."
                     />
                 </div>
