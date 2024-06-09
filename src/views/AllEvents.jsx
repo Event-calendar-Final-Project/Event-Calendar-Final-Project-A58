@@ -29,7 +29,7 @@ export default function AllEvents() {
                     filteredEvents = allEvents.filter(event => {
                         return event.type === 'public' || 
                             (event.type === 'private' && 
-                            (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle)));
+                            (event.author === userData.handle || (event.invitedUsers && Object.keys(event.invitedUsers).includes(userData.handle))));
                     });
                 } else {
                     filteredEvents = allEvents.filter(event => event.type === filter);

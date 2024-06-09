@@ -29,6 +29,23 @@ export const getAllEvents = async (search) => {
         events = eventsSnapshot.val();
     }
 
+    // Fetch event series
+    const eventSeriesSnapshot = await get(ref(db, 'eventSeries'));
+
+    if (eventSeriesSnapshot.exists()) {
+        const eventSeries = eventSeriesSnapshot.val();
+        
+        // Fetch events for each series and merge with existing events
+        for (const seriesId in eventSeries) {
+            const seriesEventsSnapshot = await get(ref(db, `eventSeries/${seriesId}/events`));
+            if (seriesEventsSnapshot.exists()) {
+                console.log(seriesEventsSnapshot.val());
+                const seriesEvents = seriesEventsSnapshot.val();
+                events = { ...events, ...seriesEvents };
+            }
+        }
+    }
+
     let tagEvents = {};
 
 
@@ -182,3 +199,16 @@ export const getInvitedUsers = async (eventId) => {
     return Object.keys(snapshot.val());
 }
 
+// Check if an event exists in the database
+export const checkEventExists = async (name, startDate) => {
+    const eventsSnapshot = await get(ref(db, 'events'));
+    if (!eventsSnapshot.exists()) return false;
+
+    const events = eventsSnapshot.val();
+    for (const key in events) {
+        if (events[key].name === name && events[key].startDate === startDate) {
+            return true;
+        }
+    }
+    return false;
+};

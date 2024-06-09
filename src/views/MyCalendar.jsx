@@ -19,11 +19,13 @@ export default function MyCalendar() {
           let filteredEvents = allEvents.filter(event => {
             
             return event.type === 'private' && 
-              (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle))
+              (event.author === userData.handle || (event.invitedUsers && Object.keys(event.invitedUsers).includes(userData.handle)))
 
           });
           setEvents(filteredEvents);
+          console.log(filteredEvents);
         });
+        
       }, [userData]);
     
 
