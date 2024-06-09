@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { getAllEvents } from "../services/event.service";
 import Pagination from "../components/Pagination/Pagination";
 import { AppContext } from "../context/AppContext";
-import CalendarEvent from "../components/CalendarEvent/CalendarEvent";
+
 
 export default function AllEvents() {
     const [events, setEvents] = useState([]);
@@ -23,19 +23,19 @@ export default function AllEvents() {
                 if (filter === 'private') {
                     filteredEvents = allEvents.filter(event => {
                         return event.type === 'private' && 
-                            (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle));
+                            (event.author === userData.handle || (event.invitedUsers && Object.keys(event.invitedUsers).includes(userData.handle)));
                     });
                 } else if (filter === 'all') {
                     filteredEvents = allEvents.filter(event => {
                         return event.type === 'public' || 
                             (event.type === 'private' && 
-                            (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle)));
+                            (event.author === userData.handle || (event.invitedUsers && Object.keys(event.invitedUsers).includes(userData.handle))));
                     });
                 } else {
                     filteredEvents = allEvents.filter(event => event.type === filter);
                 }
             } else {
-                    filteredEvents = allEvents.filter(event => event.type === 'public');
+                filteredEvents = allEvents.filter(event => event.type === 'public');
             }
             setEvents(filteredEvents);
         });
