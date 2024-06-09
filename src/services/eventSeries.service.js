@@ -2,13 +2,16 @@ import { db } from "../config/firebase-config";
 import { ref, set, get, push } from "firebase/database";
 
 // Function to add an event series
-export const addEventSeries = async (title, description) => {
+export const addEventSeries = async (createdBy, title, description, endDate, repeat) => {
     const newSeriesRef = push(ref(db, 'eventSeries')); // Generate a new series ID
     const seriesId = newSeriesRef.key;
 
     const series = {
+        createdBy,
         title,
         description,
+        endDate,
+        repeat,
         createdOn: Date.now(),
     };
 
@@ -16,40 +19,26 @@ export const addEventSeries = async (title, description) => {
     return seriesId; // Return the generated series ID
 };
 
-// Function to add an event to a series with recurrence options by title
-export const addEventToSeriesByTitle = async (seriesTitle, eventTitle, eventDescription, startDate, endDate, repeat) => {
-    // Find series by title
-    const seriesRef = ref(db, 'eventSeries');
-    const seriesSnapshot = await get(seriesRef);
-    let seriesId = null;
-
-    seriesSnapshot.forEach(childSnapshot => {
-        if (childSnapshot.val().title === seriesTitle) {
-            seriesId = childSnapshot.key;
-        }
-    });
-
-    if (!seriesId) {
-        throw new Error(`Series with title ${seriesTitle} not found.`);
-    }
-
+// Function to add an event to a series by series ID
+export const addEventToSeriesByTitle = async (seriesId, author, name, description, startDateTime, endDateTime, location, photo, type) => {
     const newEventRef = push(ref(db, `eventSeries/${seriesId}/events`));
     const eventId = newEventRef.key;
 
     const event = {
-        title: eventTitle,
-        description: eventDescription,
-        startDate,
-        endDate: endDate || null,
-        repeat, // 'none', 'weekly', 'monthly', 'yearly'
+        author,
+        name,
+        description,
+        startDateTime: startDateTime.toISOString(),
+        endDateTime: endDateTime.toISOString(),
+        location,
+        photo,
+        type,
         createdOn: Date.now(),
     };
 
     await set(newEventRef, event);
 
-    if (repeat !== 'none') {
-        await generateRecurringEvents(seriesId, eventId, eventTitle, eventDescription, new Date(startDate), endDate ? new Date(endDate) : null, repeat);
-    }
+    return eventId;
 };
 
 // Function to generate recurring events
