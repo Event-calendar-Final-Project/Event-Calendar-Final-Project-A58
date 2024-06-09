@@ -42,7 +42,8 @@ console.log(user);
 
 
   return (
-    <div className="flex justify-center items-center h-screen">
+        <div className="absolute top-1/3 left-1/2">
+    <div className="flex justify-center items-center h-screen ">
       <div className="bg-white p-12 rounded-md shadow-md" style={{ width: '400px' }}>
         <h1 className="text-2xl font-bold mb-4 text-center">Edit Profile</h1>
         <form onSubmit={handleSubmit}>
@@ -64,6 +65,7 @@ console.log(user);
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 }

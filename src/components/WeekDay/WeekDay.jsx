@@ -69,9 +69,8 @@ export default function WeekDay({ date, events, context }) {
                             {displayEvent ? 
                                 <Link to={`/events/${eventOnThisHour.id}`} style={styles.link}>
                                     {displayEventName ? eventOnThisHour.name : ''}
-                                </Link> :
-                                <div style={{visibility: 'hidden'}}>Placeholder</div>
-                            }
+                                </Link> : <> </>
+}
                         </li>
                     );
                 })}

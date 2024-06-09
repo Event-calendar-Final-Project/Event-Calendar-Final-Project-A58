@@ -134,6 +134,8 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     };
 
     const inviteContactList = async () => {
+
+      
         console.log('Inviting users from contact list:', Object.keys(userData.contactLists), contactListName);
         const contactList = Object.keys(userData.contactLists).find(list => list === contactListName);
         console.log('Contact list:', contactList);

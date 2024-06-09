@@ -13,20 +13,17 @@ export default function MyCalendar() {
     const [events, setEvents] = useState([]);
     const { userData } = useContext(AppContext)
 
-    useEffect(() => {
-        getAllEvents('').then((allEvents) => {
-
-          let filteredEvents = allEvents.filter(event => {
-            
-            return event.type === 'private' && 
-              (event.author === userData.handle || (event.invitedUsers && Object.keys(event.invitedUsers).includes(userData.handle)))
-
-          });
-          setEvents(filteredEvents);
-          console.log(filteredEvents);
-        });
-        
-      }, [userData]);
+useEffect(() => {
+  getAllEvents('').then((allEvents) => {
+    console.log(allEvents);
+    let filteredEvents = allEvents.filter(event => {
+      return event.type === 'private' && 
+        (event.author === userData.handle || Object.keys(event.invitedUsers ?? {}).includes(userData.handle))
+    });
+    setEvents(filteredEvents);
+  });
+}, [userData]);
+console.log(events);
     
 
 

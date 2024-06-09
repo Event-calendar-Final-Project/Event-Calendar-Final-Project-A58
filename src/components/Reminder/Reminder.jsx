@@ -14,7 +14,7 @@ export default function Reminder() {
       let filteredEvents = allEvents.filter(event => {
         const eventDate = new Date(event.startDateTime);
         return event.type === 'private' && 
-          (event.author === userData.handle || Object.keys(event.invitedUsers).includes(userData.handle)) &&
+          (event.author === userData.handle || Object.keys(event.invitedUsers ?? {}).includes(userData.handle)) &&
           eventDate > now && 
           eventDate <= oneWeekLater;
       });

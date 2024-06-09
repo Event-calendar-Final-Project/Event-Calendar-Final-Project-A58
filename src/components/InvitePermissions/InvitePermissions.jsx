@@ -7,7 +7,7 @@ import { AppContext } from '../../context/AppContext';
 export default function InvitePermissions({ event }) {
   const [contacts, setContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
-  const [showPermissions, setShowPermissions] = useState(false); // State to control visibility
+  const [showPermissions, setShowPermissions] = useState(false);
   const { userData } = useContext(AppContext);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function InvitePermissions({ event }) {
     };
     updateEvent(event.id, updatedEventData).then(() => {
       setSelectedContacts([]);
-      setShowPermissions(false); // Hide the permissions UI after updating
+      setShowPermissions(false);
     });
   };
 
