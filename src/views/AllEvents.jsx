@@ -6,7 +6,6 @@ import { getAllEvents } from "../services/event.service";
 import Pagination from "../components/Pagination/Pagination";
 import { AppContext } from "../context/AppContext";
 
-
 export default function AllEvents() {
     const [events, setEvents] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -15,7 +14,7 @@ export default function AllEvents() {
     const itemsPerPage = 4;
     const { userData } = useContext(AppContext);
     const [filter, setFilter] = useState('all');
-    
+
     useEffect(() => {
         getAllEvents(search).then((allEvents) => {
             let filteredEvents = allEvents;
@@ -47,48 +46,36 @@ export default function AllEvents() {
     const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
 
     return (
-        <div>
-            <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>All Events</h1>
-            <input
-                type="text"
-                placeholder="Search"
-                onChange={(e) => setSearchParams({ search: e.target.value })}
-            />
-            {userData ? (
-                <select
-    value={filter}
-    onChange={(e) => setFilter(e.target.value)}
-    className="select select-bordered select-accent w-full max-w-xs mb-4"
-    style={{
-        border: '1px solid #d1d5db',
-        borderRadius: '0.375rem',
-        padding: '0.5rem 1rem',
-        color: '#374151',
-        fontSize: '1rem',
-        cursor: 'pointer'
-    }}
->
-    <option value="all">All events</option>
-    <option value="public">Public events</option>
-    <option value="private">Private events</option>
-    <option value="draft">Drafts</option>
-</select>
-            ) : null}
-           
-            <div className="grid grid-cols-2 gap-2">
-            
+        <div className="p-4">
+            <h1 className="text-3xl font-bold mb-4 text-center">All Events</h1>
+            <div className="flex justify-between mb-4">
+                {userData && (
+                    <select
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="select select-bordered select-accent w-full max-w-xs mr-4"
+                    >
+                        <option value="all">All events</option>
+                        <option value="public">Public events</option>
+                        <option value="private">Private events</option>
+                        <option value="draft">Drafts</option>
+                    </select>
+                )}
+                <input
+                    type="text"
+                    placeholder="Search"
+                    onChange={(e) => setSearchParams({ search: e.target.value })}
+                    className="w-64 px-4 py-2 border rounded-md"
+                />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
                 {currentEvents.map((event) => (
-                    <div key={event.id} className="event-card bg-white shadow-lg transform transition-transform hover:scale-105 mt-4 flex flex-row items-center p-4 space-x-4 rounded-lg ">
-                        <div className="card-body">
-                       
-                            <Event className="card-title" key={event.id} event={event} />
-                            <div className="card-actions justify-end">
-                            </div>
-                        </div>
+                    <div key={event.id} className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition duration-300">
+                        <Event key={event.id} event={event} />
                     </div>
                 ))}
             </div>
-        <br />
             <Pagination itemsPerPage={itemsPerPage} totalItems={events.length} paginate={paginateEvents} currentPage={currentPageEvents} />
         </div>
     );
