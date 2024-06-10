@@ -10,6 +10,7 @@ import { updateEvent } from '../../services/event.service';
 import LikeDislikeButton from '../LikeDislikeButton/LikeDislikeButton';
 import Invite from '../Invite/Invite';
 import { setupInvitedUsersListener } from '../../services/notification.service';
+import Participants from '../Participants/Participants';
 
 
 export default function Event({ event: initialEvent, deleteEvent, editEvent, isSingleView }) {
@@ -141,7 +142,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
  
                 <span className="font-medium text-sm ml-2">{event.author}</span>
               </div>
-              <span className="text-sm">{new Date(event.createdOn).toLocaleDateString('bg-BG')}</span>
+              <span className="text-sm">{new Date(event.startDateTime).toLocaleDateString('bg-BG')}</span>
             </div>
     
             <div className="flex flex-col gap-2">
@@ -160,7 +161,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                 <img src={event.photoUrl} alt="Event" className="w-32 h-32" />
               )}
             </div>
-    
+            {isSingleView && userData && <Participants event={event} />}
             {isSingleView && userData && (userData.handle === event.author || userData.isAdmin) && !userData.isBlocked && (
               <>
                 <button onClick={handleDelete} className="btn btn-xs btn-warning">Delete</button>
@@ -172,9 +173,12 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                   )
                 )}
                  {< InvitePermissions event={event} />}
-                 {< Invite initialEvent={event} onUserAdded={handleUserAdded} />}
-              </>
+                </>
             )}
+{isSingleView && userData && (!event.invitationPermission || Object.keys(event.invitationPermission).length === 0 
+? userData.handle === event.author : (userData.handle === event.author 
+|| Object.keys(event.invitationPermission).includes(userData.handle))) 
+&& (<Invite initialEvent={event} onUserAdded={handleUserAdded} />)}
        
 
           </div>
