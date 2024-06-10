@@ -68,27 +68,3 @@ export default function Header() {
         </div>
     );
 }
-
-/*     return (
-        <header>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/events">Events</NavLink>
-            <NavLink to="/create-event">Create Event</NavLink>
-            <NavLink to="/contacts">Contacts</NavLink>
-            <NavLink to="/my-profile">My Profile</NavLink>
-            <NavLink to="/my-calendar">My Calendar</NavLink>
-            { user && userData
-            ? (
-                <>
-                    {`Welcome ${userData.handle}!`}
-                    <Button onClick={logout}>LogOut</Button>
-                </>
-            )
-            : <>
-                <NavLink to="/login">Login</NavLink>
-                <NavLink to="/register">Register</NavLink>
-            </>}
-        </header>
-    )
-}
- */
