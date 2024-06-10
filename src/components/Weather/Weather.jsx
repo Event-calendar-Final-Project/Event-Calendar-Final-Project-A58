@@ -56,7 +56,7 @@ export default function Weather() {
 
     return (
         <div className="container">
-            <div className="top" style={{ display: 'flex', gap: '10px' }}>
+            <div className="top" style={{ display: 'flex', gap: '20px' ,margin : '30px'}}>
                 <div className="stat-value text-black">
                     <p>{data.name}</p>
                 </div> 
