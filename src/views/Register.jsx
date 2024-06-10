@@ -15,8 +15,9 @@ export default function Register() {
     lastName: '',
     photo: null,
     address: '',
-    phone: '', 
+    phone: '',
   });
+  const [errors, setErrors] = useState({});
   const { user, setAppState } = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -31,13 +32,57 @@ export default function Register() {
     });
   };
 
-  const register = async() => {
-    // TODO: validate form data
-    try {
+  const validateForm = async () => {
+    const newErrors = {};
+    const usernameRegex = /^[a-zA-Z0-9]{3,30}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,30}$/;
+    const nameRegex = /^[a-zA-Z]{1,30}$/;
+    const phoneRegex = /^\d{10}$/;
+
+    if (!form.username || !usernameRegex.test(form.username)) {
+      newErrors.username = 'Username must be between 3 and 30 alphanumeric characters.';
+    } else {
       const user = await getUserByHandle(form.username);
       if (user.exists()) {
-        return console.log('User with this username already exists!');
+        newErrors.username = 'Username already exists.';
       }
+    }
+
+    if (!form.email || !emailRegex.test(form.email)) {
+      newErrors.email = 'Invalid email address.';
+    }
+
+    if (!form.password || !passwordRegex.test(form.password)) {
+      newErrors.password = 'Password must be 8-30 characters and include at least one number and one symbol.';
+    }
+
+    if (!form.firstName || !nameRegex.test(form.firstName)) {
+      newErrors.firstName = 'First name must be 1-30 characters and contain only letters.';
+    }
+
+    if (!form.lastName || !nameRegex.test(form.lastName)) {
+      newErrors.lastName = 'Last name must be 1-30 characters and contain only letters.';
+    }
+
+    if (!form.phone || !phoneRegex.test(form.phone)) {
+      newErrors.phone = 'Phone number must be 10 digits.';
+    }
+
+    if (!form.photo) {
+      newErrors.photo = 'Photo is required.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const register = async () => {
+    if (!(await validateForm())) {
+      return;
+    }
+
+    try {
       let photoUrl = '';
       if (form.photo) {
         photoUrl = await addUserPhoto(form.photo, form.username);
@@ -48,48 +93,64 @@ export default function Register() {
       navigate('/');
     } catch (error) {
       if (error.message.includes('auth/email-already-in-use')) {
-        console.log('User has already been registered!');
+        setErrors({ email: 'Email already registered.' });
       }
     }
   };
 
   return (
     <>
-          <section className="relative h-screen flex flex-col items-center justify-center text-center text-white" style={{ zIndex: 1 }}>
-        <div className="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
-          <video className="min-w-full min-h-full absolute object-cover"
+      <section className="relative h-screen flex items-center justify-center text-center text-white">
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
+          <video className="flex min-w-full min-h-full object-cover"
             src="https://cdn.pixabay.com/video/2017/01/26/7529-201118756_large.mp4"
             type="video/mp4" autoPlay muted loop></video>
         </div>
-        <div className="video-content space-y-2 z-10">
-          <h1 className="font-light text-6xl"></h1>
-          <h3 className="font-light text-3xl"></h3>
-        </div>
-      <div className="flex justify-center items-center h-screen">
-        <div className="bg-black p-12 rounded-md shadow-md" style={{ width: '400px', zIndex: 10 }}>
+        <div className="relative bg-black bg-opacity-75 p-8 rounded-md shadow-md w-full max-w-lg">
           <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
+          {errors.form && (
+            <div className="alert alert-error shadow-lg mb-4">
+              <div>{errors.form}</div>
+            </div>
+          )}
           <label htmlFor="username" className="block mb-2">Username:</label>
-          <input value={form.username} onChange={updateForm('username')} type="text" name="username" id="username" className="w-full px-3 py-2 border rounded-md" />
-          <label htmlFor="firstName" className="block mb-2">First Name:</label>
-          <input value={form.firstName} onChange={updateForm('firstName')} type="text" name="firstName" id="firstName" className="w-full px-3 py-2 border rounded-md" />
-          <label htmlFor="lastName" className="block mb-2">Last Name:</label>
-          <input value={form.lastName} onChange={updateForm('lastName')} type="text" name="lastName" id="lastName" className="w-full px-3 py-2 border rounded-md" />
-          <label htmlFor="email" className="block mb-2">Email:</label>
-          <input value={form.email} onChange={updateForm('email')} type="text" name="email" id="email" className="w-full px-3 py-2 border rounded-md" />
-          <label htmlFor="password" className="block mb-2">Password:</label>
-          <input value={form.password} onChange={updateForm('password')} type="password" name="password" id="password" className="w-full px-3 py-2 border rounded-md" />
-          <label htmlFor="address" className="block mb-2">Address:</label>
-          <input value={form.address} onChange={updateForm('address')} type="text" name="address" id="address" className="w-full px-3 py-2 border rounded-md" />
-          <label htmlFor="phone" className="block mb-2">Phone:</label>
-          <input value={form.phone} onChange={updateForm('phone')} type="tel" name="phone" id="phone" className="w-full px-3 py-2 border rounded-md" /> {/* added phone field */}
-          <label htmlFor="photo" className="block mb-2">Photo:</label>
-          <input onChange={e => setForm({...form, photo: e.target.files[0]})} type="file" name="photo" id="photo" className="w-full px-3 py-2 border rounded-md" />
-          <br /> <br /><br />
-          <div className="flex justify-center"><button onClick={register} className="px-4 py-2 text-white bg-blue-500 rounded-md">Register</button></div>
-          <PhotoPreview photo={form.photo} />
-        </div>
-      </div>
+          <input value={form.username} onChange={updateForm('username')} type="text" name="username" id="username" className={`input input-bordered w-full ${errors.username ? 'input-error' : ''}`} />
+          {errors.username && <div className="text-red-500">{errors.username}</div>}
 
+          <label htmlFor="firstName" className="block mb-2">First Name:</label>
+          <input value={form.firstName} onChange={updateForm('firstName')} type="text" name="firstName" id="firstName" className={`input input-bordered w-full ${errors.firstName ? 'input-error' : ''}`} />
+          {errors.firstName && <div className="text-red-500">{errors.firstName}</div>}
+
+          <label htmlFor="lastName" className="block mb-2">Last Name:</label>
+          <input value={form.lastName} onChange={updateForm('lastName')} type="text" name="lastName" id="lastName" className={`input input-bordered w-full ${errors.lastName ? 'input-error' : ''}`} />
+          {errors.lastName && <div className="text-red-500">{errors.lastName}</div>}
+
+          <label htmlFor="email" className="block mb-2">Email:</label>
+          <input value={form.email} onChange={updateForm('email')} type="text" name="email" id="email" className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`} />
+          {errors.email && <div className="text-red-500">{errors.email}</div>}
+
+          <label htmlFor="password" className="block mb-2">Password:</label>
+          <input value={form.password} onChange={updateForm('password')} type="password" name="password" id="password" className={`input input-bordered w-full ${errors.password ? 'input-error' : ''}`} />
+          {errors.password && <div className="text-red-500">{errors.password}</div>}
+
+          <label htmlFor="address" className="block mb-2">Address:</label>
+          <input value={form.address} onChange={updateForm('address')} type="text" name="address" id="address" className="input input-bordered w-full" />
+
+          <label htmlFor="phone" className="block mb-2">Phone:</label>
+          <input value={form.phone} onChange={updateForm('phone')} type="tel" name="phone" id="phone" className={`input input-bordered w-full ${errors.phone ? 'input-error' : ''}`} />
+          {errors.phone && <div className="text-red-500">{errors.phone}</div>}
+
+          <label htmlFor="photo" className="block mb-2">Photo:</label>
+          <input onChange={e => setForm({ ...form, photo: e.target.files[0] })} type="file" name="photo" id="photo" className={`input input-bordered w-full ${errors.photo ? 'input-error' : ''}`} />
+          {errors.photo && <div className="text-red-500">{errors.photo}</div>}
+
+          <div className="mt-4 flex justify-center">
+            <button onClick={register} className="btn btn-primary">Register</button>
+          </div >
+          <div className="flex justify-center">
+            <PhotoPreview photo={form.photo} />
+          </div>
+        </div>
       </section>
     </>
   );
