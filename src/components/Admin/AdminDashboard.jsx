@@ -17,6 +17,8 @@ const AdminDashboard = () => {
     const [currentPageEvents, setCurrentPageEvents] = useState(1);
     const itemsPerPage = 10;
 
+    const [showUsers, setShowUsers] = useState(true);
+
     useEffect(() => {
         fetchUsers();
         fetchEvents();
@@ -73,101 +75,146 @@ const AdminDashboard = () => {
         fetchUsers();
     };
 
-        // Pagination functions
-        const paginateUsers = (pageNumber) => setCurrentPageUsers(pageNumber);
-        const paginateEvents = (pageNumber) => setCurrentPageEvents(pageNumber);
-    
-        // Get current users and events
-        const indexOfLastUser = currentPageUsers * itemsPerPage;
-        const indexOfFirstUser = indexOfLastUser - itemsPerPage;
-        const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
-    
-        const indexOfLastEvent = currentPageEvents * itemsPerPage;
-        const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
-        const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
+    // Pagination functions
+    const paginateUsers = (pageNumber) => setCurrentPageUsers(pageNumber);
+    const paginateEvents = (pageNumber) => setCurrentPageEvents(pageNumber);
+
+    // Get current users and events
+    const indexOfLastUser = currentPageUsers * itemsPerPage;
+    const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+    const indexOfLastEvent = currentPageEvents * itemsPerPage;
+    const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
+    const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
 
     return (
-        <div className="p-8">
+        <div className="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">
             <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
-            <input
-                type="text"
-                placeholder="Search users or events..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="border border-gray-300 px-3 py-2 rounded-md mb-4"
-            />
+            <label className="input input-bordered flex items-center gap-2">
+                <input type="text" placeholder="Search users or events..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="grow" />
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
+            </label>
+            <br></br>
             <div className="flex space-x-4 mb-4">
-                <button onClick={fetchUsers} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Search Users</button>
-                <button onClick={fetchEvents} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Search Events</button>
+                <button onClick={fetchUsers} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-blue-500">Search Users</button>
+                <button onClick={fetchEvents} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-blue-500">Search Events</button>
+            </div>
+            <div className="flex space-x-4 mb-4">
+                <button onClick={() => setShowUsers(true)} className={`px-4 py-2 rounded-md ${showUsers ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>Show Users</button>
+                <button onClick={() => setShowUsers(false)} className={`px-4 py-2 rounded-md ${!showUsers ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>Show Events</button>
             </div>
 
-            <div>
-                <h2 className="text-2xl font-bold mb-2">Users</h2>
-                <ul>
-                    {currentUsers.map(user => (
-                        <li key={user.id} className="mb-2">
-                            <span>{user.handle} - {user.email} - {user.role}</span>
-                            {user.isBlocked ? (
-                                <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Unblock</button>
-                            ) : (
-                                <button onClick={() => handleBlockUser(user.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Block</button>
-                            )}
-                            <button
-                                onClick={() => handleToggleUserRole(user.id, user.role)}
-                                className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600 ml-2"
-                            >
-                                {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-                <Pagination
-                    itemsPerPage={itemsPerPage}
-                    totalItems={users.length}
-                    paginate={paginateUsers}
-                    currentPage={currentPageUsers}
-                />
-            </div>
-
-            <div>
-                <h2 className="text-2xl font-bold mb-2 mt-8">Events</h2>
-                <ul>
-                    {currentEvents.map(event => (
-                        <li key={event.id} className="mb-2">
-                            {isEditing && event.id === editedEventId ? (
-                                <>
-                                    <input
-                                        value={editedName}
-                                        onChange={(e) => setEditedName(e.target.value)}
-                                        placeholder="Event Name"
-                                        className="border border-gray-300 px-3 py-2 rounded-md mb-2"
-                                    />
-                                    <input
-                                        value={editedDescription}
-                                        onChange={(e) => setEditedDescription(e.target.value)}
-                                        placeholder="Event Description"
-                                        className="border border-gray-300 px-3 py-2 rounded-md mb-2"
-                                    />
-                                    <button onClick={saveEdit} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Save</button>
-                                    <button onClick={cancelEdit} className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600 ml-2">Cancel</button>
-                                </>
-                            ) : (
-                                <>
-                                    <span>{event.name} - {event.description}</span>
-                                    <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Delete</button>
-                                    <button onClick={() => startEditing(event)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 ml-2">Edit</button>
-                                </>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-                <Pagination
-                    itemsPerPage={itemsPerPage}
-                    totalItems={events.length}
-                    paginate={paginateEvents}
-                    currentPage={currentPageEvents}
-                />
-            </div>
+            {showUsers ? (
+                <div className="overflow-y-hidden rounded-lg border">
+                    <div className="overflow-x-auto">
+                        <h2 className="text-2xl font-bold mb-2">Users</h2>
+                        <table className="w-full">
+                            <thead>
+                                <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                                    <th className="px-5 py-3">Handle</th>
+                                    <th className="px-5 py-3">Email</th>
+                                    <th className="px-5 py-3">Role</th>
+                                    <th className="px-5 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-gray-500">
+                                {currentUsers.map(user => (
+                                    <tr key={user.id}>
+                                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                            {user.handle}
+                                        </td>
+                                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                            {user.email}
+                                        </td>
+                                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                            {user.role}
+                                        </td>
+                                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                            {user.isBlocked ? (
+                                                <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Unblock</button>
+                                            ) : (
+                                                <button onClick={() => handleBlockUser(user.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Block</button>
+                                            )}
+                                            <button
+                                                onClick={() => handleToggleUserRole(user.id, user.role)}
+                                                className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600 ml-2"
+                                            >
+                                                {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <Pagination
+                            itemsPerPage={itemsPerPage}
+                            totalItems={users.length}
+                            paginate={paginateUsers}
+                            currentPage={currentPageUsers}
+                        />
+                    </div>
+                </div>
+            ) : (
+                <div className="overflow-y-hidden rounded-lg border">
+                    <div className="overflow-x-auto">
+                        <h2 className="text-2xl font-bold mb-2">Events</h2>
+                        <table className="w-full">
+                            <thead>
+                                <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                                    <th className="px-5 py-3">Name</th>
+                                    <th className="px-5 py-3">Description</th>
+                                    <th className="px-5 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-gray-500">
+                                {currentEvents.map(event => (
+                                    <tr key={event.id}>
+                                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                            {event.name}
+                                        </td>
+                                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                            {event.description}
+                                        </td>
+                                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                            {isEditing && event.id === editedEventId ? (
+                                                <>
+                                                    <input
+                                                        value={editedName}
+                                                        onChange={(e) => setEditedName(e.target.value)}
+                                                        placeholder="Event Name"
+                                                        className="border border-gray-300 px-3 py-2 rounded-md mb-2"
+                                                    />
+                                                    <input
+                                                        value={editedDescription}
+                                                        onChange={(e) => setEditedDescription(e.target.value)}
+                                                        placeholder="Event Description"
+                                                        className="border border-gray-300 px-3 py-2 rounded-md mb-2"
+                                                    />
+                                                    <button onClick={saveEdit} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Save</button>
+                                                    <button onClick={cancelEdit} className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600 ml-2">Cancel</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    
+                                                    <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Delete</button>
+                                                    <button onClick={() => startEditing(event)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 ml-2">Edit</button>
+                                                </>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <Pagination
+                            itemsPerPage={itemsPerPage}
+                            totalItems={events.length}
+                            paginate={paginateEvents}
+                            currentPage={currentPageEvents}
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

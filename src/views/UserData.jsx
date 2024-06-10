@@ -39,16 +39,26 @@ export default function UserData({ user: userProp }) {
   };
 
   return (
-    <div>
-      <h1>{user.handle}</h1>
-      {user.photo && <img src={user.photo} alt={`${user.handle}'s profile`} />}
-      <p>First Name: {user.firstName}</p>
-      <p>Last Name: {user.lastName}</p>
-      <p>Email: {user.email}</p>
-      <p>Phone: {user.phone}</p>
-      <p>Address: {user.address}</p>
-      {user.handle === userData?.handle && <button onClick={handleEditClick}>Edit</button>}
-      {isEditing && <EditProfile user={user} onProfileUpdate={refreshUserData} />}
+    <div className="flex items-center justify-center h-screen">
+      <div className="card lg:card-side bg-base-100 shadow-xl w-full max-w-3xl p-8">
+        <figure className="mb-4">
+          {user.photo && <img src={user.photo} alt={`${user.handle}'s profile`} className="w-full h-auto rounded-lg" />}
+        </figure>
+        <div className="card-body">
+          <h2 className="card-title">{user.handle}</h2>
+          <p>First Name: {user.firstName}</p>
+          <p>Last Name: {user.lastName}</p>
+          <p>Email: {user.email}</p>
+          <p>Phone: {user.phone}</p>
+          <p>Address: {user.address}</p>
+          {user.handle === userData?.handle && (
+            <div className="card-actions justify-end">
+              <button onClick={handleEditClick} className="btn btn-primary">Edit</button>
+            </div>
+          )}
+          {isEditing && <EditProfile user={user} onProfileUpdate={refreshUserData} />}
+        </div>
+      </div>
     </div>
   );
 }

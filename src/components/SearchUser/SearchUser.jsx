@@ -24,14 +24,21 @@ export default function SearchUser( {onUserAdded} ) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
+      <label onSubmit={handleSubmit} className="flex items-center mb-4 space-x-2">
+          <input 
+              type="text" 
+              value={query} 
+              onChange={(e) => setQuery(e.target.value)} 
+              className="w-48 border border-gray-300 px-4 py-2 rounded-md" 
+              placeholder="Search users" 
+          />
+          <button 
+              type="submit" 
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-blue-500"
+          >
+              Search
+          </button>
+      </label>
 
       {
         results && results[0] && (
