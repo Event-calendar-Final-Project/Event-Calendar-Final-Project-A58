@@ -117,7 +117,8 @@ export async function addContactList(handle, listName, contacts) {
     const contactListData = {
       contacts: contacts,
       id: listRef.key,
-      listName: listName 
+      listName: listName,
+      owner : handle 
     };
 
     await set(listRef, contactListData);
