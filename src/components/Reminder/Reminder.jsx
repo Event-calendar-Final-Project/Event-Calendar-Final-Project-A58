@@ -126,7 +126,7 @@ export default function Reminder() {
           )}
         </div>
       ) : (
-        <p className="text-center text-lg">No upcoming events.</p>
+        <p className="text-center text-lg text-neutral-content">No upcoming events.</p>
       )}
     </div>
   );
