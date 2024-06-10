@@ -24,7 +24,7 @@ export default function SearchUser( {onUserAdded} ) {
 
   return (
     <div>
-      <label onSubmit={handleSubmit} className="flex items-center mb-4 space-x-2">
+      <form onSubmit={handleSubmit} className="flex items-center mb-4 space-x-2">
           <input 
               type="text" 
               value={query} 
@@ -38,7 +38,7 @@ export default function SearchUser( {onUserAdded} ) {
           >
               Search
           </button>
-      </label>
+      </form>
 
       {
         results && results[0] && (

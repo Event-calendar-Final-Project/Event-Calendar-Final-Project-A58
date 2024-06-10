@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
+import { getInvitedUsers, inviteUser, disinviteUser } from "../../services/event.service"; 
 import { getUserContactsList } from "../../services/users.service";
-import { getInvitedUsers, inviteUser } from "../../services/event.service"; 
 import { AppContext } from "../../context/AppContext";
 
 export default function InviteUser({ initialEvent, onUserAdded }) {
@@ -11,23 +11,21 @@ export default function InviteUser({ initialEvent, onUserAdded }) {
   const { userData } = useContext(AppContext);
   const [inputKey, setInputKey] = useState(0);
   const [invitedUsers, setInvitedUsers] = useState([]);
+  const [showInvitedUsers, setShowInvitedUsers] = useState(false);
 
   useEffect(() => {
-    
     getUserContactsList(userData.handle).then(fetchedContacts => {
       const contactsArray = Object.keys(fetchedContacts);
       setContacts(contactsArray);
   
-      
       getInvitedUsers(initialEvent.id).then((invited) => {
         setInvitedUsers(invited);
   
-        
         const filteredContacts = contactsArray.filter(contact => !invited.includes(contact));
         setAvailableContacts(filteredContacts);
       });
     });
-  }, [userData.handle, initialEvent.id]);
+  }, [userData.handle, initialEvent.id, invitedUsers]);
 
   const handleInviteClick = async () => {
     if (!inviteHandle) {
@@ -45,8 +43,18 @@ export default function InviteUser({ initialEvent, onUserAdded }) {
       setInviteHandle("");
       setInputKey(prevKey => prevKey + 1);
       onUserAdded();
+      getInvitedUsers(initialEvent.id).then(setInvitedUsers);
     } catch (error) {
       setFeedbackMessage("Failed to send invitation. Please try again.");
+    }
+  };
+
+  const handleDisinviteClick = async (userHandle) => {
+    try {
+      await disinviteUser(initialEvent.id, userHandle);
+      getInvitedUsers(initialEvent.id).then(setInvitedUsers);
+    } catch (error) {
+      console.error("Failed to disinvite user:", error);
     }
   };
 
@@ -66,6 +74,17 @@ export default function InviteUser({ initialEvent, onUserAdded }) {
         ))}
       </datalist>
       <button onClick={handleInviteClick} className="btn btn-xs btn-outline btn-success">Invite User</button>
+      <button onClick={() => setShowInvitedUsers(!showInvitedUsers)} className="btn btn-xs btn-outline">Show Invited Users</button>
+      {showInvitedUsers && (
+        <ul>
+          {invitedUsers.map(user => (
+            <li key={user}>
+              {user}
+              <button onClick={() => handleDisinviteClick(user)} className="btn btn-xs btn-error">Disinvite</button>
+            </li>
+          ))}
+        </ul>
+      )}
       {feedbackMessage && <p>{feedbackMessage}</p>}
     </div>
   );

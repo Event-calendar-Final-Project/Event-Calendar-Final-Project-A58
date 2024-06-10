@@ -21,32 +21,32 @@ export default function Reminder() {
       });
       setEvents(filteredEvents);
 
-      // Calculate initial countdowns
+      
       const initialCountdowns = filteredEvents.map(event => calculateRemainingTime(event.startDateTime));
       setCountdowns(initialCountdowns);
 
-      // Update countdowns every second
+      
       const interval = setInterval(() => {
         setCountdowns(prevCountdowns => {
           return prevCountdowns.map(countdown => {
-            // Decrease seconds by 1
+            
             countdown.seconds = countdown.seconds - 1;
-            // If seconds become negative, reset to 59 and decrease minutes by 1
+            
             if (countdown.seconds < 0) {
               countdown.seconds = 59;
               countdown.minutes = countdown.minutes - 1;
             }
-            // If minutes become negative, reset to 59 and decrease hours by 1
+            
             if (countdown.minutes < 0) {
               countdown.minutes = 59;
               countdown.hours = countdown.hours - 1;
             }
-            // If hours become negative, reset to 23 and decrease days by 1
+            
             if (countdown.hours < 0) {
               countdown.hours = 23;
               countdown.days = countdown.days - 1;
             }
-            // If days become negative, reset all values to 0
+            
             if (countdown.days < 0) {
               countdown.days = 0;
               countdown.hours = 0;

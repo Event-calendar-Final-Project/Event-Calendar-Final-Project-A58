@@ -1,13 +1,16 @@
-import React from 'react';
-import CalendarMonth from '../components/CalendarMonth/CalendarMonth';
 import Weather from '../components/Weather/Weather';
 import Clock from '../components/Watch/Watch';
 import Reminder from '../components/Reminder/Reminder';
+import { AppContext } from '../context/AppContext';
+import { useContext } from 'react';
 
 
 
 
 export default function Home() {
+
+  const { userData } = useContext(AppContext);
+
   return (
     <section className="relative h-screen flex flex-col items-center justify-center text-center text-white">
       <div className="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
@@ -24,7 +27,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 p-2 flex flex-col space-y-2">
           <Weather />
           <Clock />
-          <Reminder />
+         {userData && <Reminder />}
         </div>
         <h1 className="font-light text-6xl"></h1>
         <h3 className="font-light text-3xl"></h3>
