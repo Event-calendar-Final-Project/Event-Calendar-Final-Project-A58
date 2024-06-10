@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { getUsers, blockUser, unblockUser, getEvents, deleteEventInDB, editEventInDB, toggleUserRole } from '../../services/admin.service';
 import Pagination from '../Pagination/Pagination';
+import { HiOutlinePencilAlt, HiOutlineTrash ,HiOutlineUserRemove, HiOutlineUserAdd, HiOutlineBan, HiOutlinePlusCircle } from 'react-icons/hi';
+
 
 const AdminDashboard = () => {
     const { userData } = useContext(AppContext);
@@ -132,15 +134,15 @@ const AdminDashboard = () => {
                                         </td>
                                         <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                             {user.isBlocked ? (
-                                                <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2">Unblock</button>
+                                                <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2"><HiOutlinePlusCircle/></button>
                                             ) : (
-                                                <button onClick={() => handleBlockUser(user.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Block</button>
+                                                <button onClick={() => handleBlockUser(user.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2"><HiOutlineBan/></button>
                                             )}
                                             <button
                                                 onClick={() => handleToggleUserRole(user.id, user.role)}
                                                 className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600 ml-2"
                                             >
-                                                {user.role === 'admin' ? 'Demote to User' : 'Promote to Admin'}
+                                                 {user.role === 'admin' ? <HiOutlineUserRemove /> : <HiOutlineUserAdd />} 
                                             </button>
                                         </td>
                                     </tr>
@@ -197,8 +199,8 @@ const AdminDashboard = () => {
                                             ) : (
                                                 <>
                                                     
-                                                    <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2">Delete</button>
-                                                    <button onClick={() => startEditing(event)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 ml-2">Edit</button>
+                                                    <button onClick={() => handleDeleteEvent(event.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2"><HiOutlineTrash/></button>
+                                                    <button onClick={() => startEditing(event)} className="bg-yellow-500 text-white px-3 py-1 rounded-md hover:bg-yellow-600 ml-2"><HiOutlinePencilAlt /> {/* Edit Icon */}</button>
                                                 </>
                                             )}
                                         </td>
