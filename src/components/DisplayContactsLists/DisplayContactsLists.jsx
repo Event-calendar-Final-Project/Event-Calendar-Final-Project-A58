@@ -23,28 +23,29 @@ export default function DisplayContactsLists({ contactLists }) {
     padding: '10px',
     cursor: 'pointer',
   };
-console.log(contactLists);
+
   return (
-    <div>
-      <h1>My Contacts Lists</h1>
-      <div style={listStyle}>
+    <div class="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">
+      <h1 class="text-2xl font-bold mb-4 text-center">My Contacts Lists</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {contactLists.map((list) => (
-          <div key={list.users.id}>
-            <h2 style={nameStyle} onClick={() => handleClick(list.users.listName)}>{list.users.listName}</h2>
+          <div key={list.users.id} class="bg-white rounded-md shadow-md p-4">
+            <h2 class="text-lg font-semibold mb-2 cursor-pointer" onClick={() => handleClick(list.users.listName)}>{list.users.listName}</h2>
             {selectedList === list.users.listName && (
-  <div>
-{list.users.contacts.map((userHandle, index) => (
-  <p key={`${list.users.id}-${userHandle}-${index}`}>
-    <Link to={`/${userHandle}`}>
-      {userHandle}
-    </Link>
-  </p>
-))}
-  </div>
-)}
+              <div>
+                {list.users.contacts.map((userHandle, index) => (
+                  <p key={`${list.users.id}-${userHandle}-${index}`}>
+                    <Link to={`/${userHandle}`} class="text-blue-600 hover:underline">
+                      {userHandle}
+                    </Link>
+                  </p>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>
     </div>
   );
+  
 }

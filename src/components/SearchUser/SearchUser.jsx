@@ -24,7 +24,7 @@ export default function SearchUser( {onUserAdded} ) {
 
   return (
     <div>
-      <label onSubmit={handleSubmit} className="flex items-center mb-4 space-x-2">
+      <form onSubmit={handleSubmit} className="flex items-center mb-4 space-x-2">
           <input 
               type="text" 
               value={query} 
@@ -38,27 +38,37 @@ export default function SearchUser( {onUserAdded} ) {
           >
               Search
           </button>
-      </label>
+      </form>
 
-      {
-        results && results[0] && (
-          <div>
-            <h2>
-              <Link to={{
-                pathname: `/${results[0].handle}`,
-                state: { user: results[0] }
-              }}>
-                 {console.log('Link state:', { user: results[0] })}
-                {results[0].handle}
-              </Link>
-            </h2>
-            <p>Email: {results[0].email}</p>
-            <p>Phone: {results[0].phone}</p>
-            <p>Address: {results[0].address}</p>
-            <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} onUserAdded={onUserAdded} />
-          </div>
-        )
-      }
+      <tbody className="text-gray-500">
+              {results && results[0] && (
+                <tr>
+                  <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                    <p className="whitespace-no-wrap">1</p>
+                  </td>
+                  <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                    <Link to={{
+                      pathname: `/${results[0].handle}`,
+                      state: { user: results[0] }
+                    }}>
+                      {results[0].handle}
+                    </Link>
+                  </td>
+                  <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                    {results[0].email}
+                  </td>
+                  <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                    {results[0].phone}
+                  </td>
+                  <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                    {results[0].address}
+                  </td>
+                  <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                    <AddContact handle={userData.handle} contactHandle={results[0].handle} contactAdded={contactAdded} setContactAdded={setContactAdded} onUserAdded={onUserAdded} />
+                  </td>
+                </tr>
+              )}
+            </tbody>
     </div>
-  );
+  ); 
 }
