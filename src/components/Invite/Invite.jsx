@@ -1,11 +1,8 @@
-import{ useState, useContext, useEffect } from 'react';
-import { AppContext } from '../../context/AppContext';
+import{ useState } from 'react';
 import InviteUser from '../InviteUser/InviteUser';
 import InviteContactList from '../InviteContactList/InviteContactList';
-import { fetchContactLists, getUserContactsList } from '../../services/users.service';
-import { inviteUser } from '../../services/event.service';
 
-export default function Invite({ initialEvent }) {
+export default function Invite({ initialEvent, onUserAdded }) {
 
   const [showInviteOptions, setShowInviteOptions] = useState(false);
 
@@ -21,8 +18,8 @@ export default function Invite({ initialEvent }) {
       )}
       {showInviteOptions && (
         <div className="flex flex-col gap-2">
-            {<InviteUser initialEvent={initialEvent}/>}
-            {<InviteContactList initialEvent={initialEvent}/>}
+            {<InviteUser initialEvent={initialEvent} onUserAdded={onUserAdded}/>}
+            {<InviteContactList initialEvent={initialEvent} onUserAdded={onUserAdded}/>}
         </div>
       )}
     </div>

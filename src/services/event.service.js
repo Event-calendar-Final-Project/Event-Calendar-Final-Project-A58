@@ -168,7 +168,7 @@ export const inviteUser = async (eventId, userHandle) => {
     const event = await getEventById(eventId);
     const updateVal = {};
     if (!event.invitedUsers) {
-        event.invitedUsers = {}; // Initialize invitedUsers if it doesn't exist
+        event.invitedUsers = {};
     }
 
     if (event.invitedUsers[userHandle] === false) {

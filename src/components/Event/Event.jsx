@@ -32,13 +32,15 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
     const [showInviteForm, setShowInviteForm] = useState(false);
     const [eventType, setEventType] = useState(event.type);
     const [eventVisibility, setEventVisibility] = useState('public');
+    const [triggerEffect, setTriggerEffect] = useState(false);
 
 
     useEffect(() => {
         fetchEvent();
  
         fetchUserContacts();
-    }, []);
+        setTriggerEffect(false);
+    }, [triggerEffect]);
 
     useEffect(() => {
         setupInvitedUsersListener();
@@ -49,6 +51,9 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
         setEvent(fetchedEvent);
     };
 
+    const handleUserAdded = () => {
+      setTriggerEffect(true);
+    };
 
     const fetchUserContacts = async () => {
         const data = await getUserByHandle(userData.handle);
@@ -168,8 +173,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                   console.log('Invited users:', invitedUsers);
                   alert(`You have been invited to ${initialEvent.name}!`);
   
-                  // Update the invitedUsers in the local state
-                  const updatedEvent = {
+                      const updatedEvent = {
                       ...event,
                       invitedUsers: {
                           ...event.invitedUsers,
@@ -178,7 +182,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                   };
                   setEvent(updatedEvent);
   
-                  // Update the invitedUsers in the database
+                  
                   const updates = {};
                   updates[`events/${event.id}/invitedUsers/${userData.handle}`] = false;
                   update(ref(db), updates)
@@ -283,7 +287,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
                   )
                 )}
                  {< InvitePermissions event={event} />}
-                 {< Invite initialEvent={event} />}
+                 {< Invite initialEvent={event} onUserAdded={handleUserAdded} />}
               </>
             )}
     

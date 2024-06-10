@@ -3,7 +3,7 @@ import { getUserContactsList } from "../../services/users.service";
 import { getInvitedUsers, inviteUser } from "../../services/event.service"; 
 import { AppContext } from "../../context/AppContext";
 
-export default function InviteUser({ initialEvent }) {
+export default function InviteUser({ initialEvent, onUserAdded }) {
   const [contacts, setContacts] = useState([]);
   const [inviteHandle, setInviteHandle] = useState("");
   const [availableContacts, setAvailableContacts] = useState([]);
@@ -44,6 +44,7 @@ export default function InviteUser({ initialEvent }) {
       setAvailableContacts(availableContacts.filter(contact => contact !== inviteHandle));
       setInviteHandle("");
       setInputKey(prevKey => prevKey + 1);
+      onUserAdded();
     } catch (error) {
       setFeedbackMessage("Failed to send invitation. Please try again.");
     }

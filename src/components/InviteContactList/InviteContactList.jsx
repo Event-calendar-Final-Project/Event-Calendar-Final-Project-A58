@@ -1,8 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import { fetchContactLists } from "../../services/users.service";
 import { AppContext } from "../../context/AppContext";
+import { inviteUser } from "../../services/event.service";
 
-export default function InviteContactList({ initialEvent }) {
+export default function InviteContactList({ initialEvent, onUserAdded }) {
   const [contactLists, setContactLists] = useState([]);
   const [selectedListName, setSelectedListName] = useState("");
   const [feedbackMessage, setFeedbackMessage] = useState(""); 
@@ -29,22 +30,25 @@ const handleInviteClick = async () => {
     setFeedbackMessage("Please enter a contact list name to invite.");
     return;
   }
-  console.log("Invite contact list logic goes here.");
+  console.log("Selected list name:", selectedListName);
+  console.log("Contact list:", contactLists[selectedListName]);
+  const invitedList = contactLists[selectedListName].map(contact => inviteUser(initialEvent.id, contact));
   setFeedbackMessage("Assuming contact list invited successfully!");
   setSelectedListName("");
   setInputKey(prevKey => prevKey + 1);
+  onUserAdded()
 };
 
 return (
   <div className="flex flex-col gap-2">
-    <input
-      key={inputKey}
-      value={contactLists}
-      onChange={(e) => setSelectedListName(e.target.value)}
-      placeholder="Contact list name"
-      className="input input-bordered input-xs"
-      list="contacts-lists"
-    />
+<input
+  key={inputKey}
+  value={selectedListName}
+  onChange={(e) => setSelectedListName(e.target.value)}
+  placeholder="Contact list name"
+  className="input input-bordered input-xs"
+  list="contacts-lists"
+/>
     <datalist id="contacts-lists">
       {Object.keys(contactLists).map(listName => (
         console.log("List name:", listName),
