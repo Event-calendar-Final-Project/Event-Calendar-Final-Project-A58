@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+
 export default function CalendarMonth({ onDateClick, events, ...props }) {
     const weekDaysStyle = {
         display: 'grid',
@@ -20,14 +21,22 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
 
     const dateStyle = {
         width: '100%',
-        cursor: props.shortWeekdays ? 'default' : 'pointer'
+        cursor: props.shortWeekdays ? 'default' : 'pointer',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: '8px',
+        backgroundColor: 'white',
+        color: 'grey',
+        fontSize: '24px', // Adjust the font size as needed
+        padding: '8px', // Adjust the padding as needed
     };
 
     const currentDate = new Date();
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
     const weekdays = props.shortWeekdays ? ['M', 'T', 'W', 'T', 'F', 'S', 'S'] : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    console.log(events)
+
     const handlePrevMonth = () => {
         setCurrentMonth(prevMonth => {
             if (prevMonth > 0) {
