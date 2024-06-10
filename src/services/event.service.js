@@ -143,7 +143,7 @@ export async function deleteEventInDB(id, author) {
     }
 }
 
-// Fetch an event from the database by ID
+
 export async function fetchEventFromDB(id) {
     const snapshot = await get(ref(db, `events/${id}`));
     const val = snapshot.val();
@@ -163,7 +163,7 @@ export async function fetchEventFromDB(id) {
     }
 }
 
-// Invite a user to an event
+
 export const inviteUser = async (eventId, userHandle) => {
     const event = await getEventById(eventId);
     const updateVal = {};
@@ -178,7 +178,7 @@ export const inviteUser = async (eventId, userHandle) => {
     update(ref(db), updateVal);
 };
 
-// Disinvite a user from an event
+
 export const disinviteUser = async (eventId, userHandle) => {
     const updateVal = {};
     updateVal[`events/${eventId}/invitedUsers/${userHandle}`] = null;
