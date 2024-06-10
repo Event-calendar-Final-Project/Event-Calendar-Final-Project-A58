@@ -11,6 +11,7 @@ export default function Header() {
         await logoutUser();
         setAppState({ user: null, userData: null })
     };
+
     return (
         <div>
             <header>
@@ -26,12 +27,13 @@ export default function Header() {
                         </div>
                     </div>
                     <div className="flex-none gap-2">
-                                               <NavLink to="/events" className="btn btn-ghost text-xl">Events</NavLink>
+                        <NavLink to="/events" className="btn btn-ghost text-xl">Events</NavLink>
                         {user && userData ? (
                             <>
+                                
                                 <NavLink to="/create-event" className="btn btn-ghost text-xl">Create Event</NavLink>
-                                <NavLink to="/contacts" className="btn btn-ghost text-xl">Contacts</NavLink>
                                 <NavLink to="/my-calendar" className="btn btn-ghost text-xl">My Calendar</NavLink>
+                                <NavLink to="/my-profile" className="btn btn-ghost text-xl">Welcome, {userData.handle}!</NavLink>
                                 <div className="dropdown dropdown-end">
                                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                         <div className="w-10 rounded-full">
@@ -45,10 +47,14 @@ export default function Header() {
                                                 My profile
                                             </NavLink>
                                         </li>
+                                        <li>
+                                            <NavLink to="/contacts" className="justify-between">
+                                                Contacts
+                                            </NavLink>
+                                        </li>
                                         <li onClick={logout}><a href="/">Logout</a></li>
                                     </ul>
                                 </div>
-                                <NavLink to="/my-profile" className="btn btn-ghost text-xl">Welcome ,{userData.handle}!</NavLink>
                             </>
                         ) : (
                             <>
