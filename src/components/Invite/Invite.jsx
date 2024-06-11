@@ -10,7 +10,7 @@ export default function Invite({ initialEvent, onUserAdded }) {
     <div>
       {!showInviteOptions && (
         <button
-          className="btn btn-primary"
+          className="btn min-w-auto w-32 h-10 bg-green-300 p-2 rounded-t-xl hover:bg-green-500 text-white font-semibold transition-transform hover:-translate-y-2 ease-in-out"
           onClick={() => setShowInviteOptions(true)}
         >
           Invite

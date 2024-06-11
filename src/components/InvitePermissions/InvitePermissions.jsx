@@ -32,7 +32,7 @@ export default function InvitePermissions({ event }) {
     userData.handle === event.author && (
       <div className="flex flex-col gap-2">
         {!showPermissions ? (
-          <button onClick={() => setShowPermissions(true)} className="btn btn-xs btn-outline btn-success">
+          <button onClick={() => setShowPermissions(true)} className="btn btn-xs min-w-auto w-14 h-14 bg-green-300 p-2 rounded-full hover:bg-green-500 text-white font-semibold transition-rotation duration-300 hover:-rotate-90 ease-in-out">
             Give Permissions
           </button>
         ) : (
@@ -62,7 +62,7 @@ export default function InvitePermissions({ event }) {
                 </li>
               ))}
             </ul>
-            <button onClick={invite} className="btn btn-xs btn-outline btn-success">
+            <button onClick={invite} className="btn btn-xs min-w-auto w-32 h-10 bg-green-300 p-2 rounded-t-xl hover:bg-green-500 text-white font-semibold transition-transform hover:-translate-y-2 ease-in-out">
               Allow Invitations
             </button>
           </>

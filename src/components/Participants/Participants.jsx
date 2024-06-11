@@ -44,7 +44,7 @@ export default function Participants({ event }) {
 
   return (
     <div>
-      <button className="btn btn-primary" onClick={toggleParticipantsList}>
+      <button className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-t-xl hover:bg-blue-500 text-white font-semibold transition-transform hover:-translate-y-2 ease-in-out" onClick={toggleParticipantsList}>
         Show Participants ({participants.length})
       </button>
       {showParticipants && (

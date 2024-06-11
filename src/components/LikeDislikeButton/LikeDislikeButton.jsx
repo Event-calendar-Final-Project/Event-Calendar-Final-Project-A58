@@ -17,7 +17,7 @@ export default function LikeDislikeButton({ initialLikes, onLike, onDislike }) {
 
   return (
     <div className="flex items-center gap-2">
-      <button onClick={handleLike} className={`btn btn-xs ${liked ? 'btn-accent' : 'btn-outline btn-secondary'}`}>
+      <button onClick={handleLike} className={`btn btn-xs min-w-auto w-14 h-14 bg-orange-300 p-2 rounded-full hover:bg-orange-500 text-white font-semibold transition-rotation duration-300 hover:rotate-45 ease-in-out ${liked ? 'btn-accent' : 'btn-outline btn-secondary'}`}>
         {liked ? 'Dislike' : 'Like'}
       </button>
       <span>{`Likes: ${likes}`}</span>
