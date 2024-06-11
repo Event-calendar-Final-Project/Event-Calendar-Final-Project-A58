@@ -19,11 +19,13 @@ export const addEventSeries = async (createdBy, title, description, endDate, rep
     return seriesId; // Return the generated series ID
 };
 
-// Function to add an event to a series by series ID
-export const addEventToSeriesByTitle = async (seriesId, author, name, description, startDateTime, endDateTime, location, photo, type) => {
-    const newEventRef = push(ref(db, `eventSeries/${seriesId}/events`));
+
+export const addEventToSeriesById = async (seriesId, author, name, description, startDateTime, endDateTime, location, photo, type) => {
+
+    const newEventRef = push(ref(db, 'events'));
     const eventId = newEventRef.key;
 
+    
     const event = {
         author,
         name,
@@ -36,12 +38,17 @@ export const addEventToSeriesByTitle = async (seriesId, author, name, descriptio
         createdOn: Date.now(),
     };
 
+    
     await set(newEventRef, event);
+
+    
+    const seriesEventRef = ref(db, `eventSeries/${seriesId}/events/${eventId}`);
+    await set(seriesEventRef, true);
 
     return eventId;
 };
 
-// Function to generate recurring events
+
 const generateRecurringEvents = async (seriesId, originalEventId, name, description, startDate, endDate, repeat) => {
     const eventsRef = ref(db, `eventSeries/${seriesId}/events`);
     const occurrences = [];

@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { addEventSeries, addEventToSeriesByTitle } from "../../services/eventSeries.service";
+import { addEventSeries, addEventToSeriesById } from "../../services/eventSeries.service";
 import { AppContext } from "../../context/AppContext";
-import { updateUserEvents } from "../../services/users.service";
 import { addEventPhoto } from "../../services/upload.service";
 import PhotoPreview from "../PhotoPreview/PhotoPreview";
+
 
 export default function AddEventSeries() {
     const [series, setSeries] = useState({
@@ -12,7 +12,7 @@ export default function AddEventSeries() {
         seriesEndDate: '',
         repeat: 'none',
     });
-    const [event, setEvent] = useState({
+    const [events, setEvent] = useState({
         name: '',
         description: '',
         date: '',
@@ -34,51 +34,118 @@ export default function AddEventSeries() {
 
     const updateEvent = (value, key) => {
         setEvent({
-            ...event,
+            ...events,
             [key]: value,
         });
-    };
+    };    
 
     const createEventSeries = async () => {
         if (series.seriesName.length < 5 || series.seriesName.length > 64) {
             return alert('Series name must be between 5 and 64 characters long');
         }
     
-        if (event.name.length < 16 || event.name.length > 64) {
+        if (events.name.length < 16 || events.name.length > 64) {
             return alert('Event name must be between 16 and 64 characters long');
         }
     
-        if (event.description.length < 5) {
+        if (events.description.length < 5) {
             return alert('Event description must be at least 5 characters long');
         }
     
-        if (!event.date) {
-            return alert('Please select a date for the starting event');
+        if (!events.date) {
+            return alert('Please select a date for the starting events');
         }
     
-        if (!event.location) {
-            return alert('Please provide a location for the event');
+        if (!events.location) {
+            return alert('Please provide a location for the events');
         }
     
         let photoURL = '';
         if (selectedFile) {
-            photoURL = await addEventPhoto(selectedFile, event.name);
+            photoURL = await addEventPhoto(selectedFile, events.name);
         }
 
-        const startDateTime = new Date(`${event.date}T${event.startHour}`);
-        const endDateTime = new Date(`${event.date}T${event.endHour}`);
-        const startDateTimeLocal = new Date(startDateTime.toLocaleString());
-        const endDateTimeLocal = new Date(endDateTime.toLocaleString());
+const startDateTime = new Date(`${events.date}T${events.startHour}`);
+const endDateTime = new Date(`${events.date}T${events.endHour}`);
+const startDateTimeLocal = new Date(startDateTime.toLocaleString());
+const endDateTimeLocal = new Date(endDateTime.toLocaleString());
+const seriesEndDate = new Date(series.seriesEndDate);
 
-        const seriesId = await addEventSeries(userData.handle, series.seriesName, series.seriesDescription, series.seriesEndDate, series.repeat);
-        const eventId = await addEventToSeriesByTitle(seriesId, userData.handle, event.name, event.description, startDateTimeLocal, endDateTimeLocal, event.location, photoURL, event.type);
+const seriesId = await addEventSeries(userData.handle, series.seriesName, series.seriesDescription, series.seriesEndDate, series.repeat);
 
-        if (seriesId && eventId) {
-            setSuccessMessage('Event series created successfully!');
-            setTimeout(() => setSuccessMessage(''), 3000);
-        }
+const timeDiff = seriesEndDate.getTime() - startDateTimeLocal.getTime();
 
-        await updateUserEvents(userData.handle, eventId, startDateTime, endDateTime, event.type);
+const timeFormat = series.repeat;
+
+let timeDiffAdjusted;
+switch (timeFormat) {
+    case 'daily':
+        timeDiffAdjusted = timeDiff / (1000 * 3600 * 24);
+        break;
+    case 'weekly':
+        timeDiffAdjusted = timeDiff / (1000 * 3600 * 24 * 7);
+        break;
+    case 'monthly':
+        
+        timeDiffAdjusted = timeDiff / (1000 * 3600 * 24 * 30.44);
+        break;
+    case 'yearly':
+        
+        timeDiffAdjusted = timeDiff / (1000 * 3600 * 24 * 365.25);
+        break;
+    default:
+        throw new Error('Invalid time format');
+}
+
+const eventsArr = Array.from({ length: Math.floor(timeDiffAdjusted) + 1 }).map((_, i) => {
+    const eventStartDateLocal = new Date(startDateTimeLocal);
+    const eventEndDateLocal = new Date(endDateTimeLocal);
+
+    switch (timeFormat) {
+        case 'daily':
+            eventStartDateLocal.setDate(startDateTimeLocal.getDate() + i);
+            eventEndDateLocal.setDate(endDateTimeLocal.getDate() + i);
+            break;
+        case 'weekly':
+            eventStartDateLocal.setDate(startDateTimeLocal.getDate() + i * 7);
+            eventEndDateLocal.setDate(endDateTimeLocal.getDate() + i * 7);
+            break;
+        case 'monthly':
+            eventStartDateLocal.setMonth(startDateTimeLocal.getMonth() + i);
+            eventEndDateLocal.setMonth(endDateTimeLocal.getMonth() + i);
+            break;
+        case 'yearly':
+            eventStartDateLocal.setFullYear(startDateTimeLocal.getFullYear() + i);
+            eventEndDateLocal.setFullYear(endDateTimeLocal.getFullYear() + i);
+            break;
+    }
+
+    return {
+        ...events,
+        startDateTimeLocal: eventStartDateLocal,
+        endDateTimeLocal: eventEndDateLocal,
+        date: eventStartDateLocal.toISOString().split('T')[0],
+    };
+});
+
+
+
+
+eventsArr.map(async (events) => {
+    console.log(series.repeat);
+     await addEventToSeriesById(
+        seriesId,
+        userData.handle,
+        events.name,
+        events.description,
+        events.startDateTimeLocal,
+        events.endDateTimeLocal,
+        events.location,
+        photoURL,
+        events.type
+    );
+});
+
 
         setSeries({
             seriesName: '',
@@ -148,7 +215,7 @@ export default function AddEventSeries() {
                         id="input-repeat"
                         className="select select-bordered w-3/4"
                     >
-                        <option value="none">One-Time</option>
+                        <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                         <option value="monthly">Monthly</option>
                         <option value="yearly">Yearly</option>
@@ -157,35 +224,35 @@ export default function AddEventSeries() {
                 <hr />
                 <h2 className="text-xl font-medium text-gray-700 mb-2">Starting Event</h2>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-event-name" className="block text-sm font-medium text-gray-700 w-1/6">Event Name:</label>
+                    <label htmlFor="input-events-name" className="block text-sm font-medium text-gray-700 w-1/6">Event Name:</label>
                     <input
                         type="text"
-                        value={event.name}
+                        value={events.name}
                         onChange={(e) => updateEvent(e.target.value, 'name')}
-                        name="input-event-name"
-                        id="input-event-name"
+                        name="input-events-name"
+                        id="input-events-name"
                         className="input input-bordered w-3/4"
-                        placeholder="Enter event name here..."
+                        placeholder="Enter events name here..."
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-event-description" className="block text-sm font-medium text-gray-700 w-1/6">Event Description:</label>
+                    <label htmlFor="input-events-description" className="block text-sm font-medium text-gray-700 w-1/6">Event Description:</label>
                     <textarea
-                        value={event.description}
+                        value={events.description}
                         onChange={(e) => updateEvent(e.target.value, 'description')}
-                        name="input-event-description"
-                        id="input-event-description"
+                        name="input-events-description"
+                        id="input-events-description"
                         cols="30"
                         rows="2"
                         className="textarea textarea-bordered w-3/4"
-                        placeholder="Enter event description here..."
+                        placeholder="Enter events description here..."
                     />
                 </div>
                 <div className="flex items-center space-x-4">
                     <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/6">Date:</label>
                     <input
                         type="date"
-                        value={event.date}
+                        value={events.date}
                         onChange={(e) => updateEvent(e.target.value, 'date')}
                         name="input-date"
                         id="input-date"
@@ -197,7 +264,7 @@ export default function AddEventSeries() {
                             <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>
                             <input
                                 type="time"
-                                value={event.startHour}
+                                value={events.startHour}
                                 onChange={(e) => updateEvent(e.target.value, 'startHour')}
                                 name="input-start-hour"
                                 id="input-start-hour"
@@ -208,7 +275,7 @@ export default function AddEventSeries() {
                             <label htmlFor="input-end-hour" className="block text-sm font-medium text-gray-700 w-1/4">End Hour:</label>
                             <input
                                 type="time"
-                                value={event.endHour}
+                                value={events.endHour}
                                 onChange={(e) => updateEvent(e.target.value, 'endHour')}
                                 name="input-end-hour"
                                 id="input-end-hour"
@@ -219,7 +286,7 @@ export default function AddEventSeries() {
                 <div className="flex items-center space-x-4">
                     <label htmlFor="input-type" className="block text-sm font-medium text-gray-700 w-1/6">Event Type:</label>
                     <select
-                        value={event.type}
+                        value={events.type}
                         onChange={(e) => updateEvent(e.target.value, 'type')}
                         name="input-type"
                         id="input-type"
@@ -234,7 +301,7 @@ export default function AddEventSeries() {
                     <label htmlFor="input-location" className="block text-sm font-medium text-gray-700 w-1/6">Location:</label>
                     <input
                         type="text"
-                        value={event.location}
+                        value={events.location}
                         onChange={(e) => updateEvent(e.target.value, 'location')}
                         name="input-location"
                         id="input-location"
