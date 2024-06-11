@@ -49,7 +49,7 @@ export default function CalendarWorkWeek({ onDateClick, events }) {
             margin: '0 10px',
         },
         hoursColumn: {
-            marginTop: '20px',
+            marginTop: '40px',
         },
     };
 

@@ -3,8 +3,8 @@ export default function HoursColumn()  {
     const hours = Array.from({ length: 25 }, (_, i) => i);
     const styles = {
         li: {
-            height: '40px',
-            lineHeight: '40px',
+            height: '60px',
+            lineHeight: '60px',
             textAlign: 'center',
         }
     };

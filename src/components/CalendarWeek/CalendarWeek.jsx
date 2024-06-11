@@ -23,11 +23,13 @@ export default function CalendarWeek({ onDateClick, events }) {
             padding: '0',
             margin: '0',
             listStyleType: 'none',
+            width: '100%',
         },
         li: {
             margin: '0',
             padding: '0',
             textAlign: 'center',
+            width: '100%',
         },
         today: {
             backgroundColor: '#f0f0f0',
@@ -62,7 +64,7 @@ export default function CalendarWeek({ onDateClick, events }) {
             margin: '0 10px',
         },
         hoursColumn: {
-            marginTop: '20px',
+            marginTop: '40px',
         },
     };
 

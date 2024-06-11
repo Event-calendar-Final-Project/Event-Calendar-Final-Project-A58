@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import HoursColumn from '../HoursColumn/HoursColumn';
+import WeekDay from '../WeekDay/WeekDay';
 
 export default function SingleDay({ date, events }) {
 
@@ -21,7 +22,7 @@ export default function SingleDay({ date, events }) {
         },
         ul: {
             display: 'grid',
-            gridTemplateColumns: '1fr 3fr',
+            gridTemplateColumns: '1fr 4fr',
             listStyleType: 'none',
             padding: '0',
             width: '100%',
@@ -29,8 +30,8 @@ export default function SingleDay({ date, events }) {
         },
         li: {
             boxSizing: 'border-box', 
-            height: '40px',
-            lineHeight: '40px',
+            height: '60px',
+            lineHeight: '60px',
             textAlign: 'center',
             border: '1px solid #f0f0f0',
             backgroundColor: '#fff'
@@ -85,8 +86,6 @@ export default function SingleDay({ date, events }) {
         setCurrentDate(nextDate => new Date(nextDate.getFullYear(), nextDate.getMonth(), nextDate.getDate() + 1));
     };
 
-    const hours = Array.from({ length: 24 }, (_, i) => i);
-    let lastDisplayedEvent = null;
 
     return (
         <div style={styles.day}>
@@ -120,37 +119,7 @@ export default function SingleDay({ date, events }) {
             <div style={styles.ul}>
                 <HoursColumn />
                 <div style={styles.eventsColumn}>
-                    <ul>
-                        {hours.map(hour => {
-                            const eventOnThisHour = events.find(event => {
-                                const eventStartDate = new Date(event.startDateTime);
-                                const eventEndDate = new Date(event.endDateTime);
-                                const eventStartHour = eventStartDate.getHours();
-                                const eventEndHour = eventEndDate.getHours();
-                                const eventStartDay = eventStartDate.getDate();
-                                const eventStartMonth = eventStartDate.getMonth();
-                                const eventStartYear = eventStartDate.getFullYear();
-
-                                const isSameDay = eventStartDay === currentDate.getDate() && eventStartMonth === currentDate.getMonth() && eventStartYear === currentDate.getFullYear();
-                                const isWithinEventHours = hour >= eventStartHour && hour < eventEndHour;
-
-                                return isSameDay && isWithinEventHours;
-                            });
-                            const displayEvent = eventOnThisHour;
-                            const displayEventName = displayEvent && eventOnThisHour !== lastDisplayedEvent;
-                            lastDisplayedEvent = displayEvent ? eventOnThisHour : lastDisplayedEvent;
-                            return (
-                                <li key={hour} style={displayEvent ? { ...styles.li, ...styles.event } : styles.li}>
-                                    {displayEvent ?
-                                        <Link to={`/events/${eventOnThisHour.id}`} style={styles.link}>
-                                            {displayEventName ? eventOnThisHour.name : ''}
-                                        </Link> :
-                                        <div style={{ visibility: 'hidden' }}>Placeholder</div>
-                                    }
-                                </li>
-                            );
-                        })}
-                    </ul>
+{< WeekDay date={currentDate} events={events} showDate={false}/>    }
                 </div>
             </div>
         </div>

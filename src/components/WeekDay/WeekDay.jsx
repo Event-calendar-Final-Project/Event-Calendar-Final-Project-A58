@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 
-export default function WeekDay({ date, events, context }) {
+export default function WeekDay({ date, events, showDate = true }) {
     const styles = {
         day: {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             margin: '0',
-            padding: '0', 
+            padding: '0',
+            width: '100%', // Ensure the parent container has a defined width
+            height: '100%', // Ensure the parent container has a defined height
         },
         link: {
             color: 'inherit',
@@ -16,62 +18,86 @@ export default function WeekDay({ date, events, context }) {
             height: '100%',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-start',
-            overflow: 'hidden', 
-            textOverflow: 'ellipsis', 
-            whiteSpace: 'nowrap' 
+            justifyContent: 'center',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
         },
         ul: {
             display: 'flex',
             flexDirection: 'column',
             padding: '0',
             listStyleType: 'none',
+            width: '100%', 
         },
         li: {
-            boxSizing: 'border-box', 
-            height: '40px',
-            lineHeight: '40px',
+            boxSizing: 'border-box',
+            height: '1px',
+            lineHeight: '1px',
             textAlign: 'center',
-            border: '1px solid #f0f0f0',
-            width: context === 'workweek' ? '195px' : '145px',
-            backgroundColor: '#fff'
+            width: '100%',
+            backgroundColor: '#fff',
+            borderLeft: '1px solid black',
+            borderRight: '1px solid black',
+            minWidth: '100%',
+            flexGrow: 1,
         },
         event: {
             backgroundColor: '#f0f0f0',
         },
         date: {
-            height: '40px',
-            lineHeight: '40px', 
+            height: '60px',
+            lineHeight: '60px',
         },
     };
 
-    
-    const hours = Array.from({ length: 24 }, (_, i) => i);
-    let lastDisplayedEvent = null;
+    // Generate time slots for every minute of the day
+    const timeSlots = Array.from({ length: 24 * 60 }, (_, i) => {
+        const hour = Math.floor(i / 60);
+        const minutes = i % 60;
+        return { hour, minutes };
+    });
+    let occupiedSlots = {};
 
     return (
         <div style={styles.day}>
-            <div style={styles.date}>{date.toLocaleDateString('bg-BG', { timeZone: 'Europe/Sofia' })}</div>
+            {showDate && <div style={styles.date}>{date.toLocaleDateString('bg-BG', { timeZone: 'Europe/Sofia' })}</div>}
             <ul style={styles.ul}>
-                {hours.map(hour => {
-                    const eventOnThisHour = events.find(event => {
+                {timeSlots.map((slot, index) => {
+                    if (occupiedSlots[index]) {
+                        return null;
+                    }
+
+                    const eventOnThisSlot = events.find(event => {
                         const eventStartDate = new Date(event.startDateTime);
                         const eventEndDate = new Date(event.endDateTime);
-                        const eventStartHour = eventStartDate.getHours();
-                        const eventEndHour = eventEndDate.getHours();
-                        return hour >= eventStartHour && hour < eventEndHour && eventStartDate.getDate() === date.getDate() && eventStartDate.getMonth() === date.getMonth() && eventStartDate.getFullYear() === date.getFullYear();
+                        const slotDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), slot.hour, slot.minutes);
+                        return slotDate >= eventStartDate && slotDate < eventEndDate;
                     });
-                    const displayEvent = eventOnThisHour;
-                    const displayEventName = displayEvent && eventOnThisHour !== lastDisplayedEvent;
-                    lastDisplayedEvent = displayEvent ? eventOnThisHour : lastDisplayedEvent;
+
+                    if (eventOnThisSlot) {
+                        const eventStartDate = new Date(eventOnThisSlot.startDateTime);
+                        const eventEndDate = new Date(eventOnThisSlot.endDateTime);
+                        const durationInMinutes = (eventEndDate - eventStartDate) / (1000 * 60);
+                        const slotSpan = Math.ceil(durationInMinutes); // Adjusted for 1-minute precision
+
+                        for (let i = 1; i < slotSpan; i++) {
+                            occupiedSlots[index + i] = true;
+                        }
+
+                        return (
+                            <li key={index} style={{...styles.li, ...styles.event, height: `${slotSpan}px`, lineHeight: `${slotSpan}px`}}>
+                                <Link to={`/events/${eventOnThisSlot.id}`} style={styles.link}>
+                                    {eventOnThisSlot.name}
+                                </Link>
+                            </li>
+                        );
+                    }
+
+                        const additionalStyle = index % 60 === 0 ? { borderTop: '1px solid black' } : {};
+
                     return (
-                        <li key={hour} style={displayEvent ? {...styles.li, ...styles.event} : styles.li}>
-                            {displayEvent ? 
-                                <Link to={`/events/${eventOnThisHour.id}`} style={styles.link}>
-                                    {displayEventName ? eventOnThisHour.name : ''}
-                                </Link> : <> </>
-}
-                        </li>
+                        <li key={index} style={{...styles.li, ...additionalStyle}}></li>
                     );
                 })}
             </ul>
