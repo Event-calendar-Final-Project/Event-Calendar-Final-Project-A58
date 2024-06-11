@@ -58,7 +58,7 @@ export default function Participants({ event }) {
         </ul>
       )}
       {((event.author !== userData.handle) && !participants.includes(userData.handle)) && (
-        <button className="btn btn-primary" onClick={joinEvent}>
+        <button className="btn min-w-auto w-32 h-10 bg-green-300 p-2 rounded-b-xl hover:bg-green-500 text-white font-semibold transition-transform hover:translate-y-2 ease-in-out" onClick={joinEvent}>
           Join Event
         </button>
       )}
