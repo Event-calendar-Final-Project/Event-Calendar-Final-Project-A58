@@ -29,7 +29,7 @@ export default function UserData({ user: userProp }) {
   }
 
   const handleEditClick = () => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
   };
 
   const refreshUserData = async () => {
@@ -39,9 +39,9 @@ export default function UserData({ user: userProp }) {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="card lg:card-side bg-base-100 shadow-xl w-full max-w-3xl p-8">
-        <figure className="mb-4">
+    <div className="relative flex items-center justify-left h-screen ml-80 mr-80">
+      <div className="flex flex-col lg:card-side bg-base-100 shadow-xl w-full max-w-3xl p-8">
+        <figure className="mb-4 lg:mb-0 lg:mr-8">
           {user.photo && <img src={user.photo} alt={`${user.handle}'s profile`} className="w-full h-auto rounded-lg" />}
         </figure>
         <div className="card-body">
@@ -56,7 +56,11 @@ export default function UserData({ user: userProp }) {
               <button onClick={handleEditClick} className="btn btn-primary">Edit</button>
             </div>
           )}
-          {isEditing && <EditProfile user={user} onProfileUpdate={refreshUserData} />}
+        {isEditing && (
+          <div className="absolute top-0 right-0 lg:top-0 lg:right-80 lg:ml-0">
+            <EditProfile user={user} onProfileUpdate={refreshUserData} />
+          </div>
+        )}
         </div>
       </div>
     </div>

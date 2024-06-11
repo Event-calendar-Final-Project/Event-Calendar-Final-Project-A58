@@ -192,27 +192,29 @@ export default function AddEventSeries() {
                         className="input input-bordered w-3/4"
                     />
                 </div>
-                <div className="flex items-center space-x-4">
-                    <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>
-                    <input
-                        type="time"
-                        value={event.startHour}
-                        onChange={(e) => updateEvent(e.target.value, 'startHour')}
-                        name="input-start-hour"
-                        id="input-start-hour"
-                        className="input input-bordered w-3/4"
-                    />
-                </div>
-                <div className="flex items-center space-x-4">
-                    <label htmlFor="input-end-hour" className="block text-sm font-medium text-gray-700 w-1/4">End Hour:</label>
-                    <input
-                        type="time"
-                        value={event.endHour}
-                        onChange={(e) => updateEvent(e.target.value, 'endHour')}
-                        name="input-end-hour"
-                        id="input-end-hour"
-                        className="input input-bordered w-3/4"
-                    />
+                <div className="flex items-center space-x-8">
+                        <div className="ml-48 flex w-1/4">
+                            <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>
+                            <input
+                                type="time"
+                                value={event.startHour}
+                                onChange={(e) => updateEvent(e.target.value, 'startHour')}
+                                name="input-start-hour"
+                                id="input-start-hour"
+                                className="input input-bordered w-3/4"
+                            />
+                        </div>
+                        <div className="flex w-1/4">
+                            <label htmlFor="input-end-hour" className="block text-sm font-medium text-gray-700 w-1/4">End Hour:</label>
+                            <input
+                                type="time"
+                                value={event.endHour}
+                                onChange={(e) => updateEvent(e.target.value, 'endHour')}
+                                name="input-end-hour"
+                                id="input-end-hour"
+                                className="input input-bordered w-3/4"
+                            />
+                        </div>
                 </div>
                 <div className="flex items-center space-x-4">
                     <label htmlFor="input-type" className="block text-sm font-medium text-gray-700 w-1/4">Event Type:</label>

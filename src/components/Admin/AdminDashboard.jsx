@@ -93,18 +93,20 @@ const AdminDashboard = () => {
     return (
         <div className="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">
             <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+            <div className='flex'>
             <label className="input input-bordered flex items-center gap-2">
                 <input type="text" placeholder="Search users or events..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="grow" />
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
             </label>
             <br></br>
-            <div className="flex space-x-4 mb-4">
+            <div className="flex space-x-1 ml-4 mb-4 mt-1">
                 <button onClick={fetchUsers} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-blue-500">Search Users</button>
                 <button onClick={fetchEvents} className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-blue-500">Search Events</button>
             </div>
-            <div className="flex space-x-4 mb-4">
-                <button onClick={() => setShowUsers(true)} className={`px-4 py-2 rounded-md ${showUsers ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>Show Users</button>
-                <button onClick={() => setShowUsers(false)} className={`px-4 py-2 rounded-md ${!showUsers ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>Show Events</button>
+            </div>
+            <div className="flex space-x-0 mb-4 mt-8">
+                <button onClick={() => setShowUsers(true)} className={`px-4 py-2 rounded-md ${showUsers ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>{"\u{1F64B}\u200D\u2642\uFE0F"}</button>
+                <button onClick={() => setShowUsers(false)} className={`px-4 py-2 rounded-md ${!showUsers ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>{"\u{1F389}"}</button>
             </div>
 
             {showUsers ? (
