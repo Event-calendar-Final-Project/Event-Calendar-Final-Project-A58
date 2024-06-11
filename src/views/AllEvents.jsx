@@ -46,9 +46,9 @@ export default function AllEvents() {
     const currentEvents = events.slice(indexOfFirstEvent, indexOfLastEvent);
 
     return (
-        <div className="p-4">
+        <div className="p-4 flex flex-col items-center min-h-screen">
             <h1 className="text-3xl font-bold mb-4 text-center">All Events</h1>
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between mb-4 w-full max-w-[48rem]">
                 {userData && (
                     <select
                         value={filter}
@@ -68,10 +68,10 @@ export default function AllEvents() {
                     className="w-64 px-4 py-2 border rounded-md"
                 />
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
+    
+            <div className="flex flex-col items-center space-y-4 w-full">
                 {currentEvents.map((event) => (
-                    <div key={event.id} className="bg-white shadow-lg rounded-lg p-4 hover:shadow-xl transition duration-300">
+                    <div key={event.id} className="w-full max-w-[48rem]">
                         <Event key={event.id} event={event} />
                     </div>
                 ))}

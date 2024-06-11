@@ -59,24 +59,22 @@ export default function SingleEvent() {
     }
 
     return (
-        
-       /*  <div className="flex justify-center items-center h-screen"> */
-        <div className="max-w-4xl p-4 mt-6 bg-white shadow-lg rounded-lg">
-            <h1 className="text-2xl font-bold mb-4 text-center">Event Details</h1>
-            {event ? (
-                <Event
-                    event={event}
-                    deleteEvent={deleteEvent}
-                    editEvent={(updatedEvent) => editEvent(id, updatedEvent)}
-                    fetchEvent={fetchEvent}
-                    isSingleView={true}
-                />
-            ) : (
-                <b className="text-2xl text-center">Event deleted successfully.</b>
-            )}
+        <div className="flex justify-center items-center min-h-screen ">
+            <div className="max-w-4xl p-4 mt-6 bg-white shadow-lg rounded-lg">
+                <h1 className="text-2xl font-bold mb-4 text-center">Event Details</h1>
+                {event ? (
+                    <Event
+                        event={event}
+                        deleteEvent={deleteEvent}
+                        editEvent={(updatedEvent) => editEvent(id, updatedEvent)}
+                        fetchEvent={fetchEvent}
+                        isSingleView={true}
+                    />
+                ) : (
+                    <b className="text-2xl text-center">Event deleted successfully.</b>
+                )}
+            </div>
         </div>
-
- 
     );
 }
 
