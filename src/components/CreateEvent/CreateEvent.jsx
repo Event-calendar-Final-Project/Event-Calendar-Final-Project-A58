@@ -95,19 +95,19 @@ export default function CreateEvent() {
                 <h1 className="text-2xl font-bold mb-4 text-center">Create Event</h1>
                 <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
                     <div className="flex items-center space-x-4">
-                        <label htmlFor="input-name" className="block text-sm font-medium text-gray-700 w-1/4">Event Name:</label>
+                        <label htmlFor="input-name" className="block text-sm font-medium text-gray-700 w-1/6">Event Name:</label>
                         <input
                             type="text"
                             value={event.name}
                             onChange={(e) => updateEvent(e.target.value, 'name')}
                             name="input-name"
                             id="input-name"
-                            className="input input-bordered w-3/4"
+                            className="input input-bordered w-3/5"
                             placeholder="Enter event name here..."
                         />
                     </div>
                     <div className="flex items-center space-x-4">
-                        <label htmlFor="input-description" className="block text-sm font-medium text-gray-700 w-1/4">Description:</label>
+                        <label htmlFor="input-description" className="block text-sm font-medium text-gray-700 w-1/6">Description:</label>
                         <textarea
                             value={event.description}
                             onChange={(e) => updateEvent(e.target.value, 'description')}
@@ -115,23 +115,23 @@ export default function CreateEvent() {
                             id="input-description"
                             cols="30"
                             rows="2"
-                            className="textarea textarea-bordered w-3/4 h-96"
+                            className="textarea textarea-bordered w-3/5 h-96"
                             placeholder="Enter description here..."
                         />
                     </div>
                     <div className="flex items-center space-x-4">
-                        <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/4">Date:</label>
+                        <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/6">Date:</label>
                         <input
                             type="date"
                             value={event.date}
                             onChange={(e) => updateEvent(e.target.value, 'date')}
                             name="input-date"
                             id="input-date"
-                            className="input input-bordered w-3/4"
+                            className="input input-bordered w-3/5"
                         />
                     </div>
                     <div className="flex items-center space-x-8">
-                        <div className="ml-48 flex w-1/4">
+                        <div className="ml-32 flex w-1/4">
                             <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>
                             <input
                                 type="time"
@@ -155,13 +155,13 @@ export default function CreateEvent() {
                         </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <label htmlFor="input-type" className="block text-sm font-medium text-gray-700 w-1/4">Event Type:</label>
+                        <label htmlFor="input-type" className="block text-sm font-medium text-gray-700 w-1/6">Event Type:</label>
                         <select
                             value={event.type}
                             onChange={(e) => updateEvent(e.target.value, 'type')}
                             name="input-type"
                             id="input-type"
-                            className="select select-bordered w-3/4"
+                            className="select select-bordered w-3/5"
                         >
                             <option value="public">Public</option>
                             <option value="private">Private</option>
@@ -169,30 +169,30 @@ export default function CreateEvent() {
                         </select>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <label htmlFor="input-location" className="block text-sm font-medium text-gray-700 w-1/4">Location:</label>
+                        <label htmlFor="input-location" className="block text-sm font-medium text-gray-700 w-1/6">Location:</label>
                         <input
                             type="text"
                             value={event.location}
                             onChange={(e) => updateEvent(e.target.value, 'location')}
                             name="input-location"
                             id="input-location"
-                            className="input input-bordered w-3/4"
+                            className="input input-bordered w-3/5"
                             placeholder="Enter location here..."
                         />
                     </div>
                     <div className="flex items-center space-x-4">
-                        <label htmlFor="input-file" className="block text-sm font-medium text-gray-700 w-1/4">Event Photo:</label>
+                        <label htmlFor="input-file" className="block text-sm font-medium text-gray-700 w-1/6">Event Photo:</label>
                         <input
                             type="file"
                             onChange={(e) => setSelectedFile(e.target.files[0])}
                             name="input-file"
                             id="input-file"
-                            className="input input-bordered w-3/4"
+                            className="input input-bordered w-3/5"
                         />
                     </div>
                     <PhotoPreview photo={selectedFile} />
                     <div className="flex justify-center">
-                        <button onClick={createEvent} className="btn btn-outline btn-info w-full">
+                        <button onClick={createEvent} className="btn btn-outline btn-info w-1/4">
                             Create
                         </button>
                     </div>

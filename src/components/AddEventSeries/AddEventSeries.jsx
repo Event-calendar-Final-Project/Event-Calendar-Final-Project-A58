@@ -103,7 +103,7 @@ export default function AddEventSeries() {
             <h1 className="text-2xl font-bold mb-4 text-center">Create Event Series</h1>
             <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-series-name" className="block text-sm font-medium text-gray-700 w-1/4">Series Name:</label>
+                    <label htmlFor="input-series-name" className="block text-sm font-medium text-gray-700 w-1/6">Series Name:</label>
                     <input
                         type="text"
                         value={series.seriesName}
@@ -115,7 +115,7 @@ export default function AddEventSeries() {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-series-description" className="block text-sm font-medium text-gray-700 w-1/4">Series Description:</label>
+                    <label htmlFor="input-series-description" className="block text-sm font-medium text-gray-700 w-1/6">Series Description:</label>
                     <textarea
                         value={series.seriesDescription}
                         onChange={(e) => updateSeries(e.target.value, 'seriesDescription')}
@@ -128,7 +128,7 @@ export default function AddEventSeries() {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-series-end-date" className="block text-sm font-medium text-gray-700 w-1/4">End Date:</label>
+                    <label htmlFor="input-series-end-date" className="block text-sm font-medium text-gray-700 w-1/6">End Date:</label>
                     <input
                         type="date"
                         value={series.seriesEndDate}
@@ -140,7 +140,7 @@ export default function AddEventSeries() {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-repeat" className="block text-sm font-medium text-gray-700 w-1/4">Repeat:</label>
+                    <label htmlFor="input-repeat" className="block text-sm font-medium text-gray-700 w-1/6">Repeat:</label>
                     <select
                         value={series.repeat}
                         onChange={(e) => updateSeries(e.target.value, 'repeat')}
@@ -157,7 +157,7 @@ export default function AddEventSeries() {
                 <hr />
                 <h2 className="text-xl font-medium text-gray-700 mb-2">Starting Event</h2>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-event-name" className="block text-sm font-medium text-gray-700 w-1/4">Event Name:</label>
+                    <label htmlFor="input-event-name" className="block text-sm font-medium text-gray-700 w-1/6">Event Name:</label>
                     <input
                         type="text"
                         value={event.name}
@@ -169,7 +169,7 @@ export default function AddEventSeries() {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-event-description" className="block text-sm font-medium text-gray-700 w-1/4">Event Description:</label>
+                    <label htmlFor="input-event-description" className="block text-sm font-medium text-gray-700 w-1/6">Event Description:</label>
                     <textarea
                         value={event.description}
                         onChange={(e) => updateEvent(e.target.value, 'description')}
@@ -182,7 +182,7 @@ export default function AddEventSeries() {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/4">Date:</label>
+                    <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/6">Date:</label>
                     <input
                         type="date"
                         value={event.date}
@@ -193,7 +193,7 @@ export default function AddEventSeries() {
                     />
                 </div>
                 <div className="flex items-center space-x-8">
-                        <div className="ml-48 flex w-1/4">
+                        <div className="ml-32 flex w-1/4">
                             <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>
                             <input
                                 type="time"
@@ -217,7 +217,7 @@ export default function AddEventSeries() {
                         </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-type" className="block text-sm font-medium text-gray-700 w-1/4">Event Type:</label>
+                    <label htmlFor="input-type" className="block text-sm font-medium text-gray-700 w-1/6">Event Type:</label>
                     <select
                         value={event.type}
                         onChange={(e) => updateEvent(e.target.value, 'type')}
@@ -231,7 +231,7 @@ export default function AddEventSeries() {
                     </select>
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-location" className="block text-sm font-medium text-gray-700 w-1/4">Location:</label>
+                    <label htmlFor="input-location" className="block text-sm font-medium text-gray-700 w-1/6">Location:</label>
                     <input
                         type="text"
                         value={event.location}
@@ -243,7 +243,7 @@ export default function AddEventSeries() {
                     />
                 </div>
                 <div className="flex items-center space-x-4">
-                    <label htmlFor="input-file" className="block text-sm font-medium text-gray-700 w-1/4">Event Photo:</label>
+                    <label htmlFor="input-file" className="block text-sm font-medium text-gray-700 w-1/6">Event Photo:</label>
                     <input
                         type="file"
                         onChange={(e) => setSelectedFile(e.target.files[0])}
@@ -254,7 +254,7 @@ export default function AddEventSeries() {
                 </div>
                 <PhotoPreview photo={selectedFile} />
                 <div className="flex justify-center">
-                    <button onClick={createEventSeries} className="btn btn-outline btn-info w-full">
+                    <button onClick={createEventSeries} className="btn btn-outline btn-info w-1/4">
                         Create Series
                     </button>
                 </div>
