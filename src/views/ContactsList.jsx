@@ -37,7 +37,7 @@ export default function ContactsList() {
 
   return (
     <div className="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">
-      <div className="bg-white shadow-md rounded-md p-6">
+      <div className="bg-white shadow-md rounded-md p-6" style={{ width: '900px', height: '700px' }}>
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-2xl font-bold">Contacts</h1>
           <div className="relative">

@@ -17,7 +17,7 @@ const AdminDashboard = () => {
 
     const [currentPageUsers, setCurrentPageUsers] = useState(1);
     const [currentPageEvents, setCurrentPageEvents] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 7;
 
     const [showUsers, setShowUsers] = useState(true);
 
@@ -110,9 +110,9 @@ const AdminDashboard = () => {
             </div>
 
             {showUsers ? (
-                <div className="overflow-y-hidden rounded-lg border">
+                <div className="overflow-y-hidden rounded-lg border ">
                     <div className="overflow-x-auto">
-                        <h2 className="text-2xl font-bold mb-2">Users</h2>
+                        <h2 className="text-2xl font-bold mb-2 ml-3">Users</h2>
                         <table className="w-full">
                             <thead>
                                 <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
                                     <th className="px-5 py-3">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-gray-500">
+                            <tbody className="text-gray-500 font-bold">
                                 {currentUsers.map(user => (
                                     <tr key={user.id}>
                                         <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
@@ -162,7 +162,7 @@ const AdminDashboard = () => {
             ) : (
                 <div className="overflow-y-hidden rounded-lg border">
                     <div className="overflow-x-auto">
-                        <h2 className="text-2xl font-bold mb-2">Events</h2>
+                        <h2 className="text-2xl font-bold mb-2 ml-3">Events</h2>
                         <table className="w-full">
                             <thead>
                                 <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
@@ -171,7 +171,7 @@ const AdminDashboard = () => {
                                     <th className="px-5 py-3">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody className="text-gray-500">
+                            <tbody className="text-gray-500 font-bold">
                                 {currentEvents.map(event => (
                                     <tr key={event.id}>
                                         <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
