@@ -97,7 +97,7 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
             return (
                 <li
                     key={`current-${i}`}
-                    style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'red' : 'transparent' }}
+                    style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'white' : 'transparent' }}
                     onClick={() => onDateClick(date)}
                 >
                     {i + 1}
