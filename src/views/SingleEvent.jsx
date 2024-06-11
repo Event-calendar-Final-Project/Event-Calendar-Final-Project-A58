@@ -6,7 +6,7 @@ import Event from "../components/Event/Event";
 
 export default function SingleEvent() {
     const [event, setEvent] = useState(null);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true); 
     const { id } = useParams();
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export default function SingleEvent() {
             } catch (error) {
                 console.error('Error fetching event:', error);
             } finally {
-                setLoading(false); // Set loading to false after fetching
+                setLoading(false); 
             }
         };
 
@@ -47,7 +47,7 @@ export default function SingleEvent() {
             console.log('Updated event:', updatedEvent);
             console.log('Event ID:', eventId);
             await updateEvent(eventId, updatedEvent);
-            fetchEvent(); // Re-fetch event after editing
+            fetchEvent(); 
         } catch (error) {
             console.error('Error updating event:', error);
             throw error;
@@ -55,7 +55,7 @@ export default function SingleEvent() {
     };
 
     if (loading) {
-        return <div>Loading...</div>; // Render loading state
+        return <div>Loading...</div>; 
     }
 
     return (
@@ -78,22 +78,3 @@ export default function SingleEvent() {
     );
 }
 
-
-/* return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        {event ? (
-            <Event
-                event={event}
-                deleteEvent={deleteEvent}
-                editEvent={(updatedEvent) => editEvent(id, updatedEvent)}
-                fetchEvent={fetchEvent}
-                isSingleView={true}
-                style={{ fontSize: '5em', width: '500px', height: '500px' }} // Increase width and height
-            />
-        ) : (
-            <b style={{ fontSize: '2em' }}>Event deleted successfully.</b>
-        )}
-    </div>
-);
-}
- */
