@@ -59,7 +59,7 @@ export const getAllEvents = async (search) => {
                 createdOn: new Date(value.createdOn).toString(),
             }
         })
-        .filter(e => (e.description.toLowerCase().includes(search.toLowerCase())) || (e.name.toLowerCase().includes(search.toLowerCase()))
+        .filter(e => (e.description && e.description.toLowerCase().includes(search.toLowerCase())) || (e.name && e.name.toLowerCase().includes(search.toLowerCase()))
         || (e.author === search) || tagEvents[e.id]);
 };
 
