@@ -1,7 +1,6 @@
 import { ref, push, get, set, update, child, remove } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
-// Add a new event to the database
 export const addEvent = async (author, name, description, startDateTime, endDateTime, location, photo, type) => {
     const event = {
         author,
@@ -19,7 +18,7 @@ export const addEvent = async (author, name, description, startDateTime, endDate
     return result.key;
 };
 
-// Get all events, optionally filtered by search term
+
 export const getAllEvents = async (search) => {
     const eventsSnapshot = await get(ref(db, 'events'));
 
@@ -28,25 +27,6 @@ export const getAllEvents = async (search) => {
     if (eventsSnapshot.exists()) {
         events = eventsSnapshot.val();
     }
-
-    // Fetch event series
-    const eventSeriesSnapshot = await get(ref(db, 'eventSeries'));
-
-    if (eventSeriesSnapshot.exists()) {
-        const eventSeries = eventSeriesSnapshot.val();
-        
-        // Fetch events for each series and merge with existing events
-        for (const seriesId in eventSeries) {
-            const seriesEventsSnapshot = await get(ref(db, `eventSeries/${seriesId}/events`));
-            if (seriesEventsSnapshot.exists()) {
-                console.log(seriesEventsSnapshot.val());
-                const seriesEvents = seriesEventsSnapshot.val();
-                events = { ...events, ...seriesEvents };
-            }
-        }
-    }
-
-    let tagEvents = {};
 
 
     return Object
@@ -60,10 +40,10 @@ export const getAllEvents = async (search) => {
             }
         })
         .filter(e => (e.description.toLowerCase().includes(search.toLowerCase())) || (e.name.toLowerCase().includes(search.toLowerCase()))
-        || (e.author === search) || tagEvents[e.id]);
+        || (e.author === search));
 };
 
-// Get event by ID
+
 export const getEventById = async (id) => {
     const snapshot = await get(ref(db, `events/${id}`));
 
