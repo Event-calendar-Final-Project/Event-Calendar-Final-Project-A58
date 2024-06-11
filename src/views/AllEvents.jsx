@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import Event from "../components/Event/Event";
 import { useSearchParams } from "react-router-dom";
 import { getAllEvents } from "../services/event.service";
-import Pagination from "../components/Pagination/Pagination";
+import PaginationEvents from "../components/PaginationEvents/PaginationEvents";
 import { AppContext } from "../context/AppContext";
 
 export default function AllEvents() {
@@ -76,7 +76,7 @@ export default function AllEvents() {
                     </div>
                 ))}
             </div>
-            <Pagination itemsPerPage={itemsPerPage} totalItems={events.length} paginate={paginateEvents} currentPage={currentPageEvents} />
+            <PaginationEvents itemsPerPage={itemsPerPage} totalItems={events.length} paginate={paginateEvents} currentPage={currentPageEvents} />
         </div>
     );
 }

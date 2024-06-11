@@ -16,7 +16,7 @@ const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
   const topPosition = Math.max(paginationPosition, maxTopPosition);
 
   return (
-    <nav style={{ position: 'fixed', top: `815px` }}>
+    <nav style={{ position: 'fixed', top: `820px` }}>
       <ul className="pagination mt-4 mb-4">
         {pageNumbers.map(number => (
           <li key={number} className={`page-item ${number === currentPage ? 'active' : ''}`}>
