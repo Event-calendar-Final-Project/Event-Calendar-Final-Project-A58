@@ -33,7 +33,7 @@ console.log(events);
             display: 'flex',
             justifyContent: 'flex-start',
             alignItems: 'stretch',
-            marginTop: '5%',
+            marginTop: '1%',
             marginLeft: '2%',
         },
         largeContainer: {
