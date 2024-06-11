@@ -94,7 +94,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   };
 
   return (
-    <div className="relative flex w-full max-w-[48rem] flex-row rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+    <div className="relative flex w-full max-w-[48rem] flex-row rounded-xl bg-gray-200 bg-clip-border text-gray-700 shadow-md">
       <div className="relative m-0 w-2/5 shrink-0 overflow-hidden rounded-xl rounded-r-none bg-white bg-clip-border text-gray-700">
         <img
           src={event.photo || '/backgrounds/forest.jpg'}
@@ -129,7 +129,7 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
             <h6 className="mb-4 block font-sans text-base font-semibold uppercase leading-relaxed tracking-normal text-pink-500 antialiased">
               {event.type}
             </h6>
-            <h4 className="mb-2 block font-sans text-2xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased shadow-lg shadow-gray-400 p-4 font-serif">
+            <h4 className="mb-2 block font-sans text-2xl font-semibold leading-snug rounded-xl tracking-normal text-blue-gray-900 antialiased shadow-lg shadow-gray-400 p-4 font-serif">
   {event.name}
 </h4>
 <p className="mb-8 block font-sans text-xl font-normal leading-relaxed text-gray-700 antialiased font-serif p-4">

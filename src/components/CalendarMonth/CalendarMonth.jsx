@@ -127,8 +127,8 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
     return (
         <div style={{ ...props.style, textAlign: 'center' }}>
             <div className="month-selector" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <button onClick={handlePrevMonth} type="button" className="bg-gray-800 text-white rounded-l-md border-r border-gray-100 py-2 hover:bg-blue-700 hover:text-white px-3">
-                    <div className="flex flex-row align-middle">
+                <button onClick={handlePrevMonth} type="button" className="btn min-w-auto w-32 h-10 bg-red-300 p-2 rounded-xl hover:bg-red-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold">
+                    <div className="flex flex-row align-middle m-2">
                         <svg className="w-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd"></path>
                         </svg>
@@ -138,8 +138,8 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
                 <div className="stat-value" style={{ margin: '0 20px' }}>
                     {new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth))}
                 </div>
-                <button onClick={handleNextMonth} type="button" className="bg-gray-800 text-white rounded-r-md py-2 border-l border-gray-200 hover:bg-blue-700 hover:text-white px-3">
-                    <div className="flex flex-row align-middle">
+                <button onClick={handleNextMonth} type="button" className="btn min-w-auto w-32 h-10 bg-green-300 p-2 rounded-xl hover:bg-green-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold">
+                    <div className="flex flex-row align-middle p-2">
                         <span className="mr-2">Next</span>
                         <svg className="w-5 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd"></path>

@@ -5,7 +5,7 @@ import CalendarWorkWeek from '../components/CalendarWorkWeek/CalendarWorkWeek';
 import SingleDay from '../components/SingleDay/SingleDay';
 import { AppContext } from '../context/AppContext';
 import { getAllEvents } from '../services/event.service';
-import CreateMap from '../components/Map/Map';
+
 
 export default function MyCalendar() {
     const [view, setView] = useState('month');
@@ -101,17 +101,16 @@ console.log(events);
             <CalendarMonth style={styles.small} shortWeekdays={true} events={events} />
             <div style={styles.largeContainer}>
                 <div style={styles.buttonContainer}>
-                    <button  className="btn btn-info" onClick={() => setView('month')}>Month</button>
-                    <button  className="btn btn-info" onClick={() => setView('week')}>Week</button>
-                    <button  className="btn btn-info" onClick={() => setView('workweek')}>Work Week</button>
-                    <button  className="btn btn-info" onClick={() => {
+                    <button  className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold" onClick={() => setView('month')}>Month</button>
+                    <button  className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold" onClick={() => setView('week')}>Week</button>
+                    <button  className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold" onClick={() => setView('workweek')}>Work Week</button>
+                    <button  className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold" onClick={() => {
                         setView('day');
                         setSelectedDate(new Date());
                     }}>Day</button>
                 </div>
                 {renderView()}
             </div>
-            <CreateMap/>
         </div>
               
     );
