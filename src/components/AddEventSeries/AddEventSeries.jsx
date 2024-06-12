@@ -4,6 +4,7 @@ import { AppContext } from "../../context/AppContext";
 import { addEventPhoto } from "../../services/upload.service";
 import PhotoPreview from "../PhotoPreview/PhotoPreview";
 import { TimeFormats } from "../../Data/data-enums";
+import { SERIES_NAME_MIN_LENGTH, SERIES_NAME_MAX_LENGTH, EVENT_NAME_MIN_LENGTH, EVENT_NAME_MAX_LENGTH, EVENT_DESCRIPTION_MIN_LENGTH, EVENT_DESCRIPTION_MAX_LENGTH} from "../../Data/CONSTANTS";
 
 
 export default function AddEventSeries() {
@@ -49,17 +50,21 @@ export default function AddEventSeries() {
         const endDateTimeLocal = new Date(endDateTime.toLocaleString());
         const seriesEndDate = new Date(series.seriesEndDate);
 
-        if (series.seriesName.length < 5 || series.seriesName.length > 64) {
-            return alert('Series name must be between 5 and 64 characters long');
-        }
-    
-        if (events.name.length < 16 || events.name.length > 64) {
-            return alert('Event name must be between 16 and 64 characters long');
-        }
-    
-        if (events.description.length < 5) {
-            return alert('Event description must be at least 5 characters long');
-        }
+        if (series.seriesName.length < SERIES_NAME_MIN_LENGTH || series.seriesName.length > SERIES_NAME_MAX_LENGTH) {
+            return alert(`Series name must be between ${SERIES_NAME_MIN_LENGTH} and ${SERIES_NAME_MAX_LENGTH} characters long`);
+          }
+          
+          if (events.name.length < EVENT_NAME_MIN_LENGTH || events.name.length > EVENT_NAME_MAX_LENGTH) {
+            return alert(`Event name must be between ${EVENT_NAME_MIN_LENGTH} and ${EVENT_NAME_MAX_LENGTH} characters long`);
+          }
+          
+          if (events.description.length < EVENT_DESCRIPTION_MIN_LENGTH) {
+            return alert(`Event description must be at least ${EVENT_DESCRIPTION_MIN_LENGTH} characters long`);
+          }
+
+          if (events.description.length > EVENT_DESCRIPTION_MAX_LENGTH) {
+            return alert(`Event description must be at least ${EVENT_DESCRIPTION_MAX_LENGTH} characters long`);
+          }
     
         if (!events.location) {
             return alert('Please provide a location for the events');

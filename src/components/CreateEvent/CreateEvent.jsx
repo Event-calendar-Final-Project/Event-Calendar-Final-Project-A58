@@ -5,6 +5,7 @@ import { updateUserEvents } from "../../services/users.service";
 import AddEventSeries from "../AddEventSeries/AddEventSeries";
 import { addEventPhoto } from "../../services/upload.service";
 import PhotoPreview from "../PhotoPreview/PhotoPreview";
+import { EVENT_NAME_MIN_LENGTH, EVENT_NAME_MAX_LENGTH, EVENT_DESCRIPTION_MIN_LENGTH, EVENT_DESCRIPTION_MAX_LENGTH } from "../../Data/CONSTANTS";
 
 export default function CreateEvent() {
   const [event, setEvent] = useState({
@@ -46,12 +47,12 @@ export default function CreateEvent() {
       const startDateTimeLocal = new Date(startDateTime.toLocaleString());
       const endDateTimeLocal = new Date(endDateTime.toLocaleString());
 
-      if (event.name.length < 3 || event.name.length > 30) {
-        return alert("Event name must be between 3 and 30 characters long");
+      if (event.name.length < EVENT_NAME_MIN_LENGTH || event.name.length > EVENT_NAME_MAX_LENGTH) {
+        return alert(`Event name must be between ${EVENT_NAME_MIN_LENGTH} and ${EVENT_NAME_MAX_LENGTH} characters long`);
       }
-
-      if (event.description.length < 5 || event.description.length > 500) {
-        return alert("Description must be at least 5 characters long and less than 500 characters long");
+      
+      if (event.description.length < EVENT_DESCRIPTION_MIN_LENGTH || event.description.length > EVENT_DESCRIPTION_MAX_LENGTH) {
+        return alert(`Description must be at least ${EVENT_DESCRIPTION_MIN_LENGTH} characters long and less than ${EVENT_DESCRIPTION_MAX_LENGTH} characters long`);
       }
 
       if (!event.startDate || !event.endDate) {
@@ -72,10 +73,14 @@ export default function CreateEvent() {
         return;
       }
       
-      
-      if (startDateTime >= endDateTime) {
+      if (startDateTime.toDateString() === endDateTime.toDateString()) {
+        if (startDateTime.getTime() >= endDateTime.getTime()) {
+          alert("For events on the same day, the start time must be before the end time.");
+          return;
+        }
+      } else if (startDateTime > endDateTime) {
         alert("Event start date and time must be before the end date and time.");
-        return; 
+        return;
       }
 
       let photoURL = "";
