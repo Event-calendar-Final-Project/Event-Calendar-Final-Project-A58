@@ -1,19 +1,8 @@
 import { useState } from 'react';
 import WeekDay from '../WeekDay/WeekDay';
-import SingleDay from '../SingleDay/SingleDay';
 import HoursColumn from '../HoursColumn/HoursColumn';
 
 export default function CalendarWeek({ onDateClick, events }) {
-    const [currentDate, setCurrentDate] = useState(new Date());
-    const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() + 1);
-    const endOfWeek = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() + 6);
-
-    let displayDate;
-    if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
-        displayDate = `${startOfWeek.getDate()}-${endOfWeek.getDate()} ${startOfWeek.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
-    } else {
-        displayDate = `${startOfWeek.getDate()} ${startOfWeek.toLocaleString('en-US', { month: 'long' })}-${endOfWeek.getDate()} ${endOfWeek.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
-    }
 
     const styles = {
         ul: {
@@ -41,7 +30,7 @@ export default function CalendarWeek({ onDateClick, events }) {
             marginBottom: '20px',
         },
         button: {
-            backgroundColor: '#2d3748', // Tailwind bg-gray-800
+            backgroundColor: '#2d3748',
             color: 'white',
             padding: '10px',
             border: 'none',
@@ -51,12 +40,12 @@ export default function CalendarWeek({ onDateClick, events }) {
         buttonPrev: {
             borderTopLeftRadius: '4px',
             borderBottomLeftRadius: '4px',
-            borderRight: '1px solid #d1d5db', // Tailwind border-gray-100
+            borderRight: '1px solid #d1d5db',
         },
         buttonNext: {
             borderTopRightRadius: '4px',
             borderBottomRightRadius: '4px',
-            borderLeft: '1px solid #e5e7eb', // Tailwind border-gray-200
+            borderLeft: '1px solid #e5e7eb', 
         },
         span: {
             textAlign: 'center',
@@ -67,6 +56,19 @@ export default function CalendarWeek({ onDateClick, events }) {
             marginTop: '40px',
         },
     };
+
+    const [currentDate, setCurrentDate] = useState(new Date());
+    const startOfWeek = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay() + 1);
+    const endOfWeek = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() + 6);
+
+    let displayDate;
+    if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
+        displayDate = `${startOfWeek.getDate()}-${endOfWeek.getDate()} ${startOfWeek.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
+    } else {
+        displayDate = `${startOfWeek.getDate()} ${startOfWeek.toLocaleString('en-US', { month: 'long' })}-${endOfWeek.getDate()} ${endOfWeek.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`;
+    }
+
+    
 
     function calendarBuilder() {
         const datesOfCurrentWeek = Array.from({ length: 7 }, (_, i) => {

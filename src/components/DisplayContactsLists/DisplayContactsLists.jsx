@@ -12,17 +12,7 @@ export default function DisplayContactsLists({ contactLists }) {
     }
   };
 
-  const listStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '10px',
-  };
 
-  const nameStyle = {
-    border: '1px solid black',
-    padding: '10px',
-    cursor: 'pointer',
-  };
 
   return (
     <div className="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">

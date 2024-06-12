@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { getAllEvents } from '../../services/event.service';
 import { AppContext } from '../../context/AppContext';
+import { Link } from 'react-router-dom';
 
 export default function Reminder() {
   const [events, setEvents] = useState([]);
@@ -91,6 +92,7 @@ export default function Reminder() {
               {events.map((event, index) => (
                 <div key={event.id} className="card shadow-md bg-white text-black">
                   <div className="card-body">
+                  <Link to={`/events/${event.id}`} className="hover:underline">{event.name}</Link>
                     <h3 className="text-center text-2xl font-semibold mb-2">{event.name}</h3>
                     <p className="text-center text-lg mb-4">{new Date(event.startDateTime).toLocaleDateString('default', { day: '2-digit', month: '2-digit' }).replace(/\//g, '.')}</p>
                     <div className="grid grid-flow-col gap-5 text-center auto-cols-max">

@@ -26,7 +26,7 @@ export default function CalendarWorkWeek({ onDateClick, events }) {
             marginBottom: '20px',
         },
         button: {
-            backgroundColor: '#2d3748', // Tailwind bg-gray-800
+            backgroundColor: '#2d3748', 
             color: 'white',
             padding: '10px',
             border: 'none',
@@ -36,12 +36,12 @@ export default function CalendarWorkWeek({ onDateClick, events }) {
         buttonPrev: {
             borderTopLeftRadius: '4px',
             borderBottomLeftRadius: '4px',
-            borderRight: '1px solid #d1d5db', // Tailwind border-gray-100
+            borderRight: '1px solid #d1d5db', 
         },
         buttonNext: {
             borderTopRightRadius: '4px',
             borderBottomRightRadius: '4px',
-            borderLeft: '1px solid #e5e7eb', // Tailwind border-gray-200
+            borderLeft: '1px solid #e5e7eb', 
         },
         span: {
             textAlign: 'center',

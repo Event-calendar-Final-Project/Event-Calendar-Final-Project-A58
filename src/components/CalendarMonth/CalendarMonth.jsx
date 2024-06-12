@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 
 export default function CalendarMonth({ onDateClick, events, ...props }) {
+
     const weekDaysStyle = {
         display: 'grid',
         gridTemplateColumns: 'repeat(7, 1fr)',
@@ -18,20 +19,6 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
         listStyleType: 'none',
         ...(props.shortWeekdays ? {} : { height: '100%' }),
     };
-
-    const dateStyle = {
-        width: '100%',
-        cursor: props.shortWeekdays ? 'default' : 'pointer',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: '8px',
-        backgroundColor: 'white',
-        color: 'grey',
-        fontSize: '24px',
-        padding: '8px', 
-    };
-
     const currentDate = new Date();
     const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
     const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());

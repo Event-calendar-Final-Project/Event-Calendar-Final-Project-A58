@@ -32,7 +32,6 @@ const handleInviteClick = async () => {
   }
   console.log("Selected list name:", selectedListName);
   console.log("Contact list:", contactLists[selectedListName]);
-  const invitedList = contactLists[selectedListName].map(contact => inviteUser(initialEvent.id, contact));
   setFeedbackMessage("Assuming contact list invited successfully!");
   setSelectedListName("");
   setInputKey(prevKey => prevKey + 1);
