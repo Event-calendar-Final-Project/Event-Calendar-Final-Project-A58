@@ -77,11 +77,11 @@ const AdminDashboard = () => {
         fetchUsers();
     };
 
-    // Pagination functions
+    
     const paginateUsers = (pageNumber) => setCurrentPageUsers(pageNumber);
     const paginateEvents = (pageNumber) => setCurrentPageEvents(pageNumber);
 
-    // Get current users and events
+    
     const indexOfLastUser = currentPageUsers * itemsPerPage;
     const indexOfFirstUser = indexOfLastUser - itemsPerPage;
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);

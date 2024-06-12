@@ -8,8 +8,8 @@ export default function WeekDay({ date, events, showDate = true }) {
             alignItems: 'center',
             margin: '0',
             padding: '0',
-            width: '100%', // Ensure the parent container has a defined width
-            height: '100%', // Ensure the parent container has a defined height
+            width: '100%', 
+            height: '100%', 
         },
         link: {
             color: 'inherit',
@@ -51,7 +51,7 @@ export default function WeekDay({ date, events, showDate = true }) {
         },
     };
 
-    // Generate time slots for every minute of the day
+    
     const timeSlots = Array.from({ length: 24 * 60 }, (_, i) => {
         const hour = Math.floor(i / 60);
         const minutes = i % 60;
