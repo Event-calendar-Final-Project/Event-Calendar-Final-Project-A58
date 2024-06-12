@@ -283,7 +283,7 @@ eventsArr.map(async (events) => {
                                 onChange={(e) => updateEvent(e.target.value, 'startHour')}
                                 name="input-start-hour"
                                 id="input-start-hour"
-                                className="input input-bordered w-3/5"
+                                className="input input-bordered w-3/4"
                             />
                         </div>
                         <div className="flex w-1/4">
@@ -294,7 +294,7 @@ eventsArr.map(async (events) => {
                                 onChange={(e) => updateEvent(e.target.value, 'endHour')}
                                 name="input-end-hour"
                                 id="input-end-hour"
-                                className="input input-bordered w-3/5"
+                                className="input input-bordered w-3/4"
                             />
                         </div>
                 </div>
