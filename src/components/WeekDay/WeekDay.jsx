@@ -32,7 +32,7 @@ export default function WeekDay({ date, events, showDate = true }) {
         },
         li: {
             boxSizing: 'border-box',
-            height: '1px',
+                    height: '1px',
             lineHeight: '1px',
             textAlign: 'center',
             width: '100%',
@@ -43,7 +43,7 @@ export default function WeekDay({ date, events, showDate = true }) {
             flexGrow: 1,
         },
         event: {
-            backgroundColor: '#f0f0f0',
+            backgroundColor: '#bde0fe',
         },
         date: {
             height: '60px',
@@ -51,8 +51,7 @@ export default function WeekDay({ date, events, showDate = true }) {
         },
     };
 
-    // Generate time slots for every minute of the day
-    const timeSlots = Array.from({ length: 24 * 60 }, (_, i) => {
+       const timeSlots = Array.from({ length: 24 * 60 }, (_, i) => {
         const hour = Math.floor(i / 60);
         const minutes = i % 60;
         return { hour, minutes };
@@ -79,7 +78,7 @@ export default function WeekDay({ date, events, showDate = true }) {
                         const eventStartDate = new Date(eventOnThisSlot.startDateTime);
                         const eventEndDate = new Date(eventOnThisSlot.endDateTime);
                         const durationInMinutes = (eventEndDate - eventStartDate) / (1000 * 60);
-                        const slotSpan = Math.ceil(durationInMinutes); // Adjusted for 1-minute precision
+                        const slotSpan = Math.ceil(durationInMinutes);
 
                         for (let i = 1; i < slotSpan; i++) {
                             occupiedSlots[index + i] = true;

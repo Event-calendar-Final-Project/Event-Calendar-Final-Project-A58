@@ -91,16 +91,34 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
             );
         }).reverse();
 
+        const EventIcon = () => (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-4 h-4 text-blue-600"
+            >
+                <path d="M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 7h14v2H5V7zm0 12V11h14v8H5z"/>
+            </svg>
+        );
+        
         const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => {
             const date = new Date(currentYear, currentMonth, i + 1);
             const hasEventOnDate = hasEvent(date);
             return (
                 <li
                     key={`current-${i}`}
-                    style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'white' : 'transparent' }}
+                    className={`relative flex flex-col items-center justify-center p-2 border rounded-md shadow-sm cursor-pointer transition duration-300 ease-in-out ${
+                        hasEventOnDate ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'
+                    } hover:shadow-md hover:border-blue-300`}
                     onClick={() => onDateClick(date)}
                 >
-                    {i + 1}
+                    <span className="text-lg font-semibold">{i + 1}</span>
+                    {hasEventOnDate && (
+                        <div className="absolute top-1 right-1">
+                            <EventIcon />
+                        </div>
+                    )}
                 </li>
             );
         });
