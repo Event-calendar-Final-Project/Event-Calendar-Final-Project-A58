@@ -21,6 +21,7 @@ export default function CreateEvent() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [isCreatingEventSeries, setIsCreatingEventSeries] = useState(false);
+  const currentDate = new Date()
 
   const updateEvent = (value, key) => {
     if (key === "type") {
@@ -39,6 +40,12 @@ export default function CreateEvent() {
 
   const createEvent = async () => {
     try {
+
+      const startDateTime = new Date(`${event.startDate}T${event.startHour}`);
+      const endDateTime = new Date(`${event.endDate}T${event.endHour}`);
+      const startDateTimeLocal = new Date(startDateTime.toLocaleString());
+      const endDateTimeLocal = new Date(endDateTime.toLocaleString());
+
       if (event.name.length < 3 || event.name.length > 30) {
         return alert("Event name must be between 3 and 30 characters long");
       }
@@ -54,17 +61,29 @@ export default function CreateEvent() {
       if (!event.location) {
         return alert("Please provide a location for the event");
       }
-      console.log(userData);
+      
+      if (startDateTime < currentDate) {
+        alert("Event start date and time cannot be in the past.");
+        return; 
+      }
+      
+      if (endDateTime < currentDate) {
+        alert("Event end date and time cannot be in the past.");
+        return;
+      }
+      
+      
+      if (startDateTime >= endDateTime) {
+        alert("Event start date and time must be before the end date and time.");
+        return; 
+      }
 
       let photoURL = "";
       if (selectedFile) {
         photoURL = await addEventPhoto(selectedFile, event.name);
       }
 
-      const startDateTime = new Date(`${event.startDate}T${event.startHour}`);
-      const endDateTime = new Date(`${event.endDate}T${event.endHour}`);
-      const startDateTimeLocal = new Date(startDateTime.toLocaleString());
-      const endDateTimeLocal = new Date(endDateTime.toLocaleString());
+
 
       const eventId = await addEvent(
         userData.handle,

@@ -25,6 +25,7 @@ export default function AddEventSeries() {
     const { userData } = useContext(AppContext);
     const [selectedFile, setSelectedFile] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
+    const currentDate = new Date();
 
     const updateSeries = (value, key) => {
         setSeries({
@@ -41,6 +42,13 @@ export default function AddEventSeries() {
     };    
 
     const createEventSeries = async () => {
+
+        const startDateTime = new Date(`${events.startDate}T${events.startHour}`);
+        const endDateTime = new Date(`${events.endDate}T${events.endHour}`);
+        const startDateTimeLocal = new Date(startDateTime.toLocaleString());
+        const endDateTimeLocal = new Date(endDateTime.toLocaleString());
+        const seriesEndDate = new Date(series.seriesEndDate);
+
         if (series.seriesName.length < 5 || series.seriesName.length > 64) {
             return alert('Series name must be between 5 and 64 characters long');
         }
@@ -56,6 +64,22 @@ export default function AddEventSeries() {
         if (!events.location) {
             return alert('Please provide a location for the events');
         }
+
+        if (startDateTime < currentDate) {
+            alert("Event start date and time cannot be in the past.");
+            return; 
+          }
+          
+          if (endDateTime < currentDate) {
+            alert("Event end date and time cannot be in the past.");
+            return;
+          }
+          
+          
+          if (startDateTime >= endDateTime) {
+            alert("Event start date and time must be before the end date and time.");
+            return; 
+          }
     
         let photoURL = '';
         if (selectedFile) {
@@ -66,12 +90,6 @@ export default function AddEventSeries() {
             }
             
         }
-
-const startDateTime = new Date(`${events.startDate}T${events.startHour}`);
-const endDateTime = new Date(`${events.endDate}T${events.endHour}`);
-const startDateTimeLocal = new Date(startDateTime.toLocaleString());
-const endDateTimeLocal = new Date(endDateTime.toLocaleString());
-const seriesEndDate = new Date(series.seriesEndDate);
 
 const seriesId = await addEventSeries(userData.handle, series.seriesName, series.seriesDescription, series.seriesEndDate, series.repeat);
 
