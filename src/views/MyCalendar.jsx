@@ -5,28 +5,10 @@ import CalendarWorkWeek from '../components/CalendarWorkWeek/CalendarWorkWeek';
 import SingleDay from '../components/SingleDay/SingleDay';
 import { AppContext } from '../context/AppContext';
 import { getAllEvents } from '../services/event.service';
+import { CalendarViewTypes, CalendarEventTypes } from '../Data/data-enums';
 
 
 export default function MyCalendar() {
-    const [view, setView] = useState('month');
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [events, setEvents] = useState([]);
-    const { userData } = useContext(AppContext)
-
-useEffect(() => {
-  getAllEvents('').then((allEvents) => {
-    console.log(allEvents);
-    let filteredEvents = allEvents.filter(event => {
-      return event.type === 'private' && 
-        (event.author === userData.handle || Object.keys(event.invitedUsers ?? {}).includes(userData.handle))
-    });
-    setEvents(filteredEvents);
-  });
-}, [userData]);
-console.log(events);
-    
-
-
 
     const styles = {
         gridContainer: {
@@ -56,31 +38,47 @@ console.log(events);
         },
     };
 
+    const [view, setView] = useState(CalendarViewTypes.MONTH);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [events, setEvents] = useState([]);
+    const { userData } = useContext(AppContext)
+
+useEffect(() => {
+  getAllEvents('').then((allEvents) => {
+    console.log(allEvents);
+    let filteredEvents = allEvents.filter(event => {
+      return event.type === CalendarEventTypes.PRIVATE && 
+        (event.author === userData.handle || Object.keys(event.invitedUsers ?? {}).includes(userData.handle))
+    });
+    setEvents(filteredEvents);
+  });
+}, [userData]);
+
     const renderView = () => {
         switch (view) {
-            case 'week':
+            case CalendarViewTypes.WEEK:
                 return (
                     <CalendarWeek
                         style={styles.large}
                         events={events}
                         onDateClick={(date) => {
-                            setView('day');
+                            setView(CalendarViewTypes.DAY);
                             setSelectedDate(date);
                         }}
                     />
                 );
-            case 'workweek':
+            case CalendarViewTypes.WORKWEEK:
                 return (
                     <CalendarWorkWeek
                         style={styles.large}
                         events={events}
                         onDateClick={(date) => {
-                            setView('day');
+                            setView(CalendarViewTypes.DAY);
                             setSelectedDate(date);
                         }}
                     />
                 );
-            case 'day':
+            case CalendarViewTypes.DAY:
                 return <SingleDay style={styles.large} date={selectedDate} events={events} />;
             default:
                 return (
@@ -88,7 +86,7 @@ console.log(events);
                         style={styles.large}
                         events ={events}
                         onDateClick={(date) => {
-                            setView('day');
+                            setView(CalendarViewTypes.DAY);
                             setSelectedDate(date);
                         }}
                     />
@@ -105,7 +103,7 @@ console.log(events);
                     <button  className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold" onClick={() => setView('week')}>Week</button>
                     <button  className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold" onClick={() => setView('workweek')}>Work Week</button>
                     <button  className="btn min-w-auto w-32 h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold" onClick={() => {
-                        setView('day');
+                        setView(CalendarViewTypes.DAY);
                         setSelectedDate(new Date());
                     }}>Day</button>
                 </div>

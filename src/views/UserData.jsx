@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState, useContext } from 'react';
 import { fetchUserByHandle } from '../services/users.service';
 import EditProfile from '../components/EditProfile/EditProfile';

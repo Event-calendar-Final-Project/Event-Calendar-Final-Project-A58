@@ -1,10 +1,10 @@
-/* eslint-disable no-case-declarations */
 import { useContext, useEffect, useState } from "react";
 import Event from "../components/Event/Event";
 import { useSearchParams } from "react-router-dom";
 import { getAllEvents } from "../services/event.service";
 import PaginationEvents from "../components/PaginationEvents/PaginationEvents";
 import { AppContext } from "../context/AppContext";
+import { CalendarEventTypes } from "../Data/data-enums";
 
 export default function AllEvents() {
     const [events, setEvents] = useState([]);
@@ -13,28 +13,28 @@ export default function AllEvents() {
     const [currentPageEvents, setCurrentPageEvents] = useState(1);
     const itemsPerPage = 4;
     const { userData } = useContext(AppContext);
-    const [filter, setFilter] = useState('all');
+    const [filter, setFilter] = useState(CalendarEventTypes.ALL);
 
     useEffect(() => {
         getAllEvents(search).then((allEvents) => {
             let filteredEvents = allEvents;
             if (userData) {
-                if (filter === 'private') {
+                if (filter === CalendarEventTypes.PRIVATE) {
                     filteredEvents = allEvents.filter(event => {
-                        return event.type === 'private' && 
+                        return event.type === CalendarEventTypes.PRIVATE && 
                             (event.author === userData.handle || (event.invitedUsers && Object.keys(event.invitedUsers).includes(userData.handle)));
                     });
-                } else if (filter === 'all') {
+                } else if (filter === CalendarEventTypes.ALL) {
                     filteredEvents = allEvents.filter(event => {
-                        return event.type === 'public' || 
-                            (event.type === 'private' && 
+                        return event.type === CalendarEventTypes.PUBLIC || 
+                            (event.type === CalendarEventTypes.PRIVATE && 
                             (event.author === userData.handle || (event.invitedUsers && Object.keys(event.invitedUsers).includes(userData.handle))));
                     });
                 } else {
                     filteredEvents = allEvents.filter(event => event.type === filter);
                 }
             } else {
-                filteredEvents = allEvents.filter(event => event.type === 'public');
+                filteredEvents = allEvents.filter(event => event.type === CalendarEventTypes.PUBLIC);
             }
             setEvents(filteredEvents);
         });
@@ -55,10 +55,10 @@ export default function AllEvents() {
                         onChange={(e) => setFilter(e.target.value)}
                         className="select select-bordered select-accent w-full max-w-xs mr-4"
                     >
-                        <option value="all">All events</option>
-                        <option value="public">Public events</option>
-                        <option value="private">Private events</option>
-                        <option value="draft">Drafts</option>
+                        <option value={CalendarEventTypes.ALL}>All events</option>
+                        <option value={CalendarEventTypes.PUBLIC}>Public events</option>
+                        <option value={CalendarEventTypes.PRIVATE}>Private events</option>
+                        <option value={CalendarEventTypes.DRAFT}>Drafts</option>
                     </select>
                 )}
                 <input

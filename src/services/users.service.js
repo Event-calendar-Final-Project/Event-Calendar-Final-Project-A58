@@ -124,7 +124,7 @@ export async function addContactList(handle, listName, contacts) {
     await set(listRef, contactListData);
 
     console.log("Contact list successfully written with ID:", listRef.key);
-    return listRef.key; // Return the generated ID for further use
+    return listRef.key;
   } catch (error) {
     console.error('Error writing contact list:', error);
     throw error;
