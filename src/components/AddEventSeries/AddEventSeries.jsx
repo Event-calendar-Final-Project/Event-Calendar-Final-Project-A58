@@ -166,9 +166,9 @@ eventsArr.map(async (events) => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-4 mt-6">
+        <div className="max-w-3xl mx-auto p-1 mt-1">
             <h1 className="text-2xl font-bold mb-4 text-center">Create Event Series</h1>
-            <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
+            <div className="bg-gray-100 shadow-lg rounded-lg p-4 space-y-2">
                 <div className="flex items-center space-x-4">
                     <label htmlFor="input-series-name" className="block text-sm font-medium text-gray-700 w-1/6">Series Name:</label>
                     <input
@@ -177,7 +177,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => updateSeries(e.target.value, 'seriesName')}
                         name="input-series-name"
                         id="input-series-name"
-                        className="input input-bordered w-3/4"
+                        className="input input-bordered w-3/5"
                         placeholder="Enter series name here..."
                     />
                 </div>
@@ -190,7 +190,7 @@ eventsArr.map(async (events) => {
                         id="input-series-description"
                         cols="30"
                         rows="2"
-                        className="textarea textarea-bordered w-3/4"
+                        className="textarea textarea-bordered w-3/5"
                         placeholder="Enter series description here..."
                     />
                 </div>
@@ -202,7 +202,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => updateSeries(e.target.value, 'seriesEndDate')}
                         name="input-series-end-date"
                         id="input-series-end-date"
-                        className="input input-bordered w-3/4"
+                        className="input input-bordered w-3/5"
                         placeholder="Enter series end date (optional)..."
                     />
                 </div>
@@ -213,7 +213,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => updateSeries(e.target.value, 'repeat')}
                         name="input-repeat"
                         id="input-repeat"
-                        className="select select-bordered w-3/4"
+                        className="select select-bordered w-3/5"
                     >
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
@@ -222,7 +222,7 @@ eventsArr.map(async (events) => {
                     </select>
                 </div>
                 <hr />
-                <h2 className="text-xl font-medium text-gray-700 mb-2">Starting Event</h2>
+                <h2 className="text-xl text-center font-medium text-gray-700 mb-2">Starting Event</h2>
                 <div className="flex items-center space-x-4">
                     <label htmlFor="input-events-name" className="block text-sm font-medium text-gray-700 w-1/6">Event Name:</label>
                     <input
@@ -231,7 +231,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => updateEvent(e.target.value, 'name')}
                         name="input-events-name"
                         id="input-events-name"
-                        className="input input-bordered w-3/4"
+                        className="input input-bordered w-3/5"
                         placeholder="Enter events name here..."
                     />
                 </div>
@@ -244,7 +244,7 @@ eventsArr.map(async (events) => {
                         id="input-events-description"
                         cols="30"
                         rows="2"
-                        className="textarea textarea-bordered w-3/4"
+                        className="textarea textarea-bordered w-3/5"
                         placeholder="Enter events description here..."
                     />
                 </div>
@@ -256,7 +256,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => updateEvent(e.target.value, 'date')}
                         name="input-date"
                         id="input-date"
-                        className="input input-bordered w-3/4"
+                        className="input input-bordered w-3/5"
                     />
                 </div>
                 <div className="flex items-center space-x-8">
@@ -268,7 +268,7 @@ eventsArr.map(async (events) => {
                                 onChange={(e) => updateEvent(e.target.value, 'startHour')}
                                 name="input-start-hour"
                                 id="input-start-hour"
-                                className="input input-bordered w-3/4"
+                                className="input input-bordered w-3/5"
                             />
                         </div>
                         <div className="flex w-1/4">
@@ -279,7 +279,7 @@ eventsArr.map(async (events) => {
                                 onChange={(e) => updateEvent(e.target.value, 'endHour')}
                                 name="input-end-hour"
                                 id="input-end-hour"
-                                className="input input-bordered w-3/4"
+                                className="input input-bordered w-3/5"
                             />
                         </div>
                 </div>
@@ -290,7 +290,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => updateEvent(e.target.value, 'type')}
                         name="input-type"
                         id="input-type"
-                        className="select select-bordered w-3/4"
+                        className="select select-bordered w-3/5"
                     >
                         <option value="public">Public</option>
                         <option value="private">Private</option>
@@ -305,7 +305,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => updateEvent(e.target.value, 'location')}
                         name="input-location"
                         id="input-location"
-                        className="input input-bordered w-3/4"
+                        className="input input-bordered w-3/5"
                         placeholder="Enter location here..."
                     />
                 </div>
@@ -316,7 +316,7 @@ eventsArr.map(async (events) => {
                         onChange={(e) => setSelectedFile(e.target.files[0])}
                         name="input-file"
                         id="input-file"
-                        className="input input-bordered w-3/4"
+                        className="input input-bordered w-3/5"
                     />
                 </div>
                 <PhotoPreview photo={selectedFile} />
