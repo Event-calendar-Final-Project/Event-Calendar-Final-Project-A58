@@ -2,7 +2,7 @@ import {  useState } from 'react';
 import {  updateUserProfile } from '../../services/users.service';
 import { updateUserPhoto } from '../../services/upload.service';
 import PhotoPreview from '../PhotoPreview/PhotoPreview';
-
+import PropTypes from 'prop-types';
 
 export default function EditProfile({ user, onProfileUpdate }) {
 
@@ -16,26 +16,30 @@ export default function EditProfile({ user, onProfileUpdate }) {
 
 console.log(user);
   const handleSubmit = async (event) => {
-    let photoUrl = '';
-    event.preventDefault();
-        if (photo) {
-          console.log(user.photo)
-      const upload = await updateUserPhoto(photo, user.handle, user.photo);
-    
-      console.dir(upload.downloadURL);
-      photoUrl = upload.downloadURL;
-     
-    }
-    const result = await updateUserProfile(user.handle, firstName, lastName, phone, address, photoUrl);
-    if (result.success) {
-      setIsSuccessful(true);
-      setFirstName('');
-      setLastName('');
-      setPhone('');
-      setAddress('');
-      setPhoto('');
-      console.log('Calling onProfileUpdate');
-      onProfileUpdate();
+    try{
+      let photoUrl = '';
+      event.preventDefault();
+          if (photo) {
+            console.log(user.photo)
+        const upload = await updateUserPhoto(photo, user.handle, user.photo);
+      
+        console.dir(upload.downloadURL);
+        photoUrl = upload.downloadURL;
+      
+      }
+      const result = await updateUserProfile(user.handle, firstName, lastName, phone, address, photoUrl);
+      if (result.success) {
+        setIsSuccessful(true);
+        setFirstName('');
+        setLastName('');
+        setPhone('');
+        setAddress('');
+        setPhoto('');
+        console.log('Calling onProfileUpdate');
+        onProfileUpdate();
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
     }
   };
 
@@ -69,3 +73,15 @@ console.log(user);
     </div>
   );
 }
+
+EditProfile.propTypes = {
+  user: PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    phone: PropTypes.string,
+    address: PropTypes.string,
+    photo: PropTypes.string,
+    handle: PropTypes.string,
+  }).isRequired,
+  onProfileUpdate: PropTypes.func,
+};

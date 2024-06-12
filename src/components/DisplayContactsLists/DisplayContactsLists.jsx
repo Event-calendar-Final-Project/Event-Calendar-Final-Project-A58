@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default function DisplayContactsLists({ contactLists }) {
   const [selectedList, setSelectedList] = useState(null);
@@ -25,7 +26,7 @@ export default function DisplayContactsLists({ contactLists }) {
               <div>
                 {list.users.contacts.map((userHandle, index) => (
                   <p key={`${list.users.id}-${userHandle}-${index}`}>
-                    <Link to={`/${userHandle}`} class="text-blue-600 font-bold hover:underline">
+                    <Link to={`/${userHandle}`} className="text-blue-600 font-bold hover:underline">
                       {userHandle}
                     </Link>
                   </p>
@@ -39,3 +40,15 @@ export default function DisplayContactsLists({ contactLists }) {
   );
   
 }
+
+DisplayContactsLists.propTypes = {
+  contactLists: PropTypes.arrayOf(
+    PropTypes.shape({
+      users: PropTypes.shape({
+        id: PropTypes.string,
+        listName: PropTypes.string,
+        contacts: PropTypes.arrayOf(PropTypes.string),
+      }).isRequired,
+    }).isRequired
+  ).isRequired,
+};

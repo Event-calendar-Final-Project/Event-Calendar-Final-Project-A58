@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { getInvitedUsers, inviteUser, disinviteUser } from "../../services/event.service"; 
 import { getUserContactsList } from "../../services/users.service";
 import { AppContext } from "../../context/AppContext";
+import PropTypes from "prop-types";
 
 export default function InviteUser({ initialEvent, onUserAdded }) {
   const [contacts, setContacts] = useState([]);
@@ -89,3 +90,10 @@ export default function InviteUser({ initialEvent, onUserAdded }) {
     </div>
   );
 }
+
+InviteUser.propTypes = {
+  initialEvent: PropTypes.shape({
+    id: PropTypes.string,
+  }).isRequired,
+  onUserAdded: PropTypes.func,
+};

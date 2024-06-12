@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 export default function PhotoPreview({ photo }) {
   const [photoPreview, setPhotoPreview] = useState(null);
@@ -16,3 +17,10 @@ export default function PhotoPreview({ photo }) {
     photoPreview && <img src={photoPreview} alt="Preview" className="mt-2 w-64 h-64 object-cover" />
   );
 }
+
+PhotoPreview.propTypes = {
+  photo: PropTypes.oneOfType([
+    PropTypes.instanceOf(File),
+    PropTypes.string
+  ])
+};

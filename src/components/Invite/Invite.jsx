@@ -1,6 +1,7 @@
 import{ useState } from 'react';
 import InviteUser from '../InviteUser/InviteUser';
 import InviteContactList from '../InviteContactList/InviteContactList';
+import PropTypes from 'prop-types';
 
 export default function Invite({ initialEvent, onUserAdded }) {
 
@@ -24,4 +25,9 @@ export default function Invite({ initialEvent, onUserAdded }) {
       )}
     </div>
   );
+}
+
+Invite.propTypes = {
+  initialEvent: PropTypes.object,
+  onUserAdded: PropTypes.func,
 };

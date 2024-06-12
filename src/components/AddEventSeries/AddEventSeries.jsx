@@ -58,7 +58,12 @@ export default function AddEventSeries() {
     
         let photoURL = '';
         if (selectedFile) {
-            photoURL = await addEventPhoto(selectedFile, events.name);
+            try{
+                photoURL = await addEventPhoto(selectedFile, events.name);
+            } catch (error) {
+                console.error('Error uploading photo:', error);
+            }
+            
         }
 
 const startDateTime = new Date(`${events.startDate}T${events.startHour}`);
@@ -129,17 +134,21 @@ const eventsArr = Array.from({ length: Math.floor(timeDiffAdjusted) + 1 }).map((
 
 eventsArr.map(async (events) => {
     console.log(series.repeat);
-     await addEventToSeriesById(
-        seriesId,
-        userData.handle,
-        events.name,
-        events.description,
-        events.startDateTimeLocal,
-        events.endDateTimeLocal,
-        events.location,
-        photoURL,
-        events.type
-    );
+    try {
+        await addEventToSeriesById(
+            seriesId,
+            userData.handle,
+            events.name,
+            events.description,
+            events.startDateTimeLocal,
+            events.endDateTimeLocal,
+            events.location,
+            photoURL,
+            events.type
+        );
+    } catch (error) {
+        console.error('Error adding event to series:', error);
+    }
 });
 
 

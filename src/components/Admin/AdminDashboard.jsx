@@ -27,28 +27,41 @@ const AdminDashboard = () => {
     }, []);
 
     const fetchUsers = async () => {
-        const fetchedUsers = await getUsers(searchQuery);
-        setUsers(fetchedUsers);
+        try {
+            const fetchedUsers = await getUsers(searchQuery);
+            setUsers(fetchedUsers);
+        } catch (error) { console.error("Error fetching users:", error); }
     };
 
     const fetchEvents = async () => {
+        try {
         const fetchedEvents = await getEvents(searchQuery);
         setEvents(fetchedEvents);
+        } catch (error) { console.error("Error fetching events:", error); }
     };
 
     const handleBlockUser = async (userId) => {
-        await blockUser(userId);
-        fetchUsers();
+        try {
+            await blockUser(userId);
+            fetchUsers();
+        } catch (error) { console.error("Error blocking user:", error); }
+
     };
 
     const handleUnblockUser = async (userId) => {
-        await unblockUser(userId);
-        fetchUsers();
+        try {
+            await unblockUser(userId);
+            fetchUsers();
+        } catch (error) { console.error("Error unblocking user:", error); }
+
     };
 
     const handleDeleteEvent = async (eventId) => {
-        await deleteEventInDB(eventId, userData.handle);
-        fetchEvents();
+        try {
+            await deleteEventInDB(eventId, userData.handle);
+            fetchEvents();
+        } catch (error) { console.error("Error deleting event:", error); }
+
     };
 
     const startEditing = (event) => {
@@ -60,9 +73,11 @@ const AdminDashboard = () => {
 
     const saveEdit = async () => {
         const updatedEvent = { id: editedEventId, name: editedName, description: editedDescription };
-        await editEventInDB(updatedEvent);
-        setIsEditing(false);
-        fetchEvents();
+        try {
+            await editEventInDB(updatedEvent);
+            setIsEditing(false);
+            fetchEvents();
+        } catch (error) { console.error("Error editing event:", error); }
     };
 
     const cancelEdit = () => {
@@ -73,8 +88,10 @@ const AdminDashboard = () => {
     };
 
     const handleToggleUserRole = async (userId, currentRole) => {
-        await toggleUserRole(userId, currentRole);
-        fetchUsers();
+        try {
+            await toggleUserRole(userId, currentRole);
+            fetchUsers();
+        } catch (error) { console.error("Error toggling user role:", error); }
     };
 
     
@@ -136,7 +153,7 @@ const AdminDashboard = () => {
                                         </td>
                                         <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                             {user.isBlocked ? (
-                                                <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2"><HiOutlinePlusCircle/></button>
+                                                <button onClick={() => handleUnblockUser(user.id)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2"><HiOutlinePlusCircle/></button>
                                             ) : (
                                                 <button onClick={() => handleBlockUser(user.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2"><HiOutlineBan/></button>
                                             )}
@@ -144,7 +161,7 @@ const AdminDashboard = () => {
                                                 onClick={() => handleToggleUserRole(user.id, user.role)}
                                                 className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600 ml-2"
                                             >
-                                                 {user.role === 'admin' ? <HiOutlineUserRemove /> : <HiOutlineUserAdd />} 
+                                                {user.role === 'admin' ? <HiOutlineUserRemove /> : <HiOutlineUserAdd />} 
                                             </button>
                                         </td>
                                     </tr>

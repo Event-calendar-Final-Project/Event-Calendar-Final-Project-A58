@@ -47,13 +47,17 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   };
 
   const handleLike = async () => {
-    console.log('Liked');
-    await likeEvent(event.id, userData.handle);
+    try {
+      console.log('Liked');
+      await likeEvent(event.id, userData.handle);
+    } catch (error) { console.error('Error liking event:', error); }
   };
 
   const handleDislike = async () => {
-    console.log('Disliked');
-    await dislikeEvent(event.id, userData.handle);
+    try {
+      console.log('Disliked');
+      await dislikeEvent(event.id, userData.handle);
+    } catch (error) { console.error('Error disliking event:', error); }
   };
 
   const handleDelete = () => {
@@ -70,9 +74,11 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   };
 
   const updateEventTypeAndVisibility = async () => {
-    console.log(event.id, { type: eventVisibility });
-    await updateEvent(event.id, { ...event, type: eventVisibility });
-    fetchEvent();
+    try {
+      console.log(event.id, { type: eventVisibility });
+      await updateEvent(event.id, { ...event, type: eventVisibility });
+      fetchEvent();
+    } catch (error) { console.error('Error updating event type:', error); }
   };
 
   const saveEdit = async () => {
@@ -216,12 +222,17 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
 
 Event.propTypes = {
     event: PropTypes.shape({
-        id: PropTypes.string,
-        author: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        createdOn: PropTypes.string,
-        likedBy: PropTypes.array,
-        name: PropTypes.string,
+      id: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      createdOn: PropTypes.string,
+      likedBy: PropTypes.arrayOf(PropTypes.string),
+      name: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+      startDateTime: PropTypes.string,
+      photoUrl: PropTypes.string,
+      invitationPermission: PropTypes.object,
+      invitedUsers: PropTypes.object,
     }),
     deleteEvent: PropTypes.func,
     editEvent: PropTypes.func,

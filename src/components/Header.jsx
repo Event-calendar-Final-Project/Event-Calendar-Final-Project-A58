@@ -8,8 +8,12 @@ export default function Header() {
     const { user, userData, setAppState } = useContext(AppContext);
 
     const logout = async () => {
-        await logoutUser();
-        setAppState({ user: null, userData: null })
+        try {
+            await logoutUser();
+            setAppState({ user: null, userData: null });
+        } catch (error) {
+            console.error("Error logging out:", error);
+        }
     };
 
     return (

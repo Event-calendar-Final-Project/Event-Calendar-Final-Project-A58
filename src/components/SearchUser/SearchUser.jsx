@@ -3,6 +3,7 @@ import { useState, useContext } from 'react';
 import { fetchUsersFromDB } from '../../services/users.service';
 import { AppContext } from '../../context/AppContext';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default function SearchUser( {onUserAdded} ) {
   const { userData } = useContext(AppContext);
@@ -13,12 +14,14 @@ export default function SearchUser( {onUserAdded} ) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const users = await fetchUsersFromDB();
-    const searchResults = users.filter((user) => user.handle === query || user.email === query || user.phone === query);
+    try{
+      const users = await fetchUsersFromDB();
+      const searchResults = users.filter((user) => user.handle === query || user.email === query || user.phone === query);
 
-    setResults(searchResults);
-    console.log(searchResults);
-    setContactAdded(false);
+      setResults(searchResults);
+      console.log(searchResults);
+      setContactAdded(false);
+    } catch (error) { console.error('Error searching for user:', error); }
 
   };
 
@@ -72,3 +75,7 @@ export default function SearchUser( {onUserAdded} ) {
     </div>
   ); 
 }
+
+SearchUser.propTypes = {
+  onUserAdded: PropTypes.func
+};

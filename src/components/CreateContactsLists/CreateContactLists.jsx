@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { addContactList, fetchUserByHandle } from '../../services/users.service';
+import PropTypes from 'prop-types';
 
 export default function CreateContactLists({ onNewListAdded }) {
   const [isAdding, setIsAdding] = useState(false);
@@ -52,11 +53,11 @@ export default function CreateContactLists({ onNewListAdded }) {
 
   return (
     <div className="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">
-      <button onClick={handleAddClick} class="block mb-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring">
+      <button onClick={handleAddClick} className="block mb-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring">
         Add New Contact List
       </button>
       {isAdding && (
-        <form onSubmit={handleFormSubmit} class="bg-white shadow-md rounded-md p-6">
+        <form onSubmit={handleFormSubmit} className="bg-white shadow-md rounded-md p-6">
         <div className="flex items-center mb-4">
           <label className="mr-4 text-sm font-medium text-gray-700">List Name:</label>
           <input 
@@ -87,3 +88,7 @@ export default function CreateContactLists({ onNewListAdded }) {
     </div>
   );
 }
+
+CreateContactLists.propTypes = {
+  onNewListAdded: PropTypes.func,
+};

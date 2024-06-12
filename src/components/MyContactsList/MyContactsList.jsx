@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Pagination from '../Pagination/Pagination';
 import { useState } from 'react';
-
+import PropTypes from 'prop-types';
 
 
 export default function MyContactsList({ myContacts }) {
@@ -34,11 +34,12 @@ export default function MyContactsList({ myContacts }) {
                                 <th className="px-5 py-3">Address</th>
                             </tr>
                         </thead>
+
                         <tbody className="text-gray-500">
-                            {currentContacts.map((contact) => (
+                            {currentContacts.map((contact) => (                                
                                 <tr key={contact.uid}>
                                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <Link to={`/${contact.handle}`} class="font-medium text-blue-600 hover:underline">
+                                        <Link to={`/${contact.handle}`} className="font-medium text-blue-600 hover:underline">
                                             {contact.handle}
                                         </Link>
                                     </td>
@@ -69,3 +70,17 @@ export default function MyContactsList({ myContacts }) {
         </div>
     );
 }
+
+MyContactsList.propTypes = {
+    myContacts: PropTypes.arrayOf(
+        PropTypes.shape({
+            uid: PropTypes.string.isRequired,
+            handle: PropTypes.string.isRequired,
+            firstName: PropTypes.string.isRequired,
+            lastName: PropTypes.string.isRequired,
+            email: PropTypes.string.isRequired,
+            phone: PropTypes.string,
+            address: PropTypes.string,
+        }).isRequired
+    ).isRequired,
+};

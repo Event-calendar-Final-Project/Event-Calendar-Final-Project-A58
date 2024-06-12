@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { updateEvent } from '../../services/event.service';
+import PropTypes from 'prop-types';
 
 export default function Participants({ event }) {
   const { userData } = useContext(AppContext);
@@ -64,5 +65,12 @@ export default function Participants({ event }) {
       )}
     </div>
   );
-};
+}
 
+Participants.propTypes = {
+  event: PropTypes.shape({
+    id: PropTypes.string,
+    author: PropTypes.string,
+    participants: PropTypes.arrayOf(PropTypes.string)
+  })
+};
