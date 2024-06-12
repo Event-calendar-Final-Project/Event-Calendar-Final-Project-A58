@@ -2,7 +2,7 @@ import {  useState } from 'react';
 import {  updateUserProfile } from '../../services/users.service';
 import { updateUserPhoto } from '../../services/upload.service';
 import PhotoPreview from '../PhotoPreview/PhotoPreview';
-
+import PropTypes from 'prop-types';
 
 export default function EditProfile({ user, onProfileUpdate }) {
 
@@ -69,3 +69,15 @@ console.log(user);
     </div>
   );
 }
+
+EditProfile.propTypes = {
+  user: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    photo: PropTypes.string.isRequired,
+    handle: PropTypes.string.isRequired,
+  }).isRequired,
+  onProfileUpdate: PropTypes.func.isRequired,
+};

@@ -3,6 +3,7 @@ import { useState, useContext } from 'react';
 import { fetchUsersFromDB } from '../../services/users.service';
 import { AppContext } from '../../context/AppContext';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default function SearchUser( {onUserAdded} ) {
   const { userData } = useContext(AppContext);
@@ -72,3 +73,7 @@ export default function SearchUser( {onUserAdded} ) {
     </div>
   ); 
 }
+
+SearchUser.propTypes = {
+  onUserAdded: PropTypes.func.isRequired
+};

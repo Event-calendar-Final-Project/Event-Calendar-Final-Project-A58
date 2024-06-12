@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Pagination from '../Pagination/Pagination';
 import { useState } from 'react';
-
+import PropTypes from 'prop-types';
 
 
 export default function MyContactsList({ myContacts }) {
@@ -69,3 +69,17 @@ export default function MyContactsList({ myContacts }) {
         </div>
     );
 }
+
+MyContactsList.propTypes = {
+    myContacts: PropTypes.arrayOf(
+        PropTypes.shape({
+            uid: PropTypes.string.isRequired,
+            handle: PropTypes.string.isRequired,
+            firstName: PropTypes.string.isRequired,
+            lastName: PropTypes.string.isRequired,
+            email: PropTypes.string.isRequired,
+            phone: PropTypes.string,
+            address: PropTypes.string,
+        }).isRequired
+    ).isRequired,
+};

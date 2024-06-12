@@ -144,7 +144,7 @@ const AdminDashboard = () => {
                                                 onClick={() => handleToggleUserRole(user.id, user.role)}
                                                 className="bg-purple-500 text-white px-3 py-1 rounded-md hover:bg-purple-600 ml-2"
                                             >
-                                                 {user.role === 'admin' ? <HiOutlineUserRemove /> : <HiOutlineUserAdd />} 
+                                                {user.role === 'admin' ? <HiOutlineUserRemove /> : <HiOutlineUserAdd />} 
                                             </button>
                                         </td>
                                     </tr>

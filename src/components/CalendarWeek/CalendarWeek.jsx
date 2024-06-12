@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import WeekDay from '../WeekDay/WeekDay';
 import HoursColumn from '../HoursColumn/HoursColumn';
+import PropTypes from 'prop-types';
 
 export default function CalendarWeek({ onDateClick, events }) {
 
@@ -134,3 +135,16 @@ export default function CalendarWeek({ onDateClick, events }) {
         </div>
     );
 }
+
+CalendarWeek.propTypes = {
+    onDateClick: PropTypes.func.isRequired,
+    events: PropTypes.arrayOf(PropTypes.shape({
+        startDateTime: PropTypes.string.isRequired,
+        endDateTime: PropTypes.string.isRequired,
+    })).isRequired,
+};
+
+CalendarWeek.defaultProps = {
+    onDateClick: () => {},
+    events: [],
+};

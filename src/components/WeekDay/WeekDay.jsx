@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 export default function WeekDay({ date, events, showDate = true }) {
     const styles = {
@@ -117,3 +118,9 @@ return (
         </div>
     );
 }
+
+WeekDay.propTypes = {
+    date: PropTypes.instanceOf(Date).isRequired,
+    events: PropTypes.array.isRequired,
+    showDate: PropTypes.bool,
+  };

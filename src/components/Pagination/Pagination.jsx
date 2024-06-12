@@ -1,22 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Pagination.css';
-
-
 
 const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
-  // Calculate the position of the pagination component
-  const paginationPosition = itemsPerPage * 123; // Adjust the multiplier as needed
-  const maxTopPosition = 400; // Adjust the maximum top position as needed
-
-  // Determine the top position considering the maximum
-  const topPosition = Math.max(paginationPosition, maxTopPosition);
+  // Define the styles as a string
+  const styles = `
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+    }
+    
+    .page-item {
+      margin: 0 5px;
+    }
+    
+    .page-link {
+      cursor: pointer;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #007bff;
+    }
+    
+    .page-item.active .page-link {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    
+    .page-link:hover {
+      background-color: #ddd;
+    }
+  `;
 
   return (
     <nav style={{ position: 'fixed', top: `820px` }}>
+      {/* Use style tag to apply the styles */}
+      <style>{styles}</style>
       <ul className="pagination mt-4 mb-4">
         {pageNumbers.map(number => (
           <li key={number} className={`page-item ${number === currentPage ? 'active' : ''}`}>
@@ -30,14 +54,11 @@ const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
   );
 };
 
-  
-
-
 Pagination.propTypes = {
-    itemsPerPage: PropTypes.number.isRequired,
-    totalItems: PropTypes.number.isRequired,
-    paginate: PropTypes.func.isRequired,
-    currentPage: PropTypes.number.isRequired,
-  };
+  itemsPerPage: PropTypes.number.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  paginate: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+};
 
 export default Pagination;

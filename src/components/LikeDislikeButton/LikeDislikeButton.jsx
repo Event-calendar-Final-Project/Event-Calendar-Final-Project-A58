@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export default function LikeDislikeButton({ initialLikes, onLike, onDislike }) {
   const [likes, setLikes] = useState(initialLikes);
@@ -24,3 +25,9 @@ export default function LikeDislikeButton({ initialLikes, onLike, onDislike }) {
     </div>
   );
 }
+
+LikeDislikeButton.propTypes = {
+  initialLikes: PropTypes.number.isRequired,
+  onLike: PropTypes.func.isRequired,
+  onDislike: PropTypes.func.isRequired,
+};

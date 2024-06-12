@@ -76,5 +76,6 @@ InvitePermissions.propTypes = {
   event: PropTypes.shape({
     id: PropTypes.string,
     author: PropTypes.string.isRequired,
+    invitationPermission: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };

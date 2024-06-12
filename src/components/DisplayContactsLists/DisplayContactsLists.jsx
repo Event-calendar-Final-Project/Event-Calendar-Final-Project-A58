@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export default function DisplayContactsLists({ contactLists }) {
   const [selectedList, setSelectedList] = useState(null);
@@ -39,3 +40,15 @@ export default function DisplayContactsLists({ contactLists }) {
   );
   
 }
+
+DisplayContactsLists.propTypes = {
+  contactLists: PropTypes.arrayOf(
+    PropTypes.shape({
+      users: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        listName: PropTypes.string.isRequired,
+        contacts: PropTypes.arrayOf(PropTypes.string).isRequired,
+      }).isRequired,
+    }).isRequired
+  ).isRequired,
+};

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 
 export default function CalendarMonth({ onDateClick, events, ...props }) {
@@ -186,3 +187,14 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
         </div>
     )
 }
+
+CalendarMonth.propTypes = {
+    onDateClick: PropTypes.func.isRequired,
+    events: PropTypes.arrayOf(PropTypes.shape({
+        startDateTime: PropTypes.string.isRequired,
+        endDateTime: PropTypes.string.isRequired,
+    })).isRequired,
+    shortWeekdays: PropTypes.string.isRequired,
+    style: PropTypes.object,
+};
+
