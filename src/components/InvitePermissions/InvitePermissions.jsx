@@ -75,7 +75,7 @@ export default function InvitePermissions({ event }) {
 InvitePermissions.propTypes = {
   event: PropTypes.shape({
     id: PropTypes.string,
-    author: PropTypes.string.isRequired,
+    author: PropTypes.string,
     invitationPermission: PropTypes.arrayOf(PropTypes.string),
-  }).isRequired,
+  }),
 };

@@ -28,6 +28,6 @@ export default function Invite({ initialEvent, onUserAdded }) {
 }
 
 Invite.propTypes = {
-  initialEvent: PropTypes.object.isRequired,
-  onUserAdded: PropTypes.func.isRequired,
+  initialEvent: PropTypes.object,
+  onUserAdded: PropTypes.func,
 };

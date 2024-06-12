@@ -22,9 +22,9 @@ export default function AddContact({ handle, contactHandle, contactAdded, setCon
 }
 
 AddContact.propTypes = {
-  handle: PropTypes.string.isRequired,
-  contactHandle: PropTypes.string.isRequired,
-  contactAdded: PropTypes.bool.isRequired,
-  setContactAdded: PropTypes.func.isRequired,
-  onUserAdded: PropTypes.func.isRequired
+  handle: PropTypes.string,
+  contactHandle: PropTypes.string,
+  contactAdded: PropTypes.bool,
+  setContactAdded: PropTypes.func,
+  onUserAdded: PropTypes.func
 };

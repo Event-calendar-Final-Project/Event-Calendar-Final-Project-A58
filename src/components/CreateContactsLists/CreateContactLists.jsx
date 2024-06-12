@@ -90,5 +90,5 @@ export default function CreateContactLists({ onNewListAdded }) {
 }
 
 CreateContactLists.propTypes = {
-  onNewListAdded: PropTypes.func.isRequired,
+  onNewListAdded: PropTypes.func,
 };

@@ -71,6 +71,6 @@ export default function InviteContactList({ initialEvent, onUserAdded }) {
 }
 
 InviteContactList.propTypes = {
-  initialEvent: PropTypes.object.isRequired,
-  onUserAdded: PropTypes.func.isRequired,
+  initialEvent: PropTypes.object,
+  onUserAdded: PropTypes.func,
 };

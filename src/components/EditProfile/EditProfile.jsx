@@ -76,12 +76,12 @@ console.log(user);
 
 EditProfile.propTypes = {
   user: PropTypes.shape({
-    firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired,
-    phone: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
-    photo: PropTypes.string.isRequired,
-    handle: PropTypes.string.isRequired,
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    phone: PropTypes.string,
+    address: PropTypes.string,
+    photo: PropTypes.string,
+    handle: PropTypes.string,
   }).isRequired,
-  onProfileUpdate: PropTypes.func.isRequired,
+  onProfileUpdate: PropTypes.func,
 };

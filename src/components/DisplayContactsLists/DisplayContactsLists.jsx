@@ -45,9 +45,9 @@ DisplayContactsLists.propTypes = {
   contactLists: PropTypes.arrayOf(
     PropTypes.shape({
       users: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        listName: PropTypes.string.isRequired,
-        contacts: PropTypes.arrayOf(PropTypes.string).isRequired,
+        id: PropTypes.string,
+        listName: PropTypes.string,
+        contacts: PropTypes.arrayOf(PropTypes.string),
       }).isRequired,
     }).isRequired
   ).isRequired,

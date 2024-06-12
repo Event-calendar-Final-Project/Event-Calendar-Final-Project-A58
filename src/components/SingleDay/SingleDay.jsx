@@ -164,6 +164,6 @@ export default function SingleDay({ date, events }) {
 }
 
 SingleDay.propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
-    events: PropTypes.array.isRequired,
+    date: PropTypes.instanceOf(Date),
+    events: PropTypes.array,
     };

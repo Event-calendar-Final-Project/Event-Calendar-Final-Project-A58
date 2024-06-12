@@ -93,7 +93,7 @@ export default function InviteUser({ initialEvent, onUserAdded }) {
 
 InviteUser.propTypes = {
   initialEvent: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
   }).isRequired,
-  onUserAdded: PropTypes.func.isRequired,
+  onUserAdded: PropTypes.func,
 };

@@ -69,8 +69,8 @@ export default function Participants({ event }) {
 
 Participants.propTypes = {
   event: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    author: PropTypes.string,
     participants: PropTypes.arrayOf(PropTypes.string)
-  }).isRequired
+  })
 };

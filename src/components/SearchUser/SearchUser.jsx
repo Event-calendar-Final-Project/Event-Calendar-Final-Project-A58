@@ -77,5 +77,5 @@ export default function SearchUser( {onUserAdded} ) {
 }
 
 SearchUser.propTypes = {
-  onUserAdded: PropTypes.func.isRequired
+  onUserAdded: PropTypes.func
 };

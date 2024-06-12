@@ -23,10 +23,10 @@ EventSeries.propTypes = {
             description: PropTypes.string.isRequired,
             startDate: PropTypes.string.isRequired,
             endDate: PropTypes.string,
-            repeat: PropTypes.string.isRequired,
-            createdOn: PropTypes.number.isRequired,
-        })).isRequired,
-    }).isRequired,
+            repeat: PropTypes.string,
+            createdOn: PropTypes.number,
+        })),
+    }),
 };
 
 export default EventSeries;

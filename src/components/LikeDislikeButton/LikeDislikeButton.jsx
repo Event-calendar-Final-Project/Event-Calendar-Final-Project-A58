@@ -27,7 +27,7 @@ export default function LikeDislikeButton({ initialLikes, onLike, onDislike }) {
 }
 
 LikeDislikeButton.propTypes = {
-  initialLikes: PropTypes.number.isRequired,
-  onLike: PropTypes.func.isRequired,
-  onDislike: PropTypes.func.isRequired,
+  initialLikes: PropTypes.number,
+  onLike: PropTypes.func,
+  onDislike: PropTypes.func,
 };

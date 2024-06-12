@@ -120,7 +120,7 @@ return (
 }
 
 WeekDay.propTypes = {
-    date: PropTypes.instanceOf(Date).isRequired,
-    events: PropTypes.array.isRequired,
+    date: PropTypes.instanceOf(Date),
+    events: PropTypes.array,
     showDate: PropTypes.bool,
   };

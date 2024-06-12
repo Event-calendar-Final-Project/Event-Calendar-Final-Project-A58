@@ -58,10 +58,10 @@ const PaginationEvents = ({ itemsPerPage, totalItems, paginate, currentPage }) =
 };
 
 PaginationEvents.propTypes = {
-  itemsPerPage: PropTypes.number.isRequired,
-  totalItems: PropTypes.number.isRequired,
-  paginate: PropTypes.func.isRequired,
-  currentPage: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number,
+  totalItems: PropTypes.number,
+  paginate: PropTypes.func,
+  currentPage: PropTypes.number,
 };
 
 export default PaginationEvents;

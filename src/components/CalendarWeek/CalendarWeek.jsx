@@ -137,11 +137,11 @@ export default function CalendarWeek({ onDateClick, events }) {
 }
 
 CalendarWeek.propTypes = {
-    onDateClick: PropTypes.func.isRequired,
+    onDateClick: PropTypes.func,
     events: PropTypes.arrayOf(PropTypes.shape({
-        startDateTime: PropTypes.string.isRequired,
-        endDateTime: PropTypes.string.isRequired,
-    })).isRequired,
+        startDateTime: PropTypes.string,
+        endDateTime: PropTypes.string,
+    })),
 };
 
 CalendarWeek.defaultProps = {

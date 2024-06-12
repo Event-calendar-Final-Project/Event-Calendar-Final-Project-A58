@@ -189,12 +189,12 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
 }
 
 CalendarMonth.propTypes = {
-    onDateClick: PropTypes.func.isRequired,
+    onDateClick: PropTypes.func,
     events: PropTypes.arrayOf(PropTypes.shape({
-        startDateTime: PropTypes.string.isRequired,
-        endDateTime: PropTypes.string.isRequired,
-    })).isRequired,
-    shortWeekdays: PropTypes.string.isRequired,
+        startDateTime: PropTypes.string,
+        endDateTime: PropTypes.string,
+    })),
+    shortWeekdays: PropTypes.string,
     style: PropTypes.object,
 };
 
