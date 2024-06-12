@@ -10,7 +10,8 @@ export default function CreateEvent() {
     const [event, setEvent] = useState({
         name: '',
         description: '',
-        date: '',
+        startDate: '', 
+        endDate: '', 
         location: '',
         startHour: '',
         endHour: '',
@@ -42,7 +43,7 @@ export default function CreateEvent() {
             return alert('Description must be at least 5 characters long');
         }
     
-        if (!event.date) {
+        if (!event.startDate || !event.endDate) {
             return alert('Please select a date for the event');
         }
     
@@ -56,8 +57,8 @@ export default function CreateEvent() {
             photoURL = await addEventPhoto(selectedFile, event.name);
         }
 
-        const startDateTime = new Date(`${event.date}T${event.startHour}`);
-        const endDateTime = new Date(`${event.date}T${event.endHour}`);
+        const startDateTime = new Date(`${event.startDate}T${event.startHour}`);
+        const endDateTime = new Date(`${event.endDate}T${event.endHour}`);
         const startDateTimeLocal = new Date(startDateTime.toLocaleString());
         const endDateTimeLocal = new Date(endDateTime.toLocaleString());
 
@@ -73,7 +74,8 @@ export default function CreateEvent() {
         setEvent({
             name: '',
             description: '',
-            date: '',
+            startDate: '', 
+            endDate: '', 
             location: '',
             startHour: '',
             endHour: '',
@@ -119,17 +121,30 @@ export default function CreateEvent() {
                             placeholder="Enter description here..."
                         />
                     </div>
-                    <div className="flex items-center space-x-4">
-                        <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/6">Date:</label>
-                        <input
-                            type="date"
-                            value={event.date}
-                            onChange={(e) => updateEvent(e.target.value, 'date')}
-                            name="input-date"
-                            id="input-date"
-                            className="input input-bordered w-3/5"
-                        />
-                    </div>
+                    <div className="flex items-center space-x-8">
+    <div className="ml-32 flex w-1/4">
+        <label htmlFor="input-start-date" className="block text-sm font-medium text-gray-700 w-1/4">Start Date:</label>
+        <input
+            type="date"
+            value={event.startDate}
+            onChange={(e) => updateEvent(e.target.value, 'startDate')}
+            name="input-start-date"
+            id="input-start-date"
+            className="input input-bordered w-3/4"
+        />
+    </div>
+    <div className="flex w-1/4">
+        <label htmlFor="input-end-date" className="block text-sm font-medium text-gray-700 w-1/4">End Date:</label>
+        <input
+            type="date"
+            value={event.endDate}
+            onChange={(e) => updateEvent(e.target.value, 'endDate')}
+            name="input-end-date"
+            id="input-end-date"
+            className="input input-bordered w-3/4"
+        />
+    </div>
+</div>
                     <div className="flex items-center space-x-8">
                         <div className="ml-32 flex w-1/4">
                             <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>

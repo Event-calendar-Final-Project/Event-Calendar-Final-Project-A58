@@ -10,7 +10,7 @@ export default function AddEventSeries() {
         seriesName: '',
         seriesDescription: '',
         seriesEndDate: '',
-        repeat: 'none',
+        repeat: 'daily',
     });
     const [events, setEvent] = useState({
         name: '',
@@ -52,10 +52,6 @@ export default function AddEventSeries() {
             return alert('Event description must be at least 5 characters long');
         }
     
-        if (!events.date) {
-            return alert('Please select a date for the starting events');
-        }
-    
         if (!events.location) {
             return alert('Please provide a location for the events');
         }
@@ -65,8 +61,8 @@ export default function AddEventSeries() {
             photoURL = await addEventPhoto(selectedFile, events.name);
         }
 
-const startDateTime = new Date(`${events.date}T${events.startHour}`);
-const endDateTime = new Date(`${events.date}T${events.endHour}`);
+const startDateTime = new Date(`${events.startDate}T${events.startHour}`);
+const endDateTime = new Date(`${events.endDate}T${events.endHour}`);
 const startDateTimeLocal = new Date(startDateTime.toLocaleString());
 const endDateTimeLocal = new Date(endDateTime.toLocaleString());
 const seriesEndDate = new Date(series.seriesEndDate);
@@ -151,7 +147,7 @@ eventsArr.map(async (events) => {
             seriesName: '',
             seriesDescription: '',
             seriesEndDate: '',
-            repeat: 'none',
+            repeat: '',
         });
 
         setEvent({
@@ -163,6 +159,12 @@ eventsArr.map(async (events) => {
             endHour: '',
             type: 'public',
         });
+
+        if (seriesId) {
+            setSuccessMessage('Event series created successfully!');
+            setTimeout(() => setSuccessMessage(''), 3000);
+        }
+
     };
 
     return (
@@ -248,17 +250,30 @@ eventsArr.map(async (events) => {
                         placeholder="Enter events description here..."
                     />
                 </div>
-                <div className="flex items-center space-x-4">
-                    <label htmlFor="input-date" className="block text-sm font-medium text-gray-700 w-1/6">Date:</label>
-                    <input
-                        type="date"
-                        value={events.date}
-                        onChange={(e) => updateEvent(e.target.value, 'date')}
-                        name="input-date"
-                        id="input-date"
-                        className="input input-bordered w-3/5"
-                    />
-                </div>
+                <div className="flex items-center space-x-8">
+    <div className="ml-32 flex w-1/4">
+        <label htmlFor="input-start-date" className="block text-sm font-medium text-gray-700 w-1/4">Start Date:</label>
+        <input
+            type="date"
+            value={events.startDate}
+            onChange={(e) => updateEvent(e.target.value, 'startDate')}
+            name="input-start-date"
+            id="input-start-date"
+            className="input input-bordered w-3/4"
+        />
+    </div>
+    <div className="flex w-1/4">
+        <label htmlFor="input-end-date" className="block text-sm font-medium text-gray-700 w-1/4">End Date:</label>
+        <input
+            type="date"
+            value={events.endDate}
+            onChange={(e) => updateEvent(e.target.value, 'endDate')}
+            name="input-end-date"
+            id="input-end-date"
+            className="input input-bordered w-3/4"
+        />
+    </div>
+</div>
                 <div className="flex items-center space-x-8">
                         <div className="ml-32 flex w-1/4">
                             <label htmlFor="input-start-hour" className="block text-sm font-medium text-gray-700 w-1/4">Start Hour:</label>

@@ -32,7 +32,7 @@ export default function WeekDay({ date, events, showDate = true }) {
         },
         li: {
             boxSizing: 'border-box',
-                    height: '1px',
+            height: '1px',
             lineHeight: '1px',
             textAlign: 'center',
             width: '100%',
@@ -51,7 +51,7 @@ export default function WeekDay({ date, events, showDate = true }) {
         },
     };
 
-       const timeSlots = Array.from({ length: 24 * 60 }, (_, i) => {
+    const timeSlots = Array.from({ length: 24 * 60 }, (_, i) => {
         const hour = Math.floor(i / 60);
         const minutes = i % 60;
         return { hour, minutes };
@@ -77,23 +77,37 @@ export default function WeekDay({ date, events, showDate = true }) {
                     if (eventOnThisSlot) {
                         const eventStartDate = new Date(eventOnThisSlot.startDateTime);
                         const eventEndDate = new Date(eventOnThisSlot.endDateTime);
-                        const durationInMinutes = (eventEndDate - eventStartDate) / (1000 * 60);
-                        const slotSpan = Math.ceil(durationInMinutes);
+                        const slotDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), slot.hour, slot.minutes);
+                        let slotSpan;
 
-                        for (let i = 1; i < slotSpan; i++) {
-                            occupiedSlots[index + i] = true;
-                        }
+if (eventEndDate.getDate() !== slotDate.getDate()) {
 
-                        return (
-                            <li key={index} style={{...styles.li, ...styles.event, height: `${slotSpan}px`, lineHeight: `${slotSpan}px`}}>
-                                <Link to={`/events/${eventOnThisSlot.id}`} style={styles.link}>
-                                    {eventOnThisSlot.name}
-                                </Link>
-                            </li>
-                        );
+    const endOfDay = new Date(slotDate);
+    endOfDay.setHours(23, 59, 59, 999); 
+    slotSpan = Math.ceil((endOfDay - slotDate) / (1000 * 60));
+} else {
+
+    slotSpan = Math.ceil((eventEndDate - slotDate) / (1000 * 60));
+}
+
+
+const remainingSlotsInDay = 24 * 60 - (slot.hour * 60 + slot.minutes);
+slotSpan = Math.min(slotSpan, remainingSlotsInDay);
+
+for (let i = 1; i < slotSpan; i++) {
+    occupiedSlots[index + i] = true;
+}
+
+return (
+    <li key={index} style={{...styles.li, ...styles.event, height: `${slotSpan}px`, lineHeight: `${slotSpan}px`}}>
+        <Link to={`/events/${eventOnThisSlot.id}`} style={styles.link}>
+            {eventOnThisSlot.name}
+        </Link>
+    </li>
+);
                     }
 
-                        const additionalStyle = index % 60 === 0 ? { borderTop: '1px solid black' } : {};
+                    const additionalStyle = index % 60 === 0 ? { borderTop: '1px solid black' } : {};
 
                     return (
                         <li key={index} style={{...styles.li, ...additionalStyle}}></li>

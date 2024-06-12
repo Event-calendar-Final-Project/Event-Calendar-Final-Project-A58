@@ -28,8 +28,8 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
         borderRadius: '8px',
         backgroundColor: 'white',
         color: 'grey',
-        fontSize: '24px', // Adjust the font size as needed
-        padding: '8px', // Adjust the padding as needed
+        fontSize: '24px',
+        padding: '8px', 
     };
 
     const currentDate = new Date();
@@ -59,14 +59,25 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
         });
     };
 
-    function hasEvent(date) {
-        return events.some(event => {
-            const startDate = new Date(event.startDateTime);
-
-            return startDate.getDate() === date.getDate() &&
-                startDate.getMonth() === date.getMonth() &&
-                startDate.getFullYear() === date.getFullYear();
-        });
+    function isDateWithinEventRange(dateToCheck) {
+        
+        let startOfDayToCheck = new Date(dateToCheck);
+        startOfDayToCheck.setHours(0, 0, 0, 0);
+    
+        
+        for (let event of events) {
+            let startOfDayEventStart = new Date(event.startDateTime);
+            startOfDayEventStart.setHours(0, 0, 0, 0);
+    
+            let endOfDayEventEnd = new Date(event.endDateTime);
+            endOfDayEventEnd.setHours(23, 59, 59, 999);
+    
+            
+            if (startOfDayToCheck >= startOfDayEventStart && startOfDayToCheck <= endOfDayEventEnd) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function calendarBuilder() {
@@ -76,17 +87,24 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
         const lastMonthDate = new Date(currentYear, currentMonth + 1, 0).getDate();
         const prevMonthLastDate = new Date(currentYear, currentMonth, 0).getDate();
         const lastMonthDay = new Date(currentYear, currentMonth, lastMonthDate).getDay();
-
+        
         const datesBeforeCurrentMonth = Array.from({ length: firstMonthDay }, (_, i) => {
             const date = new Date(currentYear, currentMonth - 1, prevMonthLastDate - i);
-            const hasEventOnDate = hasEvent(date);
+            const isWithinEventRange = isDateWithinEventRange(date);
             return (
                 <li
                     key={`before-${i}`}
-                    style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'red' : 'transparent' }}
+                    className={`relative flex flex-col items-center justify-center p-2 border rounded-md shadow-sm cursor-pointer transition duration-300 ease-in-out ${
+                        isWithinEventRange ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'
+                    } hover:shadow-md hover:border-blue-300`}
                     onClick={() => onDateClick(date)}
                 >
                     {prevMonthLastDate - i}
+                    {isWithinEventRange && (
+                        <div className="absolute top-1 right-1">
+                            <EventIcon />
+                        </div>
+                    )}
                 </li>
             );
         }).reverse();
@@ -104,17 +122,17 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
         
         const datesOfCurrentMonth = Array.from({ length: lastMonthDate }, (_, i) => {
             const date = new Date(currentYear, currentMonth, i + 1);
-            const hasEventOnDate = hasEvent(date);
+            const isWithinEventRange = isDateWithinEventRange(date);
             return (
                 <li
                     key={`current-${i}`}
                     className={`relative flex flex-col items-center justify-center p-2 border rounded-md shadow-sm cursor-pointer transition duration-300 ease-in-out ${
-                        hasEventOnDate ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'
+                        isWithinEventRange ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'
                     } hover:shadow-md hover:border-blue-300`}
                     onClick={() => onDateClick(date)}
                 >
                     <span className="text-lg font-semibold">{i + 1}</span>
-                    {hasEventOnDate && (
+                    {isWithinEventRange && (
                         <div className="absolute top-1 right-1">
                             <EventIcon />
                         </div>
@@ -125,14 +143,21 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
 
         const datesOfNextMonth = Array.from({ length: 6 - lastMonthDay }, (_, i) => {
             const date = new Date(currentYear, currentMonth + 1, i + 1);
-            const hasEventOnDate = hasEvent(date);
+            const isWithinEventRange = isDateWithinEventRange(date);
             return (
                 <li
                     key={`next-${i}`}
-                    style={{ ...dateStyle, backgroundColor: hasEventOnDate ? 'red' : 'transparent' }}
+                    className={`relative flex flex-col items-center justify-center p-2 border rounded-md shadow-sm cursor-pointer transition duration-300 ease-in-out ${
+                        isWithinEventRange ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'
+                    } hover:shadow-md hover:border-blue-300`}
                     onClick={() => onDateClick(date)}
                 >
                     {i + 1}
+                    {isWithinEventRange && (
+                        <div className="absolute top-1 right-1">
+                            <EventIcon />
+                        </div>
+                    )}
                 </li>
             );
         });
