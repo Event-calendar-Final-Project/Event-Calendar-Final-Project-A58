@@ -153,7 +153,7 @@ const AdminDashboard = () => {
                                         </td>
                                         <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                             {user.isBlocked ? (
-                                                <button onClick={() => handleUnblockUser(user.uid)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2"><HiOutlinePlusCircle/></button>
+                                                <button onClick={() => handleUnblockUser(user.id)} className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 ml-2"><HiOutlinePlusCircle/></button>
                                             ) : (
                                                 <button onClick={() => handleBlockUser(user.id)} className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 ml-2"><HiOutlineBan/></button>
                                             )}

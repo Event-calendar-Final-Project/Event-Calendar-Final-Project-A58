@@ -39,12 +39,12 @@ export default function CreateEvent() {
 
   const createEvent = async () => {
     try {
-      if (event.name.length < 16 || event.name.length > 64) {
-        return alert("Event name must be between 16 and 64 characters long");
+      if (event.name.length < 3 || event.name.length > 30) {
+        return alert("Event name must be between 3 and 30 characters long");
       }
 
-      if (event.description.length < 5) {
-        return alert("Description must be at least 5 characters long");
+      if (event.description.length < 5 || event.description.length > 500) {
+        return alert("Description must be at least 5 characters long and less than 500 characters long");
       }
 
       if (!event.startDate || !event.endDate) {

@@ -26,7 +26,7 @@ export default function DisplayContactsLists({ contactLists }) {
               <div>
                 {list.users.contacts.map((userHandle, index) => (
                   <p key={`${list.users.id}-${userHandle}-${index}`}>
-                    <Link to={`/${userHandle}`} class="text-blue-600 font-bold hover:underline">
+                    <Link to={`/${userHandle}`} className="text-blue-600 font-bold hover:underline">
                       {userHandle}
                     </Link>
                   </p>

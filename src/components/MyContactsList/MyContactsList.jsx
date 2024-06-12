@@ -34,11 +34,12 @@ export default function MyContactsList({ myContacts }) {
                                 <th className="px-5 py-3">Address</th>
                             </tr>
                         </thead>
+
                         <tbody className="text-gray-500">
-                            {currentContacts.map((contact) => (
+                            {currentContacts.map((contact) => (                                
                                 <tr key={contact.uid}>
                                     <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <Link to={`/${contact.handle}`} class="font-medium text-blue-600 hover:underline">
+                                        <Link to={`/${contact.handle}`} className="font-medium text-blue-600 hover:underline">
                                             {contact.handle}
                                         </Link>
                                     </td>
