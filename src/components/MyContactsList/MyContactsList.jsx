@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 export default function MyContactsList({ myContacts }) {
 
     const [currentPageContacts, setCurrentPageContacts] = useState(1);
-    const itemsPerPage = 6;
+    const itemsPerPage = 4;
 
     const paginateContacts = (pageNumber) => setCurrentPageContacts(pageNumber);
     const indexOfLastContact = currentPageContacts * itemsPerPage;
