@@ -47,13 +47,17 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   };
 
   const handleLike = async () => {
-    console.log('Liked');
-    await likeEvent(event.id, userData.handle);
+    try {
+      console.log('Liked');
+      await likeEvent(event.id, userData.handle);
+    } catch (error) { console.error('Error liking event:', error); }
   };
 
   const handleDislike = async () => {
-    console.log('Disliked');
-    await dislikeEvent(event.id, userData.handle);
+    try {
+      console.log('Disliked');
+      await dislikeEvent(event.id, userData.handle);
+    } catch (error) { console.error('Error disliking event:', error); }
   };
 
   const handleDelete = () => {
@@ -70,9 +74,11 @@ export default function Event({ event: initialEvent, deleteEvent, editEvent, isS
   };
 
   const updateEventTypeAndVisibility = async () => {
-    console.log(event.id, { type: eventVisibility });
-    await updateEvent(event.id, { ...event, type: eventVisibility });
-    fetchEvent();
+    try {
+      console.log(event.id, { type: eventVisibility });
+      await updateEvent(event.id, { ...event, type: eventVisibility });
+      fetchEvent();
+    } catch (error) { console.error('Error updating event type:', error); }
   };
 
   const saveEdit = async () => {

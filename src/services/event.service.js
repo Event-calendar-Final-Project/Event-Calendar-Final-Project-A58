@@ -2,59 +2,66 @@ import { ref, push, get, set, update, child, remove } from 'firebase/database';
 import { db } from '../config/firebase-config';
 
 export const addEvent = async (author, name, description, startDateTime, endDateTime, location, photo, type) => {
-    const event = {
-        author,
-        name,
-        description,
-        startDateTime: startDateTime.toISOString(),
-        endDateTime: endDateTime.toISOString(),
-        location,
-        photo,
-        type,
-        createdOn: Date.now(),
-    };
-    console.dir(event);
-    const result = await push(ref(db, 'events'), event);
-    return result.key;
+    try {
+        const event = {
+            author,
+            name,
+            description,
+            startDateTime: startDateTime.toISOString(),
+            endDateTime: endDateTime.toISOString(),
+            location,
+            photo,
+            type,
+            createdOn: Date.now(),
+        };
+        console.dir(event);
+        const result = await push(ref(db, 'events'), event);
+        return result.key;
+    } catch (error) { console.error('Error adding event:', error); }
 };
 
 
 export const getAllEvents = async (search) => {
-    const eventsSnapshot = await get(ref(db, 'events'));
+    try {
+        const eventsSnapshot = await get(ref(db, 'events'));
 
-    let events = {};
+        let events = {};
 
-    if (eventsSnapshot.exists()) {
-        events = eventsSnapshot.val();
-    }
+        if (eventsSnapshot.exists()) {
+            events = eventsSnapshot.val();
+        }
 
 
-    return Object
-        .entries(events)
-        .map(([key, value]) => {
-            return {
-                ...value,
-                id: key,
-                likedBy: value.likedBy ? Object.keys(value.likedBy) : [],
-                createdOn: new Date(value.createdOn).toString(),
-            }
-        })
-        .filter(e => (e.description.toLowerCase().includes(search.toLowerCase())) || (e.name.toLowerCase().includes(search.toLowerCase()))
-        || (e.author === search));
+        return Object
+            .entries(events)
+            .map(([key, value]) => {
+                return {
+                    ...value,
+                    id: key,
+                    likedBy: value.likedBy ? Object.keys(value.likedBy) : [],
+                    createdOn: new Date(value.createdOn).toString(),
+                }
+            })
+            .filter(e => (e.description.toLowerCase().includes(search.toLowerCase())) || (e.name.toLowerCase().includes(search.toLowerCase()))
+            || (e.author === search));
+    } catch (error) { console.error('Error fetching events:', error); }
 };
 
 
 export const getEventById = async (id) => {
-    const snapshot = await get(ref(db, `events/${id}`));
+    try {
+        const snapshot = await get(ref(db, `events/${id}`));
+        if (!snapshot.exists()) {
+            throw new Error('Event with this ID does not exist!');
+        }
 
-    if (!snapshot.val()) throw new Error('Event with this ID does not exist!');
-
-    return {
-        ...snapshot.val(),
-        id,
-        likedBy: snapshot.val().likedBy ? Object.keys(snapshot.val().likedBy) : [],
-        createdOn: new Date(snapshot.val().createdOn).toString(),
-    }
+        return {
+            ...snapshot.val(),
+            id,
+            likedBy: snapshot.val().likedBy ? Object.keys(snapshot.val().likedBy) : [],
+            createdOn: new Date(snapshot.val().createdOn).toString(),
+        };
+    } catch (error) { console.error('Error fetching event by ID:', error); }
 };
 
 // Like an event
@@ -79,10 +86,12 @@ export const dislikeEvent = async (eventId, handle) => {
 
 // Get all events without any filtering
 export const getEvents = async () => {
-    const snapshot = await get(ref(db, 'events'));
-    if (!snapshot.exists()) return [];
+    try {
+        const snapshot = await get(ref(db, 'events'));
+        if (!snapshot.exists()) return [];
 
-    return Object.entries(snapshot.val());
+        return Object.entries(snapshot.val());
+    } catch (error) { console.error('Error fetching events:', error); }
 };
 
 

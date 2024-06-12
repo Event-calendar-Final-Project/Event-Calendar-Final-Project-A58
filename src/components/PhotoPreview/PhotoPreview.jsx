@@ -22,5 +22,5 @@ PhotoPreview.propTypes = {
   photo: PropTypes.oneOfType([
     PropTypes.instanceOf(File),
     PropTypes.string
-  ]).isRequired
+  ])
 };

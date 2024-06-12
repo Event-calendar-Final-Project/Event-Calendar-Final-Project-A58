@@ -14,12 +14,14 @@ export default function SearchUser( {onUserAdded} ) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const users = await fetchUsersFromDB();
-    const searchResults = users.filter((user) => user.handle === query || user.email === query || user.phone === query);
+    try{
+      const users = await fetchUsersFromDB();
+      const searchResults = users.filter((user) => user.handle === query || user.email === query || user.phone === query);
 
-    setResults(searchResults);
-    console.log(searchResults);
-    setContactAdded(false);
+      setResults(searchResults);
+      console.log(searchResults);
+      setContactAdded(false);
+    } catch (error) { console.error('Error searching for user:', error); }
 
   };
 

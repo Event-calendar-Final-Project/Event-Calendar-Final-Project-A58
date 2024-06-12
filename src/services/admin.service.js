@@ -3,58 +3,75 @@ import { db } from '../config/firebase-config';
 
 // Fetch all users or search by username/email
 export const getUsers = async (searchQuery = '') => {
-    const usersSnapshot = await get(ref(db, 'users'));
-    let users = [];
+    try {
+        const usersSnapshot = await get(ref(db, 'users'));
+        let users = [];
 
-    if (usersSnapshot.exists()) {
-        console.log(Object.entries(usersSnapshot.val()));
-        users = Object.entries(usersSnapshot.val())
-            .map(([id, userData]) => ({ id, ...userData }))
-            .filter(user =>
-                user.handle?.includes(searchQuery) ||
-                user.email?.includes(searchQuery) ||
-                user.firstName?.includes(searchQuery) ||
-                user.lastName?.includes(searchQuery)
-            );
-            
+        if (usersSnapshot.exists()) {
+            console.log(Object.entries(usersSnapshot.val()));
+            users = Object.entries(usersSnapshot.val())
+                .map(([id, userData]) => ({ id, ...userData }))
+                .filter(user =>
+                    user.handle?.includes(searchQuery) ||
+                    user.email?.includes(searchQuery) ||
+                    user.firstName?.includes(searchQuery) ||
+                    user.lastName?.includes(searchQuery)
+                );
+                
+        }
+
+        return users;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return [];
     }
-
-    return users;
 };
 
 // Block a user
 export const blockUser = async (userId) => {
-    await update(ref(db, `users/${userId}`), { isBlocked: true });
+    try {
+        await update(ref(db, `users/${userId}`), { isBlocked: true });
+    } catch (error) {
+        console.error('Error blocking user:', error);
+        throw error;
+    }
 };
 
 // Unblock a user
 export const unblockUser = async (userId) => {
-    await update(ref(db, `users/${userId}`), { isBlocked: false });
+    try {
+        await update(ref(db, `users/${userId}`), { isBlocked: false });
+    } catch (error) {
+        console.error('Error unblocking user:', error);
+        throw error;
+    }
 };
 
 // Fetch all events or search by name
 export const getEvents = async (search = '') => {
-    const eventsSnapshot = await get(ref(db, 'events'));
+    try {
+        const eventsSnapshot = await get(ref(db, 'events'));
 
-    if (!eventsSnapshot.exists()) {
-        return [];
-    }
+        if (!eventsSnapshot.exists()) {
+            return [];
+        }
 
-    const events = eventsSnapshot.val();
-    const searchLower = search.toLowerCase();
+        const events = eventsSnapshot.val();
+        const searchLower = search.toLowerCase();
 
-    return Object.entries(events)
-        .map(([key, value]) => ({
-            ...value,
-            id: key,
-            likedBy: value.likedBy ? Object.keys(value.likedBy) : [],
-            createdOn: new Date(value.createdOn).toString(),
-        }))
-        .filter(e =>
-            e.description.toLowerCase().includes(searchLower) ||
-            e.name.toLowerCase().includes(searchLower) ||
-            e.author.toLowerCase().includes(searchLower)
-        );
+        return Object.entries(events)
+            .map(([key, value]) => ({
+                ...value,
+                id: key,
+                likedBy: value.likedBy ? Object.keys(value.likedBy) : [],
+                createdOn: new Date(value.createdOn).toString(),
+            }))
+            .filter(e =>
+                e.description.toLowerCase().includes(searchLower) ||
+                e.name.toLowerCase().includes(searchLower) ||
+                e.author.toLowerCase().includes(searchLower)
+            );
+    } catch (error) { console.error('Error fetching events:', error); }
 };
 
 // Delete an event
@@ -78,15 +95,24 @@ export const deleteEventInDB = async (eventId, author) => {
 
 
 export const editEventInDB = async (updatedEvent) => {
-    const { id, name, description } = updatedEvent;
-    const eventRef = ref(db, `events/${id}`);
+    try {
+        const { id, name, description } = updatedEvent;
+        const eventRef = ref(db, `events/${id}`);
 
-    await update(eventRef, { name, description });
+        await update(eventRef, { name, description });
+    } catch (error) {
+        console.error('Error updating event:', error);
+        throw error;
+    }
 };
 
 export const toggleUserRole = async (userId, currentRole) => {
-    
-    const newRole = currentRole === 'admin' ? 'user' : 'admin';
+    try {
+        const newRole = currentRole === 'admin' ? 'user' : 'admin';
 
-    await update(ref(db, `users/${userId}`), { role: newRole });
+        await update(ref(db, `users/${userId}`), { role: newRole });
+    } catch (error) {
+        console.error('Error updating user role:', error);
+        throw error;
+    }
 };

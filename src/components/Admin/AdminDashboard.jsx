@@ -27,28 +27,41 @@ const AdminDashboard = () => {
     }, []);
 
     const fetchUsers = async () => {
-        const fetchedUsers = await getUsers(searchQuery);
-        setUsers(fetchedUsers);
+        try {
+            const fetchedUsers = await getUsers(searchQuery);
+            setUsers(fetchedUsers);
+        } catch (error) { console.error("Error fetching users:", error); }
     };
 
     const fetchEvents = async () => {
+        try {
         const fetchedEvents = await getEvents(searchQuery);
         setEvents(fetchedEvents);
+        } catch (error) { console.error("Error fetching events:", error); }
     };
 
     const handleBlockUser = async (userId) => {
-        await blockUser(userId);
-        fetchUsers();
+        try {
+            await blockUser(userId);
+            fetchUsers();
+        } catch (error) { console.error("Error blocking user:", error); }
+
     };
 
     const handleUnblockUser = async (userId) => {
-        await unblockUser(userId);
-        fetchUsers();
+        try {
+            await unblockUser(userId);
+            fetchUsers();
+        } catch (error) { console.error("Error unblocking user:", error); }
+
     };
 
     const handleDeleteEvent = async (eventId) => {
-        await deleteEventInDB(eventId, userData.handle);
-        fetchEvents();
+        try {
+            await deleteEventInDB(eventId, userData.handle);
+            fetchEvents();
+        } catch (error) { console.error("Error deleting event:", error); }
+
     };
 
     const startEditing = (event) => {
@@ -60,9 +73,11 @@ const AdminDashboard = () => {
 
     const saveEdit = async () => {
         const updatedEvent = { id: editedEventId, name: editedName, description: editedDescription };
-        await editEventInDB(updatedEvent);
-        setIsEditing(false);
-        fetchEvents();
+        try {
+            await editEventInDB(updatedEvent);
+            setIsEditing(false);
+            fetchEvents();
+        } catch (error) { console.error("Error editing event:", error); }
     };
 
     const cancelEdit = () => {
@@ -73,8 +88,10 @@ const AdminDashboard = () => {
     };
 
     const handleToggleUserRole = async (userId, currentRole) => {
-        await toggleUserRole(userId, currentRole);
-        fetchUsers();
+        try {
+            await toggleUserRole(userId, currentRole);
+            fetchUsers();
+        } catch (error) { console.error("Error toggling user role:", error); }
     };
 
     

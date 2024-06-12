@@ -14,14 +14,13 @@ export default function UserData({ user: userProp }) {
 
 
   useEffect(() => {
-    console.log('useEffect triggered');
-    console.log('UserData useEffect', handle, user, userProp);
     const fetchUser = async () => {
-      const fetchedUser = await fetchUserByHandle(handle);
-      setUser(fetchedUser);
+      try {
+        const fetchedUser = await fetchUserByHandle(handle);
+        setUser(fetchedUser);
+      } catch (error) { console.error('Error fetching user:', error); }
     };
     fetchUser();
-    console.log(user)
   }, [handle]);
 
   if (!user) {
@@ -33,9 +32,10 @@ export default function UserData({ user: userProp }) {
   };
 
   const refreshUserData = async () => {
-    console.log('refreshUserData called');
-    const fetchedUser = await fetchUserByHandle(handle);
-    setUser(prevUser => ({ ...prevUser, ...fetchedUser }));
+    try {
+      const fetchedUser = await fetchUserByHandle(handle);
+      setUser(prevUser => ({ ...prevUser, ...fetchedUser }));
+    } catch (error) { console.error('Error refreshing user data:', error); }
   };
 
   return (

@@ -27,7 +27,9 @@ export const getUserData = (uid) => {
 };
 
 export const setAdminRole = async (handle) => {
-  await update(ref(db, `users/${handle}`), { role: 'admin' });
+  try {
+    await update(ref(db, `users/${handle}`), { role: 'admin' });
+  } catch (error) { console.error('Error setting admin role:', error); }
 };
 
 export async function updateUserEvents(handle, eventId, startDateTime, endDateTime, type) {
@@ -103,11 +105,13 @@ export async function updateUserProfile(handle, firstName, lastName, phone, addr
   if (lastName !== undefined && lastName !== null) updates.lastName = lastName;
   if (phone !== undefined && phone !== null) updates.phone = phone;
   if (address !== undefined && address !== null) updates.address = address;
-   if (photo !== undefined && photo !== null) updates.photo = photo;
+  if (photo !== undefined && photo !== null) updates.photo = photo;
 
-  await update(userRef, updates);
+  try {
+      await update(userRef, updates);
+      return { success: true };
+    } catch (error) { console.error('Error updating user profile:', error); }
 
-  return { success: true };
 }
 
 export async function addContactList(handle, listName, contacts) {
