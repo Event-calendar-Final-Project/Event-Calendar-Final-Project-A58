@@ -6,7 +6,7 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
     const weekDaysStyle = {
         display: 'grid',
         gridTemplateColumns: 'repeat(7, 1fr)',
-        gap: '10px',
+        gap: '15px',
         padding: '0',
         listStyleType: 'none',
     };
@@ -14,7 +14,7 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
     const datesStyle = {
         display: 'grid',
         gridTemplateColumns: 'repeat(7, 1fr)',
-        gap: '10px',
+        gap: '15px',
         padding: '0',
         listStyleType: 'none',
         ...(props.shortWeekdays ? {} : { height: '100%' }),
@@ -82,7 +82,7 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
                 <li
                     key={`before-${i}`}
                     className={`relative flex flex-col items-center justify-center p-2 border rounded-md shadow-sm cursor-pointer transition duration-300 ease-in-out ${
-                        isWithinEventRange ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'
+                        isWithinEventRange ? 'bg-blue-500 border-blue-300' : 'bg-blue border-gray-200'
                     } hover:shadow-md hover:border-blue-300`}
                     onClick={() => onDateClick(date)}
                 >
@@ -135,7 +135,7 @@ export default function CalendarMonth({ onDateClick, events, ...props }) {
                 <li
                     key={`next-${i}`}
                     className={`relative flex flex-col items-center justify-center p-2 border rounded-md shadow-sm cursor-pointer transition duration-300 ease-in-out ${
-                        isWithinEventRange ? 'bg-blue-50 border-blue-300' : 'bg-white border-gray-200'
+                        isWithinEventRange ? 'bg-blue-50 border-blue-300' : 'bg-blue border-gray-200'
                     } hover:shadow-md hover:border-blue-300`}
                     onClick={() => onDateClick(date)}
                 >
