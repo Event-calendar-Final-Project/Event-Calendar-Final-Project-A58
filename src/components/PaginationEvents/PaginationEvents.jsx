@@ -8,8 +8,7 @@ const PaginationEvents = ({ itemsPerPage, totalItems, paginate, currentPage }) =
     pageNumbers.push(i);
   }
 
-  // Define the styles as a string
-  const styles = `
+    const styles = `
     .pagination {
       display: flex;
       list-style: none;
@@ -42,7 +41,6 @@ const PaginationEvents = ({ itemsPerPage, totalItems, paginate, currentPage }) =
 
   return (
     <nav>
-      {/* Use style tag to apply the styles */}
       <style>{styles}</style>
       <ul className="pagination mt-4">
         {pageNumbers.map(number => (

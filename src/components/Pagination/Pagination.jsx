@@ -5,7 +5,6 @@ const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
-  // Define the styles as a string
   const styles = `
     .pagination {
       display: flex;
@@ -39,7 +38,6 @@ const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
 
   return (
     <nav style={{ position: 'fixed', top: `820px` }}>
-      {/* Use style tag to apply the styles */}
       <style>{styles}</style>
       <ul className="pagination mt-4 mb-4">
         {pageNumbers.map(number => (

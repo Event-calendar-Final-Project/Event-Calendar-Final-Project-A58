@@ -92,7 +92,7 @@ export default function CalendarWorkWeek({ onDateClick, events }) {
                 <button
                     style={{ ...styles.button, ...styles.buttonPrev }}
                     onClick={handlePrevWeek}
-                    className="hover:bg-blue-700" // Tailwind class for hover effect
+                    className="hover:bg-blue-700" 
                 >
                     <div className="flex flex-row align-middle">
                         <svg className="w-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +105,7 @@ export default function CalendarWorkWeek({ onDateClick, events }) {
                 <button
                     style={{ ...styles.button, ...styles.buttonNext }}
                     onClick={handleNextWeek}
-                    className="hover:bg-blue-700" // Tailwind class for hover effect
+                    className="hover:bg-blue-700" 
                 >
                     <div className="flex flex-row align-middle">
                         <span className="mr-2">Next</span>
@@ -124,7 +124,6 @@ export default function CalendarWorkWeek({ onDateClick, events }) {
                         key={index}
                         date={date}
                         events={events}
-                        context="workweek"
                         showHoursLabel={index === 0}
                     />
                 ))}

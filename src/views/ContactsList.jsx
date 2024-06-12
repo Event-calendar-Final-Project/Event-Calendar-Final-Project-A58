@@ -5,34 +5,35 @@ import MyContactsList from "../components/MyContactsList/MyContactsList";
 import ContactsLists from "../components/ContactsLists/ContactsLists";
 import { fetchUserByHandle } from "../services/users.service";
 import { getUserContactsList } from "../services/users.service";
-
+import { ContactTypes } from "../Data/data-enums";
 
 export default function ContactsList() {
   const { userData } = useContext(AppContext);
-  const [selectedOption, setSelectedOption] = useState('myContacts');
-  const[myContacts, setMyContacts] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(ContactTypes.MY_CONTACTS);
+  const [myContacts, setMyContacts] = useState([]);
   const [triggerRerender, setTriggerRerender] = useState(false);
 
   const handleUserAdded = () => {
     setTriggerRerender(prevState => !prevState);
-  }; 
+  };
 
   useEffect(() => {
-    
-    getUserContactsList(userData.handle)
-      .then(contacts => {
-        if (contacts) {
-          const contactHandles = Object.keys(contacts);
-          return Promise.all(contactHandles.map(handle => fetchUserByHandle(handle)));
-        }
-        return [];
-      })
-      .then(setMyContacts)
-      .catch(error => console.error("Failed to fetch contacts:", error));
-  }, [userData.handle, triggerRerender]); 
+    if (userData && userData.handle) {
+      getUserContactsList(userData.handle)
+        .then(contacts => {
+          if (contacts) {
+            const contactHandles = Object.keys(contacts);
+            return Promise.all(contactHandles.map(handle => fetchUserByHandle(handle)));
+          }
+          return [];
+        })
+        .then(setMyContacts)
+        .catch(error => console.error("Failed to fetch contacts:", error));
+    }
+  }, [userData, triggerRerender]);
 
   const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value); 
+    setSelectedOption(event.target.value);
   };
 
   return (
@@ -46,8 +47,8 @@ export default function ContactsList() {
               value={selectedOption}
               className="block appearance-none border border-gray-300 rounded-md px-4 py-2 pr-8 focus:outline-none focus:ring focus:border-blue-500 sm:text-sm"
             >
-              <option value="myContacts">My Contacts</option>
-              <option value="contactsLists">Contacts Lists</option>
+              <option value={ContactTypes.MY_CONTACTS}>My Contacts</option>
+              <option value={ContactTypes.CONTACTS_LISTS}>Contacts Lists</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -65,15 +66,14 @@ export default function ContactsList() {
             </div>
           </div>
         </div>
-        {selectedOption === 'myContacts' && (
+        {selectedOption === ContactTypes.MY_CONTACTS && (
           <>
             <SearchUser onUserAdded={handleUserAdded} />
             <MyContactsList myContacts={myContacts}/>
           </>
         )}
-        {selectedOption === 'contactsLists' && <ContactsLists />}
+        {selectedOption === ContactTypes.CONTACTS_LISTS && <ContactsLists />}
       </div>
     </div>
   );
-  
 }

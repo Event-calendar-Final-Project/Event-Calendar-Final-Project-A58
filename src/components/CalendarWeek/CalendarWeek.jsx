@@ -127,7 +127,6 @@ export default function CalendarWeek({ onDateClick, events }) {
                         key={index}
                         date={date}
                         events={events}
-                        context="week"
                         showHoursLabel={index === 0}
                     />
                 ))}

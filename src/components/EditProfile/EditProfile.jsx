@@ -35,7 +35,6 @@ console.log(user);
         setPhone('');
         setAddress('');
         setPhoto('');
-        console.log('Calling onProfileUpdate');
         onProfileUpdate();
       }
     } catch (error) {

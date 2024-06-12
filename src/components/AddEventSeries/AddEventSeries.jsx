@@ -3,6 +3,7 @@ import { addEventSeries, addEventToSeriesById } from "../../services/eventSeries
 import { AppContext } from "../../context/AppContext";
 import { addEventPhoto } from "../../services/upload.service";
 import PhotoPreview from "../PhotoPreview/PhotoPreview";
+import { TimeFormats } from "../../Data/data-enums";
 
 
 export default function AddEventSeries() {
@@ -80,18 +81,16 @@ const timeFormat = series.repeat;
 
 let timeDiffAdjusted;
 switch (timeFormat) {
-    case 'daily':
+    case TimeFormats.DAILY:
         timeDiffAdjusted = timeDiff / (1000 * 3600 * 24);
         break;
-    case 'weekly':
+    case TimeFormats.WEEKLY:
         timeDiffAdjusted = timeDiff / (1000 * 3600 * 24 * 7);
         break;
-    case 'monthly':
-        
+    case TimeFormats.MONTHLY:
         timeDiffAdjusted = timeDiff / (1000 * 3600 * 24 * 30.44);
         break;
-    case 'yearly':
-        
+    case TimeFormats.YEARLY:
         timeDiffAdjusted = timeDiff / (1000 * 3600 * 24 * 365.25);
         break;
     default:
@@ -103,19 +102,19 @@ const eventsArr = Array.from({ length: Math.floor(timeDiffAdjusted) + 1 }).map((
     const eventEndDateLocal = new Date(endDateTimeLocal);
 
     switch (timeFormat) {
-        case 'daily':
+        case TimeFormats.DAILY:
             eventStartDateLocal.setDate(startDateTimeLocal.getDate() + i);
             eventEndDateLocal.setDate(endDateTimeLocal.getDate() + i);
             break;
-        case 'weekly':
+        case TimeFormats.WEEKLY:
             eventStartDateLocal.setDate(startDateTimeLocal.getDate() + i * 7);
             eventEndDateLocal.setDate(endDateTimeLocal.getDate() + i * 7);
             break;
-        case 'monthly':
+        case TimeFormats.MONTHLY:
             eventStartDateLocal.setMonth(startDateTimeLocal.getMonth() + i);
             eventEndDateLocal.setMonth(endDateTimeLocal.getMonth() + i);
             break;
-        case 'yearly':
+        case TimeFormats.YEARLY:
             eventStartDateLocal.setFullYear(startDateTimeLocal.getFullYear() + i);
             eventEndDateLocal.setFullYear(endDateTimeLocal.getFullYear() + i);
             break;
