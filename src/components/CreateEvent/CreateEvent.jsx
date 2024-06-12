@@ -86,14 +86,14 @@ export default function CreateEvent() {
     return (
         <div className="max-w-3xl mx-auto p-4 mt-6">
             
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-2">
                 <button onClick={toggleEventSeries} className={`btn ${isCreatingEventSeries ? 'btn-outline' : 'btn-info'} mr-2`}>Create Single Event</button>
                 <button onClick={toggleEventSeries} className={`btn ${isCreatingEventSeries ? 'btn-info' : 'btn-outline'} ml-2`}>Create Event Series</button>
             </div>
             { !isCreatingEventSeries &&
             <>
-                <h1 className="text-2xl font-bold mb-4 text-center">Create Event</h1>
-                <div className="bg-white shadow-lg rounded-lg p-6 space-y-4">
+                <h1 className="text-2xl font-bold mb-2 text-center">Create Event</h1>
+                <div className="bg-gray-100 shadow-lg rounded-lg p-4 space-y-2">
                     <div className="flex items-center space-x-4">
                         <label htmlFor="input-name" className="block text-sm font-medium text-gray-700 w-1/6">Event Name:</label>
                         <input
